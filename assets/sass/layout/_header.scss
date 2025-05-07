@@ -1,0 +1,20 @@
+header{
+  background-color: $red;
+
+  .navbar-header{
+    .logo{
+
+    }
+    .menu-links-container{
+        display: flex;
+        justify-content: space-between;
+        a{
+            picture,img{
+                width: 220px;
+                height: auto;
+                object-fit: contain;
+            }
+        }
+    }
+  }
+}

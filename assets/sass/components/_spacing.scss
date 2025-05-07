@@ -1,0 +1,94 @@
+$spacing: 24;
+
+    @mixin create-mq($breakpoint) {
+      @if ($breakpoint == 0) {
+        @content;
+      } @else {
+        @media screen and (min-width: $breakpoint) {
+          @content;
+        }
+      }
+    }
+    
+    @mixin create-col-classes($modifier, $spacing, $breakpoint) {
+      @include create-mq($breakpoint) {
+        @for $i from 0 through $spacing {
+          .m#{$modifier}-#{$i} {
+            margin: ($i) * 0.5rem;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .ml#{$modifier}-#{$i} {
+            margin-left: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .mr#{$modifier}-#{$i} {
+            margin-right: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .mt#{$modifier}-#{$i} {
+            margin-top: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .mb#{$modifier}-#{$i} {
+            margin-bottom: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .my#{$modifier}-#{$i} {
+            margin-top: ($i) * 0.5rem !important;
+            margin-bottom: ($i) * 0.5rem !important;
+          }
+          .mx#{$modifier}-#{$i} {
+            margin-left: ($i) * 0.5rem !important;
+            margin-right: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .p#{$modifier}-#{$i} {
+            padding: ($i) * 0.5rem;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .pl#{$modifier}-#{$i} {
+            padding-left: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .pr#{$modifier}-#{$i} {
+            padding-right: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .pt#{$modifier}-#{$i} {
+            padding-top: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .pb#{$modifier}-#{$i} {
+            padding-bottom: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .px#{$modifier}-#{$i} {
+            padding-left: ($i) * 0.5rem !important;
+            padding-right: ($i) * 0.5rem !important;
+          }
+        }
+        @for $i from 0 through $spacing {
+          .py#{$modifier}-#{$i} {
+            padding-top: ($i) * 0.5rem !important;
+            padding-bottom: ($i) * 0.5rem !important;
+          }
+        }
+      }
+    }
+    
+    @each $modifier, $breakpoint in $map-grid-props {
+      @include create-col-classes($modifier, $spacing, $breakpoint);
+    }
+
+

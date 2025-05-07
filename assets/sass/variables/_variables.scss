@@ -1,0 +1,100 @@
+
+$url_font: '../webfonts/';
+$url_image: '../img/';
+
+// FUNCION PARA REGISTRAR LAS FUENTES
+@mixin register-font($name:"Arial", $weight: 400, $woff, $woff2){
+    @if $name != ""{
+        @font-face {
+            font-family: $name;
+            font-display: swap;
+            src:  
+                url("#{$url_font}#{$woff}") format('woff'),
+                url("#{$url_font}#{$woff2}") format('woff2');
+            font-weight: $weight;
+            font-style: normal;
+        }
+    }
+}
+
+// FUNCION PARA REGISTRAR EL BACKGROUND
+@mixin bg-image-webp($folder:"", $image_webp:"", $image_jpg:"", ){
+    $img_1 : '';
+    $img_2 : '';
+    @if $image_webp != "" {
+        $img_1 :  "#{$url_image}#{$folder}/#{$image_webp}";
+    }
+    @if $image_jpg  != "" {
+        $img_2 : "#{$url_image}#{$folder}/#{$image_jpg}";
+    }
+    @if $folder != "" {
+        background-image:
+        url("#{$img_1}"), 
+        url("#{$img_2}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }@else{
+        background-image:
+        url("#{$img_1}"), 
+        url("#{$img_2}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+@mixin bg-image-svg($folder:"", $image_svg:""){
+    $img_1 : '';
+    @if $image_svg != "" {
+        $img_1 :  "#{$url_image}#{$folder}/#{$image_svg}";
+    }
+
+    @if $folder != "" {
+        background-image:
+        url("#{$img_1}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }@else{
+        background-image:
+        url("#{$img_1}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+@mixin bg-presets(){
+        content: "";
+        position: absolute;
+}
+
+@mixin gradient($direction, $opacity: 0.8){
+    background: linear-gradient(to $direction, rgba(0, 0, 0, $opacity), transparent);
+}
+
+
+
+$fast: .25s all ease-in-out;
+$slow: .4s all ease-in-out;
+$very-slow: .3s all  ease-in-out;
+
+
+// Custom Variables
+@mixin marginSection(){
+    padding-top: 77px;
+    display: flex;
+    flex-direction: column;
+    @include media(md){
+        padding-top: 57px;
+    }
+    @include media(sm){
+        padding-top: 51px;
+    }
+}
+
+@mixin aspectRatio(){
+    aspect-ratio: 16 / 9;
+    @include media(md){
+        aspect-ratio: 4 / 3;
+    }
+    @include media(sm){
+        aspect-ratio: 1 / 1;
+    }
+}

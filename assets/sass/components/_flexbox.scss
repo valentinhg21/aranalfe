@@ -1,0 +1,117 @@
+
+$times : 1;
+
+
+    @mixin create-mq($breakpoint) {
+      @if ($breakpoint == 0) {
+        @content;
+      } @else {
+        @media screen and (min-width: $breakpoint) {
+          @content;
+        }
+      }
+    }
+    
+    @mixin create-col-classes($modifier, $times, $breakpoint) {
+      @include create-mq($breakpoint) {
+        @for $i from 1 through $times {
+          .d-flex#{$modifier}{
+            display: flex !important;
+          }
+          .d-none#{$modifier}{
+            display: none !important;
+          }
+          .d-block#{$modifier}{
+            display: block !important;
+          }
+          .d-grid#{$modifier}{
+            display: grid !important;
+          }
+        }
+        @for $i from 1 through $times {
+          .justify-center#{$modifier} {
+            justify-content: center;
+          }
+          .justify-end#{$modifier} {
+            justify-content: flex-end;
+          }
+          .justify-start#{$modifier} {
+            justify-content: flex-start;
+          }
+          .justify-between#{$modifier} {
+            justify-content: space-between;
+          }
+          .justify-around#{$modifier} {
+            justify-content: space-around;
+          }
+          .justify-baseline#{$modifier} {
+            justify-content: baseline;
+          }
+        }
+        @for $i from 1 through $times{
+          .align-content-center#{$modifier} {
+            align-content: center;
+          }
+          .align-content-end#{$modifier} {
+            align-content: flex-end;
+          }
+          .align-content-start#{$modifier} {
+            align-content: flex-start;
+          }
+          .align-content-baseline#{$modifier} {
+            align-content: baseline;
+          }
+        }
+        @for $i from 1 through $times{
+          .align-items-center#{$modifier} {
+            align-items: center;
+          }
+          .align-items-end#{$modifier} {
+            align-items: flex-end;
+          }
+          .align-items-start#{$modifier} {
+            align-items: flex-start;
+          }
+          .align-items-baseline#{$modifier} {
+            align-items: baseline;
+          }
+        }
+        @for $i from 1 through $times{
+          .flex-wrap#{$modifier} {
+            flex-wrap: wrap;
+          }
+        }
+        @for $i from 1 through $times{
+            .flex-nowrap#{$modifier} {
+              flex-wrap: nowrap;
+            }
+        }
+        @for $i from 1 through $times{
+            .flex-column#{$modifier} {
+                flex-direction: column;
+            }
+            .flex-column-reverse#{$modifier} {
+              flex-direction: column-reverse;
+            }
+    
+            .flex-row#{$modifier} {
+                flex-direction: row;
+            }
+            .flex-row-reverse#{$modifier} {
+              flex-direction: row-reverse;
+          }
+        }
+        @for $i from 1 through $times{
+          .text-center#{$modifier} {
+              text-align: center;
+          }
+    
+      }
+      }
+    }
+    
+    @each $modifier, $breakpoint in $map-grid-props {
+      @include create-col-classes($modifier, $times, $breakpoint);
+    }
+
+

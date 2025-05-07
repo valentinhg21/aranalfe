@@ -1,0 +1,53 @@
+
+
+.button__container{
+    display: flex;
+    width: 100%;
+
+    
+}
+
+.btn{
+    padding: 12px 24px;
+    color: $white;
+    background: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    outline: none;
+    transition: $fast;
+    font-size: 14px;
+    border: none;
+    color: $black;
+    border: 1px solid $white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(2px);
+    font-weight: 400;
+    text-transform: uppercase;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+
+    @include media(md){
+        min-width: 198px;
+    }
+    @include media(sm){
+    
+        min-width: 143px;
+        padding: 11px 22px;
+    }
+    @include media(xs){
+        font-size: 14px;
+    }
+    text-decoration: none !important;
+    &:hover{
+        background: transparent;
+        color: $white;
+
+    }
+    &.font-w-400{
+        font-weight: 400;
+    }
+}

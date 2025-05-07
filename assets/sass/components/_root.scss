@@ -1,0 +1,59 @@
+@import "./components/fonts";
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: $Montserrat, sans-serif;
+  color: $white;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+
+a {
+  text-decoration: none;
+}
+
+img,
+picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#wpadminbar{
+  position: fixed;
+}
+.theme.customize-support {
+
+
+}
+
+.theme {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+
+
+.hidden {
+  overflow: hidden;
+}
+
+
+.scroll-margin{
+  scroll-margin-block: 93px;
+
+  @include media(xs){
+    scroll-margin-block: 30px;
+  }
+}
+
+.page-404{
+
+}
+
