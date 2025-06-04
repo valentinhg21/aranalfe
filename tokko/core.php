@@ -1,11 +1,13 @@
 <?php
 require get_template_directory() . '/tokko/api.inc';
-$key = '9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8';
+$key = 'fad0d191d200804e836be0b26626ac919fa37e8a';
 
+// $key = '90056a0b47eb9bc8b995124778d8f7498ddbe96a';
 
 
 $auth = new TokkoAuth($key);
 // devuelve las propiedades destacadads
+
 
 function get_destacadas($cant = 12, $operation_type = null)
 {
@@ -90,7 +92,7 @@ function connectApi($url)
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => $url . "&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8",
+        CURLOPT_URL => $url . "&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -144,12 +146,12 @@ function get_utlimos_ingresos($cant = 12, $operation_type = null, $property_type
 
 function getLocationsAutocomplete()
 {
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/146/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/147/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/148/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/149/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/150/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
-    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/151/?format=json&key=9e671fc6a6052ba2c0db7dc6ab4760da15c81fb8'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/146/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/147/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/148/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/149/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/150/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
+    $merge_location[] = json_decode(connectApi('https://www.tokkobroker.com/api/v1/state/151/?format=json&key=90056a0b47eb9bc8b995124778d8f7498ddbe96a'), true);
 
     $todas = [];
     foreach ($merge_location as $location) {
@@ -163,56 +165,4 @@ function getLocationsAutocomplete()
     }
     return $todas;
 }
-
-function getDevelopment($id) {
-    global $key;
-  
-    $curl = curl_init();
-  
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => 'http://tokkobroker.com/api/v1/development/'.$id.'/?lang=es_ar&format=json&key='.$key,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => '',
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => 'GET',
-    ));
-  
-    $response = curl_exec($curl);
-  
-    curl_close($curl);
-    $resultados = json_decode($response);
-    return $resultados;
-  }
-
-
-function searchProperties($limit,$offset,$order_by,$order,$data) {
-
-    global $key;
-  
-    $CURLOPT_URL = 'http://tokkobroker.com/api/v1/property/search?lang=es_ar&format=json&limit='.$limit.'&offset='.$offset.'&data='.$data.'&order_by='.$order_by.'&order='.$order.'&key='.$key;
-  
-    $curl = curl_init();
-  
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => $CURLOPT_URL,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => '',
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => 'GET',
-    ));
-  
-    $response = curl_exec($curl);
-  
-    curl_close($curl);
-  
-    $resultados = json_decode($response);
-    return $resultados;
-  }
-
  

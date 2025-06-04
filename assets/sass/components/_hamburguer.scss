@@ -19,7 +19,8 @@ $color-hamburguer: $white;
   border: 0;
   margin: 0;
   overflow: visible;
-
+  position: relative;
+  z-index: 50;
 }
 .hamburger:hover {
   opacity: 1;

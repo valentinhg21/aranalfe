@@ -16,8 +16,8 @@
 @import './components/hamburguer';
 @import './components/tinymce';
 @import './components/form';
-
-
+@import './components/form-parts';
+@import './components/card';
 // LAYOUT
 @import './layout/header';
 @import './layout/footer';
@@ -28,5 +28,6 @@
 
 // TEMPLATES
 @import './templates/single';
-
+@import './templates/front-page';
+@import './templates/single-properties';
 

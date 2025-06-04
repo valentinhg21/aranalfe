@@ -6,14 +6,18 @@ define('JS', ROOT . '/dist/js');
 define('LIB', ROOT . '/lib');
 define('BLOCK', ROOT . '/blocks');
 define('IMAGE_DEFAULT', ROOT . '/dist/img/image-default/default.png');
+define('SVG', IMAGE . '/svg');
 
 require_once ('inc/performance/performance.php');
 require_once ('inc/login/login.php');
 require_once ('class/class-tgm-plugin-activation.php');
 require_once ('class/requerid-plugins.php');
 require_once ('class/class-wp-walker.php');
-require_once ('tokko/core.php');
-
+require_once ('tokko-api/helpers/helper.php');
+require_once ('tokko-api/url/rewrite.php');
+require_once ('tokko-api/development.php');
+require_once ('tokko-api/locations.php');
+require_once ('tokko-api/property.php');
 require_once ('inc/register-theme.php');
 require_once ('inc/register-text-editor.php');
 require_once ('inc/register-scripts-style.php');

@@ -11,10 +11,37 @@ html {
   scroll-behavior: smooth;
 }
 
+h1 {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 130%;
+  @include media(sm) {
+    font-size: 26px;
+  }
+  @include media(xs) {
+    font-size: 18px;
+    line-height: 120%;
+  }
+}
 
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 140%;
+  @include media(md) {
+    font-size: 20px;
+  }
+  @include media(xs) {
+    font-size: 18px;
+  }
+}
 
 a {
   text-decoration: none;
+}
+
+main {
+  margin-top: 80px;
 }
 
 img,
@@ -24,12 +51,10 @@ picture {
   display: flex;
 }
 
-#wpadminbar{
+#wpadminbar {
   position: fixed;
 }
 .theme.customize-support {
-
-
 }
 
 .theme {
@@ -38,22 +63,58 @@ picture {
   flex-direction: column;
 }
 
-
-
 .hidden {
   overflow: hidden;
 }
 
-
-.scroll-margin{
+.scroll-margin {
   scroll-margin-block: 93px;
 
-  @include media(xs){
+  @include media(xs) {
     scroll-margin-block: 30px;
   }
 }
 
-.page-404{
-
+.page-404 {
 }
 
+.checkbox {
+}
+
+.header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  @include media(md) {
+    justify-content: center;
+  }
+  h2 {
+    width: 50%;
+    color: $black;
+    @include media(md) {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  > div {
+    width: auto;
+  }
+}
+
+div:where(.swal2-container) h2:where(.swal2-title) {
+  font-size: 22px;
+}
+
+div:where(.swal2-container) div:where(.swal2-html-container) {
+  font-size: 16px;
+  line-height: 140%;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
+  background-color: $black-light;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled):focus-visible{
+  box-shadow: none;
+}
