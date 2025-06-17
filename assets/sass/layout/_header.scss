@@ -6,7 +6,7 @@ header {
   align-items: center;
   flex-direction: column;
   //   border-bottom: 1px solid #ffffff28;
-  z-index: 9999;
+  z-index: 999;
   position: fixed;
   top: 0;
   left: 0;
@@ -19,6 +19,8 @@ header {
       a {
         position: relative;
         z-index: 50;
+        display: flex;
+        height: auto;
         picture,
         img,svg {
           width: 210px;

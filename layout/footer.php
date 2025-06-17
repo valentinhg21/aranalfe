@@ -5,11 +5,11 @@
                 <div class="row">
                     <div class="col-lg-8 col-sm-6 col-12">
                         <div class="content">
-                            <h2>Accedé antes. Invertí mejor. Suscribite a nuestro newsletter.</h2>
+                            <h2>Accedé antes. Invertí mejor. <br>Suscribite a nuestro newsletter.</h2>
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-6 col-12">
-                        <form action="">
+                        <form action="" id="newsletterForm" data-origen="Newsletter" class="p-relative">
                             <div class="input-newsletter">
                                 <input type="text" name="email-newsletter" id="email-newsletter"
                                     placeholder="Ingresá tu email">
@@ -23,6 +23,7 @@
                                     Prefiero que me contacten via Whatsapp
                                 </label>
                             </div>
+                            <div class="loading-form"><span class="loader"></span></div>
                         </form>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                 <div class="col-sm-4 col-12" style="order:0;">
                     <div class="logo" <?php animation('fade-in-right', 100);?>>
                         <a href="<?php echo get_home_url()?>" title="Logo Aranalfe">
-                            <?php render_svg(IMAGE . '/logo.svg') ?>
+                            <?php render_svg(IMAGE_RELATIVE . '/logo.svg') ?>
                         </a>
 
                     </div>
@@ -76,12 +77,15 @@
                             </a>
                         </li>
                         <?php endif; ?>
-                        <?php if ( $linkedin = get_field( 'tiktok', 'options' ) ) : ?>
-                        <li>
-                            <a href="<?php echo esc_url( $tiktok );?>" target="_blank" title="tiktok">
-                                <i class="fa-brands fa-tiktok"></i>
-                            </a>
-                        </li>
+             
+                         
+                        <?php $tiktok = get_field( 'tiktok', 'options' ); ?>
+                        <?php if ( $tiktok ) : ?>
+                            <li>
+                                <a href="<?php echo esc_url( $tiktok );?>" target="_blank" title="tiktok">
+                                    <i class="fa-brands fa-tiktok"></i>
+                                </a>
+                            </li>
                         <?php endif; ?>
 
                     </ul>

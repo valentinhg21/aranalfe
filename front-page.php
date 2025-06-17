@@ -5,7 +5,7 @@
     
 ?>
 
-<main class="front-page">
+<main class="front-page" data-current="<?php echo return_url();?>">
     <?php if ( have_rows( 'portada' ) ) : ?>
         <?php while ( have_rows( 'portada' ) ) :
         the_row(); ?>
@@ -38,7 +38,7 @@
                     <div class="header-title">
                         <?php insert_acf($titulo, 'h2'); ?>
                         <div class="button__container d-flex-md d-none">
-                            <a href="#" class="btn btn-red-outline" title="Ver mas">
+                            <a href="<?php echo return_url() . '/emprendimientos/' ?>" class="btn btn-red-outline" title="Ver mas">
                                 Ver todos
                             </a>
                         </div>
@@ -50,10 +50,10 @@
                                 $image = $item['photos'][0]['image'];
                                 $location = get_full_location($item['location']['full_location']);
                                 $status = get_construction_status($item['construction_status']);
-                            
+                                $permalink = return_url() . '/emprendimiento/' . slugify($item['name']);
                             ?>
                             <div class="col-sm-4 col-xs-6 col-12">
-                                <a href="#" class="card-feature" title="Aguilar Point"> 
+                                <a href="<?php echo $permalink;?>" class="card-feature" title="Aguilar Point"> 
                                     <div class="image">
                                         <img src="<?php echo $image;?>" alt="<?php echo $name;?>" width="100%" height="100%" loading="lazy">
                                     </div>
@@ -67,7 +67,7 @@
                         <?php endforeach; ?>
                     </div>
                     <div class="button__container d-none-md d-flex justify-center align-items-center mt-4">
-                        <a href="#" class="btn btn-red-outline" title="Ver mas">
+                        <a href="<?php echo return_url() . '/emprendimientos/';?>" class="btn btn-red-outline" title="Ver mas">
                             Ver todos
                         </a>
                     </div>
@@ -84,7 +84,8 @@
                     <div class="header-title">
                         <?php insert_acf($titulo, 'h2'); ?>
                         <div class="button__container d-flex-md d-none">
-                            <a href="#" class="btn btn-red-outline" title="Ver mas">
+                            <?php $url = get_sub_field( 'url' ); ?>
+                            <a href="<?php echo esc_url($url);?>" class="btn btn-red-outline" title="Ver mas" target="_blank">
                                 Ver todos
                             </a>
                         </div>
@@ -96,9 +97,11 @@
                                 <?php 
                                    $title = get_sub_field( 'titulo' );
                                     $image = get_sub_field('imagen');
+                                    $url_parametros = get_sub_field( 'url_parametros' );
+ 
                                 ?>
                                 <div class="col-sm-4 col-6">
-                                    <a href="#" class="card-category" title="Aguilar Point"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Aguilar Point" target="_blank"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
                                         </div>

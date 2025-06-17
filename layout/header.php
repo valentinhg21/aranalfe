@@ -5,9 +5,8 @@
         <div class="logo">
             <?php #display_custom_logo(); ?>
             <a href="<?php echo get_home_url()?>" title="Logo Aranalfe">
-                <?php render_svg(IMAGE . '/logo.svg') ?>
-            </a>
-            
+                <?php render_svg(IMAGE_RELATIVE . '/logo.svg') ?>
+            </a>  
         </div>
         <div class="menu-links-container"> 
             <div class="backdrop">

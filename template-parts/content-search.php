@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="select-type">
-            <div class="select-container select-multi-list">
+            <div class="select-container select-simple-list">
                 <div class="field-container-input__icon">
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="select-location">
-            <div class="select-container select-multi-list">
+            <div class="select-container select-simple-list">
                 <div class="field-container-input__icon">
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>

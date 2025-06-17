@@ -123,3 +123,63 @@
     }
   }
 }
+
+.btn-red{
+  background: $red;
+  border-color: $red;
+  color: $white;
+  &:hover{
+    background: $black;
+    border-color: $black;
+  }
+}
+
+.btn-black{
+  background: $black;
+  border-color: $black;
+  color: $white;
+  &:hover{
+    background: $red;
+    border-color: $red;
+  }
+}
+
+.btn-black-white{
+  background: $black;
+  border-color: $black;
+  color: $white;
+  &:hover{
+    background: $white;
+    border-color: $white;
+    color: $black;
+  }
+}
+
+.btn-stroke-white{
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.btn-stroke-black{
+  background: transparent;
+  border-color: #DBDBDB;
+  color: $black;
+  svg{
+
+    *{
+      color: $black;
+    }
+  }
+  &:hover{
+    border-color: $black;
+    background: $black;
+    color: $white;
+    i,svg{
+      *{
+        color: $white;
+      }
+
+    }
+  }
+}

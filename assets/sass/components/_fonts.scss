@@ -8,3 +8,6 @@ $Montserrat: "Montserrat", sans-serif;
   text-transform: uppercase;
 }
 
+
+@include register-font('metropolis', 400, 'Metropolis-Regular.woff', 'Metropolis-Regular.woff2');
+@include register-font('metropolis', 700, 'Metropolis-Bold.woff', 'Metropolis-Bold.woff2');

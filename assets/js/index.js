@@ -9,7 +9,12 @@ import { transition } from './utils/transition.js';
 import { CountUp } from '../../lib/countUp/countUp.min.js';
 import { scrollCountUp } from './utils/scrollCountUp.js';
 import { newsletter } from './utils/newsletter.js';
-
+import { mapPropertys } from './utils/mapPropertys.js';
+import { singleProperty } from './utils/singleProperty.js';
+import { singleMapProperty } from './utils/singleMapProperty.js'
+import { singleDevelopment } from './utils/singleDevelopment.js'
+import { singleForm } from './utils/singleForm.js'
+import { listProp } from './utils/listProp.js'
 window.addEventListener('DOMContentLoaded', () => {
     try {
         transition();
@@ -21,6 +26,12 @@ window.addEventListener('DOMContentLoaded', () => {
         buscador();
         scrollCountUp(CountUp);
         newsletter();
+        mapPropertys();
+        singleProperty();
+        singleMapProperty();
+        singleDevelopment();
+        singleForm();
+        listProp();
     } catch (error) {
         console.error(error)
     }

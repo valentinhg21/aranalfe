@@ -125,6 +125,9 @@
     @include media(md) {
       top: 41px;
     }
+    @include media(xs){
+      top: 47px;
+    }
     &.long {
       ul {
         overflow-y: scroll;
@@ -132,11 +135,12 @@
       }
     }
     ul {
-      border: 1px solid #e3e3e3;
-      border-top: 0;
+      // border: 1px solid #e3e3e3;
+      // border-top: 0;
+      border: 0;
       @include media(md) {
-        border: 1px solid #e3e3e3;
-        border-top: 0;
+        // border: 1px solid #e3e3e3;
+        // border-top: 0;
       }
       li {
         color: $black;
@@ -146,7 +150,7 @@
           padding: 0.7rem 0.8rem;
           font-size: 14px;
           text-align: left;
-          border-bottom: 1px solid #c4c4c4;
+          border-bottom: 1px solid #e3e3e3;
           cursor: pointer;
           &:hover{
             background: $red;
@@ -159,15 +163,16 @@
             border-bottom: 1px solid #ee7d8f;
           }
         }
-        &:last-child {
-          p {
-            border-bottom: 1px solid transparent;
-          }
-        }
+        // &:last-child {
+        //   p {
+        //     border-bottom: 1px solid #e3e3e3;
+        //   }
+        // }
       }
     }
     &.show {
       display: flex !important;
+      box-shadow: 0px 10px 15px -3px rgb(0 0 0 / 5%);
     }
   }
   .option-all {
@@ -177,7 +182,7 @@
       padding: 0.7rem 0.8rem;
       font-size: 14px;
       text-align: left;
-      border: 1px solid #c4c4c4;
+      border-bottom: 1px solid #e3e3e3;
 
       cursor: pointer;
 
@@ -193,24 +198,24 @@
       }
     }
   }
-  .list-lvl-2 {
-    .checkbox-container {
-      padding: 0.4rem 0.5rem 0.4rem 1.5rem;
-    }
-    .options-list-select {
-      border-top: 1px solid #939393;
-      border-bottom: 0 !important;
-    }
-  }
-  .list-lvl-3 {
-    .checkbox-container {
-      padding: 0.4rem 0.5rem 0.4rem 2rem;
-    }
-    .options-list-select {
-      border-top: 1px solid #939393;
-      border-bottom: 0 !important;
-    }
-  }
+  // .list-lvl-2 {
+  //   .checkbox-container {
+  //     padding: 0.4rem 0.5rem 0.4rem 1.5rem;
+  //   }
+  //   .options-list-select {
+  //     border-top: 1px solid #939393;
+  //     border-bottom: 0 !important;
+  //   }
+  // }
+  // .list-lvl-3 {
+  //   .checkbox-container {
+  //     padding: 0.4rem 0.5rem 0.4rem 2rem;
+  //   }
+  //   .options-list-select {
+  //     border-top: 1px solid #939393;
+  //     border-bottom: 0 !important;
+  //   }
+  // }
   &.error {
     input {
       &::placeholder {
@@ -259,6 +264,9 @@
     @include media(md) {
       top: 41px;
     }
+    @include media(xs){
+      top: 47px;
+    }
     &.long {
       ul {
         overflow-y: scroll;
@@ -288,11 +296,11 @@
     }
     ul {
       // border: 1px solid $black;
-      border: 1px solid #e3e3e3;
+      border: none;
       border-top: 0;
       order: 2;
       @include media(md) {
-        border: 1px solid #e3e3e3;
+        border: none;
         border-top: 0;
       }
       li {
@@ -325,6 +333,7 @@
     }
     &.show {
       display: flex !important;
+      box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, .05);
     }
   }
 }

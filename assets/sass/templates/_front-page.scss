@@ -62,7 +62,7 @@
           > div {
             border-right: 1px solid #939393;
             @include media(md) {
-              border: 1px solid #dbdbdb;
+              border: 1px solid #DBDBDB;
               border-radius: 6px;
               padding: 1px;
             }
@@ -84,6 +84,7 @@
               padding: 1rem;
               color: $black;
               border: 0;
+              border-radius: 5px;
               @include media(md) {
                 height: 40px;
               }
@@ -92,6 +93,7 @@
           .select-container{
             input{
               padding: 1rem 3rem 1rem 1rem;
+              border-radius: 5px;
             }
           }
           .submit {

@@ -114,11 +114,11 @@ function limit_description_length($description, $length = 80, $link_text = 'Ver 
 }
 
 
-function render_svg($path) {
-    if ($path) {
-        $svg = file_get_contents($path);
-        echo $svg ?: '<!-- SVG vacío o inválido -->';
+function render_svg($relative_path) {
+    $full_path = get_template_directory() . $relative_path;
+    if (file_exists($full_path)) {
+        echo file_get_contents($full_path);
     } else {
-        echo "<!-- SVG no encontrado: {$path} -->";
+        echo "<!-- SVG no encontrado: {$relative_path} -->";
     }
 }

@@ -10,8 +10,8 @@ function get_summary_locations(array $params = []): array {
             'current_localization_type' => 'country',
             'price_from' => 1,
             'price_to' => 999999999,
-            'operation_types' => [1, 2, 3, 4, 5, 6, 7, 8],
-            'property_types' => [1, 2, 3, 4, 5, 6, 7, 8],
+            'operation_types' => [1, 2],
+            'property_types' => range(1, 25),
             'currency' => 'ANY',
             'filters' => []
         ];
@@ -45,6 +45,15 @@ function get_only_locations(array $params = []): array {
     $data = get_summary_locations($params);
     return $data['objects']['locations'] ?? [];
 }
+
+function save_data_locations(array $params = []) {
+    $data = get_only_locations($params);
+    if (!is_array($data)) return;
+    $file_path = get_template_directory() . '/tokko-api/data/locations.json';
+    file_put_contents($file_path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+
+
 
 function get_only_parent_locations(array $params = []): array {
     $data = get_summary_locations($params);

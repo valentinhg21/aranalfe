@@ -55,6 +55,13 @@ picture {
   position: fixed;
 }
 .theme.customize-support {
+  main{
+    margin-top: 48px;
+    @include media(sm){
+        margin-top: 34px;
+    }
+  
+  }
 }
 
 .theme {
@@ -117,4 +124,107 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
 
 div:where(.swal2-container) button:where(.swal2-styled):focus-visible{
   box-shadow: none;
+}
+
+.form-contacto{
+  label{
+    color: #222;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  input, textarea{
+    border-radius: 6px;
+    border: 0.7px solid #222;
+    height: 45px;
+    color: #222;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  textarea{
+    height: 80px;
+  }
+}
+
+.img-cover{
+  object-fit: cover;
+  -o-object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.img-contain{
+  object-fit: contain;
+  -o-object-fit: contain;
+  height: 100%;
+}
+
+
+form{
+  
+}
+
+input,
+textarea{
+  &.error{
+    border-color: $red !important;
+  }
+}
+
+.loading-form{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(251 251 251 / 60%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+  opacity: 0;
+  visibility: hidden;
+  transition: $fast;
+  &.show{
+  z-index: 80;
+  opacity: 1;
+  visibility: visible;
+  }
+  .loader {
+    width: 30px;
+    height: 30px;
+    border: 3px solid $black;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+}
+
+.error-msg{
+  font-weight: bold;
+  color: $black;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

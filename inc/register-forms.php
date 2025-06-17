@@ -123,3 +123,157 @@ function send_form_newsletter(){
     }
 }
 
+
+add_action('wp_ajax_send_form_tokko', 'send_form_tokko');
+add_action('wp_ajax_nopriv_send_form_tokko', 'send_form_tokko');
+function send_form_tokko() {
+        header('Content-Type: application/json');
+    require get_template_directory() . '/tokko/core.php';
+
+    $config = require get_template_directory() . '/tokko-api/config.php';
+    $jsonResponse = array('status'=>'ERROR','message'=>'No se ha podido enviar el contacto, por favor intente nuevamente');
+    $fullname    = sanitize_text_field($_POST['fullname'] ?? '');
+    $telephone   = sanitize_text_field($_POST['telephone'] ?? '');
+    $email       = sanitize_email($_POST['email'] ?? '');
+    $message     = sanitize_textarea_field($_POST['message'] ?? '');
+    $tags        = sanitize_text_field($_POST['tags'] ?? '');
+    $property_id = sanitize_text_field($_POST['property_id'] ?? '');
+
+    $contactData = [
+        "name"      => $fullname,
+        "cellphone" => $telephone,
+        "phone"     => $telephone,
+        "email"     => $email,
+        "text"      => $message,
+        "tags"      => $tags
+    ];
+
+    if (!empty($property_id)) {
+        $contactData['properties'] = [(int) $property_id];
+    }
+    // $apiKey = $config['api_token'];
+    $webcontact = new TokkoWebContact($apiKey, $contactData);
+
+    $response = $webcontact->send();
+    $jsonResponse['data'] = $contactData;
+    $jsonResponse['status'] = 'OK';
+    echo json_encode($jsonResponse);
+    
+   
+
+    // $response = sendTokkoWebContact($contactData, $apiKey);
+    // var_dump($response);
+    // if ($response === null) {
+    //     wp_send_json_error([
+    //         'message' => 'Error interno del servidor al enviar el contacto.',
+    //         'details' => 'Revisa los logs del servidor para más información.'
+    //     ]);
+    // } elseif (!isset($response['id'])) {
+    //     wp_send_json_error([
+    //         'message' => 'Error inesperado de la API de Tokko.',
+    //         'response' => $response
+    //     ]);
+    // } else {
+    //     wp_send_json_success([
+    //         'message' => '¡Mensaje enviado con éxito!',
+    //         'response_data' => $response
+    //     ]);
+    // }
+
+    wp_die();
+}
+
+
+add_action('wp_ajax_enviar_consulta_tokko', 'enviar_consulta_tokko');
+add_action('wp_ajax_nopriv_enviar_consulta_tokko', 'enviar_consulta_tokko');
+
+function enviar_consulta_tokko() {
+    $config = require get_template_directory() . '/tokko-api/config.php';
+
+    $fullname    = sanitize_text_field($_POST['fullname'] ?? '');
+    $telephone   = sanitize_text_field($_POST['telephone'] ?? '');
+    $email       = sanitize_email($_POST['email'] ?? '');
+    $message     = sanitize_textarea_field($_POST['message'] ?? '');
+    $tags        = sanitize_text_field($_POST['tags'] ?? '');
+    $property_id = sanitize_text_field($_POST['property_id'] ?? '');
+    $development_id = sanitize_text_field($_POST['development_id'] ?? '');
+
+    $origen = sanitize_text_field($_POST['origen'] ?? '');
+    $fuente = sanitize_text_field($_POST['fuente'] ?? '');
+    $propertyName = sanitize_text_field($_POST['property_name'] ?? '');
+    $propertyType = sanitize_text_field($_POST['property_type'] ?? '');
+    $propertyOperation = sanitize_text_field($_POST['property_operation'] ?? '');
+    $developmentName = sanitize_text_field($_POST['development_name'] ?? '');
+
+    $contactData = [
+        "name"  => $fullname,
+        "phone" => $telephone,
+        "email" => $email,
+        "text"  => $message,
+        "tags"  => $tags
+    ];
+
+    if (!empty($property_id)) {
+        $contactData['properties'] = [(int)$property_id];
+    }
+    if (!empty($development_id)) {
+        $contactData['developments'] = [(int)$development_id];
+    }
+
+    $data_drive = [
+        'origen'         => $origen,
+        'nombre'         => $fullname,
+        'email'          => $email,
+        'telefono'       => $telephone,
+        'mensaje'        => $message,
+        'tokko_id'       => $property_id ?? $development_id,
+        'propiedad'      => $propertyName,
+        'tipo_propiedad' => $propertyType,
+        'operacion'      => $propertyOperation,
+        'emprendimiento' => $developmentName,
+        'fuente'         => $fuente,
+    ];
+
+    $apiKey = $config['api_token'];
+    $response = sendTokkoWebContact($contactData, $apiKey);
+    $driveUrl = "https://script.google.com/macros/s/AKfycbyl6C7DTtqAh1eNJ4ckJvHxzHzdNebhUEzLmzi8hSE7cXeNr36qWqnpaaSNG8QUUew/exec";
+    $responseDrive = saveDataGoogleSheet($data_drive, $driveUrl);
+
+    // Envío del correo
+    $to = 'info@aranalfe.com ';
+    $subject = $data_drive['origen'] . ' de ' . $data_drive['nombre']. ' desde la web aranalfe.com';
+    $body = "
+        Nombre: {$fullname}<br>
+        Email: {$email}<br>
+        Teléfono: {$telephone}<br>
+        Mensaje: {$message}<br><br>
+        Propiedad: {$propertyName}<br>
+        Tipo: {$propertyType}<br>
+        Operación: {$propertyOperation}<br>
+        Emprendimiento: {$developmentName}<br>
+        Fuente: {$fuente}<br>
+    ";
+    $headers = [
+        'Content-Type: text/html; charset=UTF-8',
+        'Cc: valentin@zetenta.com',
+        'Cc: federico@zetenta.com',
+    ];
+
+    // Setea no-reply como remitente
+    add_filter('wp_mail_from', function () {
+        return 'no-responder@aranalfe.com';
+    });
+    add_filter('wp_mail_from_name', function () {
+        return 'Aranalfe Propiedades';
+    });
+    wp_mail($to, $subject, $body, $headers);
+
+    // Respuesta AJAX
+    $jsonResponse = [
+        'status'  => ($responseDrive && trim($responseDrive) === 'OK') ? 'ERROR' : 'OK',
+        'message' => ($responseDrive && trim($responseDrive) === 'OK') ? 'Mensaje no enviado con éxito.' : 'Mensaje enviado con éxito.',
+        'response' => $data_drive
+    ];
+
+    wp_send_json($jsonResponse);
+}

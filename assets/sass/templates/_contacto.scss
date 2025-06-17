@@ -1,0 +1,45 @@
+.template-contacto{
+section{
+  margin: 60px 0 ;
+  @include media(sm){
+    margin: 0;
+    padding: 30px 0;
+  }
+}
+           background-color: white;
+    
+    h1{
+        font-weight: 400;
+        strong{
+            color: $black;
+        }
+    }
+    .contacto{
+        border-radius: 8px;
+        background: #FFF;
+        box-shadow: 4px 4px 28px 0px rgba(0, 0, 0, 0.08);
+        padding: 25px;
+        // margin: 10px;
+        margin-bottom: 16px;
+        @include media(md){
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+    }
+    .cont-form{
+        border-radius: 8px;
+        background: #FFF;
+        box-shadow: 4px 4px 28px 0px rgba(0, 0, 0, 0.08);
+        padding: 40px 25px;
+        @include media(md){
+            margin-top: 0 !important;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+    }
+}

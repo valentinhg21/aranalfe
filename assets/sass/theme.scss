@@ -18,6 +18,7 @@
 @import './components/form';
 @import './components/form-parts';
 @import './components/card';
+@import './components/filtros';
 // LAYOUT
 @import './layout/header';
 @import './layout/footer';
@@ -30,4 +31,9 @@
 @import './templates/single';
 @import './templates/front-page';
 @import './templates/single-properties';
-
+@import './templates/single-detail-property';
+@import './templates/nosotros';
+@import './templates/tasaciones';
+@import './templates/contacto';
+@import './templates/emprendimientos';
+@import './templates/emprendimiento';
