@@ -5,12 +5,69 @@ let btnVideo = document.querySelector('.btn-open-video')
 let btnMap = document.querySelector('.btn-open-single-map');
 let containerVideoMap = document.querySelectorAll('.single-video-map');
 let heroSplide = document.getElementById('hero-splide');
+let heroSplide1 = document.getElementById('hero-splide-1');
+let heroSplide2 = document.getElementById('hero-splide-2');
 let btnOpenRequest = document.getElementById('openFormRequest');
 let closeOpenRequest = document.getElementById('closeFormRequest')
 if(heroSplide){
   new Splide("#hero-splide", {
     type: "slide",
     perPage: 3,
+    gap: "1rem",
+    arrows: false,
+    pagination: false,
+    drag: false,       // 🔒 desactiva el swipe
+    keyboard: false,   // 🔒 desactiva teclado
+    breakpoints: {
+      878.5: {
+        gap: "0rem",
+        perPage: 1,
+        arrows: true,
+        pagination: false,
+        drag: true,     // ✅ activa swipe en mobile
+        keyboard: true, // ✅ activa teclado en mobile
+      },
+    },
+  }).mount();
+
+  Fancybox.bind("[data-fancybox='galeria']", {
+    Toolbar: {
+      display: {
+        left: ["infobar"],
+        middle: [],
+        right: ["slideshow", "download", "thumbs", "close"],
+      },
+    },
+  });
+}
+
+if(heroSplide1){
+  new Splide(heroSplide1, {
+    type: "slide",
+    perPage: 1,
+    gap: "0rem",
+    arrows: false,
+    pagination: false,
+    drag: false,       // 🔒 desactiva el swipe
+    keyboard: false,   // 🔒 desactiva teclado
+
+  }).mount();
+
+  Fancybox.bind("[data-fancybox='galeria']", {
+    Toolbar: {
+      display: {
+        left: ["infobar"],
+        middle: [],
+        right: ["slideshow", "download", "thumbs", "close"],
+      },
+    },
+  });
+}
+
+if(heroSplide2){
+  new Splide(heroSplide2, {
+    type: "slide",
+    perPage: 2,
     gap: "1rem",
     arrows: false,
     pagination: false,

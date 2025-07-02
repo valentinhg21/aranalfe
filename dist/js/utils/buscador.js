@@ -21,11 +21,11 @@ export const buscador = (selectMulti, autocomplete) => {
 
           usuario_search_home.type_operation = [1];
 
-          fetchDataSearch({
-            operation_types: [1],
-          }).then((data) => {
-            changeValues(data, listContainer, "TYPE_OPERATION");
-          });
+          // fetchDataSearch({
+          //   operation_types: [1],
+          // }).then((data) => {
+          //   changeValues(data, listContainer, "TYPE_OPERATION");
+          // });
         } else {
           // inputTypeProperty.value = "Tipo de propiedad";
 
@@ -35,11 +35,11 @@ export const buscador = (selectMulti, autocomplete) => {
 
           usuario_search_home.type_operation = [2];
 
-          fetchDataSearch({
-            operation_types: [2],
-          }).then((data) => {
-            changeValues(data, listContainer, "TYPE_OPERATION");
-          });
+          // fetchDataSearch({
+          //   operation_types: [2],
+          // }).then((data) => {
+          //   changeValues(data, listContainer, "TYPE_OPERATION");
+          // });
         }
       });
     });
@@ -58,11 +58,11 @@ export const buscador = (selectMulti, autocomplete) => {
 
         usuario_search_home.type_operation = [currentOperation];
 
-        fetchDataSearch({
-          operation_types: [currentOperation],
-        }).then((data) => {
-          changeValues(data, "", "TYPE_OPERATION");
-        });
+        // fetchDataSearch({
+        //   operation_types: [currentOperation],
+        // }).then((data) => {
+        //   changeValues(data, "", "TYPE_OPERATION");
+        // });
       });
     });
   }
@@ -92,22 +92,22 @@ export const buscador = (selectMulti, autocomplete) => {
         TypePropertyContainer.classList.remove("error");
         ERROR = false;
       }
-      if (validator.isEmpty(inputTypeParentLocation.value)) {
-        TypeParentLocationContainer.classList.add("error");
-        inputTypeParentLocation.placeholder = "Seleccionar";
-        ERROR = true;
-      } else {
-        TypeParentLocationContainer.classList.remove("error");
-        ERROR = false;
-      }
-      if (validator.isEmpty(inputTypeLocation.value)) {
-        TypeLocationContainer.classList.add("error");
-        inputTypeLocation.placeholder = "Seleccionar";
-        ERROR = true;
-      } else {
-        TypeLocationContainer.classList.remove("error");
-        ERROR = false;
-      }
+      // if (validator.isEmpty(inputTypeParentLocation.value)) {
+      //   TypeParentLocationContainer.classList.add("error");
+      //   inputTypeParentLocation.placeholder = "Seleccionar";
+      //   ERROR = true;
+      // } else {
+      //   TypeParentLocationContainer.classList.remove("error");
+      //   ERROR = false;
+      // }
+      // if (validator.isEmpty(inputTypeLocation.value)) {
+      //   TypeLocationContainer.classList.add("error");
+      //   inputTypeLocation.placeholder = "Seleccionar";
+      //   ERROR = true;
+      // } else {
+      //   TypeLocationContainer.classList.remove("error");
+      //   ERROR = false;
+      // }
 
       if (!ERROR) {
           function toSlugArrayParams(str) {
@@ -121,7 +121,7 @@ export const buscador = (selectMulti, autocomplete) => {
             baseURL = `${origin}/propiedades`;
           }
 
-          console.log(origin)
+      
          
     
           const params = new URLSearchParams();
@@ -138,9 +138,12 @@ export const buscador = (selectMulti, autocomplete) => {
           });
 
           if(optionAllLocation.classList.contains('select')){
-        
+            // locaciones hijas
+            toSlugArrayParams(inputTypeLocation.dataset.ids).forEach(id => {
+                params.append('localidad[]', id);
+            });
           }else{
-          // locaciones hijas
+            // locaciones hijas
             toSlugArrayParams(inputTypeLocation.dataset.ids).forEach(id => {
                 params.append('localidad[]', id);
             });

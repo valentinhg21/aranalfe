@@ -33,10 +33,10 @@ function custom_login_logo() {
     ?>
     <style type="text/css">
         body.login {
-            background-color: #f5f5f5; /* Fondo claro */
+            background-color:#e40729; /* Fondo claro */
         }
         .login h1 a {
-            background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-black.png') !important;
+            background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo.svg') !important;
             background-size: contain !important;
             width: 100% !important;
             height: 100px !important;
@@ -44,10 +44,30 @@ function custom_login_logo() {
         .login form {
             background: #fff !important;
             border-radius: 10px !important;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+            box-shadow: none!important;
         }
         .login #login_error, .login .message {
             border-left: 4px solid #007cba!important;
+        }
+        .language-switcher form{
+            background: transparent !important;
+        }
+        .login #backtoblog a, .login #nav a{
+            color: #fff !important;
+        }
+        .login #backtoblog a, .login #nav a:hover{
+            color: #fff !important;
+        }
+        .language-switcher label .dashicons{
+            color: #fff !important;
+        }
+        #wp-submit{
+            background: #e40729 !important;
+            border-color: #e40729 !important;
+        }
+        #wp-submit:hover{
+             background: #fff !important;
+             color: #e40729 !important;
         }
     </style>
     <?php

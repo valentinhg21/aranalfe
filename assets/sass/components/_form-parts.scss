@@ -67,6 +67,7 @@
     align-items: center;
     gap: 18px;
     padding: 0.4rem 0.5rem;
+
   }
   @include media(xs) {
     grid-template-columns: repeat(1, 1fr);
@@ -113,6 +114,7 @@
     @include media(md) {
       height: 40px;
     }
+    font-size: 14px !important;
   }
   .list-select {
     display: none;
@@ -152,6 +154,8 @@
           text-align: left;
           border-bottom: 1px solid #e3e3e3;
           cursor: pointer;
+          font-size: 14px !important;
+          margin-bottom: 0 !important;
           &:hover{
             background: $red;
             color: $white;
@@ -282,6 +286,8 @@
         text-align: left;
         border-bottom: 1px solid #c4c4c4;
         cursor: pointer;
+        font-size: 14px !important;
+        margin-bottom: 0 !important;
         &:hover{
          background: $red;
           color: $white;
@@ -313,6 +319,8 @@
           text-align: left;
           border-bottom: 1px solid #c4c4c4;
           cursor: pointer;
+          font-size: 14px !important;
+          margin-bottom: 0 !important;
           &:hover{
             background: $red;
             color: $white;

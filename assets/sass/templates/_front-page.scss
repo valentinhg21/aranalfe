@@ -11,6 +11,15 @@
     text-align: center;
     position: relative;
     background-image: var(--background-image-desktop);
+    @include media(md){
+      min-height: 500px;
+      margin-bottom: 8rem;
+      background-position: bottom;
+    }
+    @include media(xs){
+      min-height: 390px;
+      margin-bottom: 12rem;
+    }
     @include media(sm){
       background-image: var(--background-image-mobile);
     }
@@ -25,7 +34,7 @@
       }
      
       @include media(sm){
-        background: #00000075;
+        background: #0000005d;
       }
     }
     .content {
@@ -34,10 +43,21 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      @include media(md){
+        margin-bottom: 4rem;
+      }
+      p{
+        font-size: 18px;
+        margin-bottom: 8px;
+        @include media(xs){
+          font-size: 12px;
+        }
+      }
       h1 {
-        max-width: 550px;
+        max-width: 700px;
         width: 100%;
         margin-bottom: 30px;
+        font-weight: 600;
         @include media(md) {
           margin-bottom: 20px;
         }
@@ -48,6 +68,13 @@
         max-width: 983px;
         width: 100%;
         margin: 0 auto;
+
+        @include media(md){
+          position: absolute;
+          top: 11rem;
+          left: 0;
+          box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+        }
         .search-container {
           display: grid;
           grid-template-columns: 0.5fr 0.5fr 0.7fr 0.7fr;
@@ -94,6 +121,17 @@
             input{
               padding: 1rem 3rem 1rem 1rem;
               border-radius: 5px;
+              cursor: pointer;
+            }
+            .field-container-input__icon{
+              i{
+                transition: $fast;
+              }
+            }
+            &.open-select{
+              .field-container-input__icon{
+                i{transform: rotate(180deg);}
+              }
             }
           }
           .submit {
@@ -112,6 +150,7 @@
             ul {
               display: flex;
               gap: 10px;
+              list-style: none;
               button {
                 background: $white;
                 font-size: 12px;

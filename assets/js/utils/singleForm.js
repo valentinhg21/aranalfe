@@ -16,24 +16,19 @@ const showPopup = (title, msg, icon) => {
     icon: icon,
   });
 };
-
-const sendForm = async (dataForm, action, form) => {
+// FUNCION PARA MANDAR EL FETCH
+const sendForm = async (dataForm, form, event) => {
   const AJAX_URL = ajax_var.url;
-  
   // UTMS
-  
   if(form.dataset.origen !== 'Newsletter'){
     let origen = form.dataset.origen;
     dataForm.append("origen", origen);
    
   }
-
   const urlParams = new URLSearchParams(window.location.search);
   const utmSource = urlParams.get('utm_source');
   const utmMedium = urlParams.get('utm_medium');
-
   let refName = 'Directo';
-
   if (utmSource === 'google' && utmMedium === 'cpc') {
     refName = 'Google ADS';
   } else if (document.referrer.includes('google.com')) {
@@ -55,12 +50,12 @@ const sendForm = async (dataForm, action, form) => {
 
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
     const data = await response.json();
-    console.log("Respuesta:", data);
+    
     if(data.status === 'OK'){
       showPopup("Enviado", data.message, 'success');
       loading(false);
       form.reset();
-      
+      dataLayer.push({'event': `${event}`});
     }else{
       showPopup("Error", data.message, 'error');
       loading(false);
@@ -78,7 +73,7 @@ export const singleForm = () => {
   const singleForm = document.getElementById('singleForm');
   const btn = document.querySelector(".btn-newsletter");
 
-  
+  // FORMULARIO PROPIEDADES
   if (formSingleProperty) {
     const fullname = document.getElementById("fullname");
     const telephone = document.getElementById("telephone");
@@ -132,9 +127,10 @@ export const singleForm = () => {
       formDataProperty.append("property_operation", propertyOp.value);
       formDataProperty.append("property_type", propertyType.value);
       loading(true);
-      sendForm(formDataProperty, "send_form_tokko", formSingleProperty);
+      sendForm(formDataProperty, formSingleProperty, formSingleProperty.dataset.event);
     });
   }
+  // FORMULARIO EMPRENDIMIENTO
   if (formSingleDevelopment) {
     const fullname = document.getElementById("fullname");
     const telephone = document.getElementById("telephone");
@@ -191,9 +187,10 @@ export const singleForm = () => {
       formDataDevelop.append("development_name", developmentName.value);
       formDataDevelop.append("property_id", property_id);
       loading(true);
-      sendForm(formDataDevelop, "send_form_tokko", formSingleDevelopment);
+      sendForm(formDataDevelop, formSingleDevelopment, formSingleDevelopment.dataset.event);
     });
   }
+  // FORMULARIO TASACIONES Y CONTACTO
   if (singleForm) {
     const fullname = document.getElementById("fullname");
     const telephone = document.getElementById("telephone");
@@ -239,9 +236,10 @@ export const singleForm = () => {
       formDataSingle.append("message", message.value);
       formDataSingle.append("tags", singleForm.dataset.tags);
       loading(true);
-      sendForm(formDataSingle, "send_form_tokko", singleForm);
+      sendForm(formDataSingle, singleForm, singleForm.dataset.event);
     });
   }
+  // FORMULARIO NEWSLETTER
   if(btn){
     let checkWhatsapp = document.getElementById("whatsapp-newsletter");
     let inputNewsletter = document.getElementById("email-newsletter");
@@ -254,10 +252,10 @@ export const singleForm = () => {
         if (validator.isNumeric(inputNewsletter.value)) {
           newsletterData.append("fullname", "");
           newsletterData.append("telephone", inputNewsletter.value);
-          newsletterData.append("message", 'Si prefiero que me contacto via whatsapp');
+          newsletterData.append("message", 'Si prefiero que me contacten via whatsapp');
           newsletterData.append("tags", 'Newsletter');
           newsletterData.append('origen', 'Suscripción WhatsApp')
-          sendForm(newsletterData, '', form);
+          sendForm(newsletterData, form, form.dataset.event);
 
 
         } else {
@@ -267,10 +265,10 @@ export const singleForm = () => {
         if (validator.isEmail(inputNewsletter.value)) {
           newsletterData.append("fullname", "");
           newsletterData.append("email", inputNewsletter.value);
-          newsletterData.append("message", 'No prefiero que me contacto via whatsapp');
+          newsletterData.append("message", 'No prefiero que me contacten via whatsapp');
           newsletterData.append("tags", 'Newsletter');
           newsletterData.append('origen', 'Suscripción Newsletter')
-          sendForm(newsletterData, '', form);
+          sendForm(newsletterData, form, form.dataset.event);
         } else {
           showPopup("Hubo un error al suscribirte", "Por favor, ingresar un email válido e intentá nuevamente.", "error");
         }

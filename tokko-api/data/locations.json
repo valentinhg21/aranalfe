@@ -21,7 +21,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 2,
         "location_id": 24678,
         "location_name": "Barrio Norte",
         "parent_id": 146,
@@ -71,13 +71,6 @@
     },
     {
         "count": 1,
-        "location_id": 24687,
-        "location_name": "Las Cañitas",
-        "parent_id": 24728,
-        "parent_name": "Palermo"
-    },
-    {
-        "count": 1,
         "location_id": 24718,
         "location_name": "Liniers",
         "parent_id": 146,
@@ -98,28 +91,21 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 19,
+        "count": 16,
         "location_id": 24728,
         "location_name": "Palermo",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },
     {
-        "count": 5,
+        "count": 4,
         "location_id": 24731,
         "location_name": "Palermo Hollywood",
         "parent_id": 24728,
         "parent_name": "Palermo"
     },
     {
-        "count": 1,
-        "location_id": 24734,
-        "location_name": "Palermo Viejo",
-        "parent_id": 24728,
-        "parent_name": "Palermo"
-    },
-    {
-        "count": 21,
+        "count": 20,
         "location_id": 24701,
         "location_name": "Puerto Madero",
         "parent_id": 146,
@@ -133,7 +119,7 @@
         "parent_name": "Maldonado"
     },
     {
-        "count": 24,
+        "count": 20,
         "location_id": 24681,
         "location_name": "Recoleta",
         "parent_id": 146,
@@ -161,18 +147,11 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 3,
         "location_id": 24704,
         "location_name": "Tribunales",
         "parent_id": 24697,
         "parent_name": "Centro (Capital Federal)"
-    },
-    {
-        "count": 1,
-        "location_id": 24740,
-        "location_name": "Villa Crespo",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
     },
     {
         "count": 1,

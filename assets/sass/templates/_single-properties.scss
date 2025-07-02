@@ -14,7 +14,7 @@
     background: $bg-filters;
     height: 100%;
     padding: 40px 40px 40px 40px;
-    height: 900px;
+    height: 850px;
     overflow-y: scroll;
     @include media(sm) {
       position: fixed;
@@ -31,6 +31,9 @@
         opacity: 1;
         z-index: 999999;
       }
+    }
+    @include media(xs){
+      top: 50px;
     }
     .close-filter {
       position: fixed;
@@ -143,11 +146,24 @@
       font-weight: 500;
       line-height: 22px;
       color: $black-strong;
+      width: 90%;
+      @include media-down(sm){
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       @include media(lg) {
         font-size: 16px;
       }
       @include media(lg) {
         font-size: 14px;
+      }
+      @include media(xs){
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // Cantidad de líneas visibles
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
     }
     .options {
@@ -299,7 +315,7 @@
   // BLOQUE RESULTADOS PROPIEDADES
   .block-results {
 
-    height: 800px;
+    height: 768px;
     overflow-y: scroll;
     position: relative;
     &::-webkit-scrollbar {

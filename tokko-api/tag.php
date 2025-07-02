@@ -1,48 +1,58 @@
 <?php 
 
+
+
 function get_all_tag_property(array $params = [], int $limit = 1000, int $offset = 0, $array = 0): array {
-    $config = require get_template_directory().'/tokko-api/config.php';
+    $config = require get_template_directory() . '/tokko-api/config.php';
+
     $params['key'] = $config['api_token'];
     $params['format'] = 'json';
     $params['lang'] = 'es_ar';
     $params['limit'] = $limit;
     $params['offset'] = $offset;
 
-    // Check if 'data' key exists before attempting to encode it
-    if (isset($params['data'])) {
-        $params['data'] = json_encode($params['data']);
-    } else {
-        // If 'data' is not set, you might want to initialize it to null, an empty string, or an empty JSON object,
-        // depending on what the API expects when no 'data' is provided.
-        // For now, I'll set it to an empty JSON object string if it's missing,
-        // assuming the API expects it even if empty.
-        $params['data'] = json_encode(new stdClass()); // Represents an empty JSON object {}
+    $params['data'] = isset($params['data'])
+        ? json_encode($params['data'])
+        : json_encode(new stdClass()); // {}
+
+    $cache_key = 'tokko_tag_property_' . md5(http_build_query($params));
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        return $cached;
     }
 
-    $url = $config['property_tag_url']
-        .'?'
-        .http_build_query($params);
+    if (is_bot()) {
+        error_log('[TOKKO][BOT] Cache no encontrada para tags');
+        return [];
+    }
+
+    $url = $config['property_tag_url'] . '?' . http_build_query($params);
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     $response = curl_exec($ch);
-
-    if ($response === false) {
-        echo 'Curl error: '.curl_error($ch);
-        curl_close($ch);
-        return [];
-    }
-
+    $error = curl_error($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    $decoded = json_decode($response, true);
 
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        echo 'JSON decode error: '.json_last_error_msg();
-        return [];
+    if ($response && $http_code === 200) {
+        $decoded = json_decode($response, true);
+
+        if (is_array($decoded) && !empty($decoded)) {
+            set_transient($cache_key, $decoded, HOUR_IN_SECONDS);
+            return $decoded;
+        } else {
+            error_log("[TOKKO][TAG] JSON inválido o vacío");
+        }
+    } else {
+        error_log("[TOKKO][TAG] CURL error: $error | HTTP: $http_code");
     }
-    return $decoded ?: [];
+
+    return [];
 }
+
 
 function get_only_services($data) {
     $data = $data ?? [];

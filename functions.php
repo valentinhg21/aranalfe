@@ -38,3 +38,4 @@ require_once ('inc/register-newsletter.php');
 require_once ('inc/register-forms.php');
 require_once ('inc/register-sync-acf.php');
 require_once ('inc/register-theme-options.php');
+

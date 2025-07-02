@@ -1,17 +1,17 @@
 <?php 
 // 1. Agregar intervalo personalizado de 30 segundos
-add_filter('cron_schedules', function($schedules) {
-    $schedules['cada_60_segundos'] = [
-        'interval' => 60,
-        'display' => 'Cada 60 segundos'
-    ];
-    return $schedules;
-});
+// add_filter('cron_schedules', function($schedules) {
+//     $schedules['cada_60_segundos'] = [
+//         'interval' => 60,
+//         'display' => 'Cada 60 segundos'
+//     ];
+//     return $schedules;
+// });
 
 // 2. Activar el cron al iniciar el theme
 function activar_cron_locations() {
     if (!wp_next_scheduled('actualizar_locations_event')) {
-        wp_schedule_event(time(), 'cada_60_segundos', 'actualizar_locations_event');
+        wp_schedule_event(time(), 'hourly', 'actualizar_locations_event');
     }
 }
 add_action('after_setup_theme', 'activar_cron_locations');

@@ -19,6 +19,27 @@
             "layout": "row",
             "sub_fields": [
                 {
+                    "key": "field_685bfa44aef55",
+                    "label": "Texto",
+                    "name": "texto",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
                     "key": "field_681bab214a6a8",
                     "label": "Titulo",
                     "name": "titulo",
@@ -424,5 +445,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748528644
+    "modified": 1750858315
 }

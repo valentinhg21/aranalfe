@@ -7,9 +7,10 @@
   }
   .hero {
     position: relative;
-    .splide__list {
+    #hero-splide-list {
+      
       @include media-down(sm) {
-        // height: 550px;
+      
         display: grid;
         grid-template-columns: 1.5fr 1fr;
         grid-template-rows: repeat(2, 1fr);
@@ -17,6 +18,28 @@
         grid-row-gap: 7px;
       }
     }
+
+    #hero-splide-1-list{
+      @include media-down(sm) {
+        
+        display: grid;
+        grid-template-columns: 1fr;
+
+      }
+    }
+    #hero-splide-2-list{
+      @include media-down(sm) {
+        
+        display: grid;
+        grid-template-columns: 1.8fr 1fr;
+        grid-column-gap: 7px;
+        grid-row-gap: 7px;
+        .splide__slide:nth-child(2){
+          height: 627px;
+        }
+      }
+    }
+    
     .splide__slide {
       //   height: 550px;
 
@@ -266,6 +289,59 @@
       @include media(sm){
         padding-bottom: 40px;
       }
+      .info-prices{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+        @include media(xs){
+          flex-direction: column;
+          row-gap: 20px;
+        }
+        p{
+          font-weight: 300;
+          color: $black;
+          font-size: 14px;
+        }
+        .price-usd{
+          padding-right: 30px;
+          @include media(xs){
+            padding-right: 0;
+          }
+          position: relative;
+          @include media(lg){
+            padding-right: 20px;
+          }
+          &::before{
+            @include bg-presets();
+            right: 0;
+            top: 10%;
+            width: 1.2px;
+            height: 90%;
+            background: $black;
+            @include media(xs){
+              top: initial;
+              bottom: -10px;
+              width: 100%;
+              height: 1px;
+            }
+          }
+        }
+        .price-ars{
+          padding-left: 30px;
+          @include media(xs){
+            padding-left: 0;
+          }
+          @include media(lg){
+            padding-right: 20px;
+          }
+        }
+        .separator{
+            width: 1px;
+            height: 100%;
+            background: $black;
+            margin: 0 auto;
+        }
+      }
       span {
         color: $black;
         font-weight: bold;
@@ -404,6 +480,9 @@
 
       .item {
         color: $black;
+        *{
+          color: $black;
+        }
         > div{
           margin-bottom: 20px;
                       @include media(sm){

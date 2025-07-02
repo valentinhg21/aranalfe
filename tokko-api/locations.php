@@ -1,9 +1,8 @@
-<?php 
+<?php
 
 function get_summary_locations(array $params = []): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
 
-    // Si no se pasa 'data', usar valores por defecto
     if (!isset($params['data'])) {
         $params['data'] = [
             'current_localization_id' => 0,
@@ -17,29 +16,53 @@ function get_summary_locations(array $params = []): array {
         ];
     }
 
+    $data_json = is_array($params['data']) ? json_encode($params['data']) : $params['data'];
+    $cache_key = 'tokko_summary_locations_' . md5($data_json);
 
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        return $cached;
+    }
 
-    // Agregar la clave a los parámetros
+    if (is_bot()) {
+        error_log('[TOKKO][BOT] Cache no encontrada para locations');
+        return [];
+    }
+
+    $params['data'] = $data_json;
     $params['key'] = $config['api_token'];
-
     $params = array_merge([
         'format' => 'json',
         'lang' => 'es_ar'
     ], $params);
 
-    // Codificar 'data' si es array
-    if (is_array($params['data'])) {
-        $params['data'] = json_encode($params['data']);
-    }
-
     $url = $config['locations_url'] . '?' . http_build_query($params);
+
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $response = curl_exec($ch);
+    $error = curl_error($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    return json_decode($response, true) ?: [];
+    if ($response && $http_code === 200) {
+        $decoded = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            set_transient($cache_key, $decoded, HOUR_IN_SECONDS);
+            return $decoded;
+        } else {
+            error_log("[TOKKO][LOCATIONS] JSON inválido: " . json_last_error_msg());
+        }
+    } else {
+        error_log("[TOKKO][LOCATIONS] CURL error: $error | HTTP: $http_code");
+    }
+
+    return [];
 }
+
 
 function get_only_locations(array $params = []): array {
     $data = get_summary_locations($params);
@@ -74,6 +97,7 @@ function get_only_parent_locations(array $params = []): array {
     }
     return array_values($unique);
 }
+
 
 function get_only_property_types(array $params = []): array {
     $data = get_summary_locations($params);
@@ -132,7 +156,7 @@ function get_tokko_ids_from_slugs(array $tipo_slug = [], array $ubicacion_slug =
     $locations = get_only_parent_locations();
     foreach ($locations as $loc) {
         $slug = sanitize_title($loc['parent_name']);
-       
+
         if (in_array($slug, $ubicacion_slug)) {
             $result['location_id'][] = (int)$loc['parent_id'];
         }
@@ -181,6 +205,3 @@ function get_data_search() {
         'params'            => $params
     ]);
 }
-
-
-

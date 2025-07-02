@@ -1,8 +1,6 @@
 export const select = () => {
     const selects = document.querySelectorAll(".field-container-input");
-    const simpleSelect = () => {
-      alert('si')
-    }
+
 
     if (selects.length > 0) {
         selects.forEach((select) => {
