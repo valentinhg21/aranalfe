@@ -1088,17 +1088,29 @@ function get_images_details_property_from_data(array $propertyData): array {
 
 
 function get_images_development(array $data): array {
-
     $photos = $data['photos'] ?? [];
-
     usort($photos, function($a, $b) {
-
         return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
-
     });
 
     return $photos;
 
+}
+
+function get_images_blue_print(array $data) {
+    $photos = $data['photos'] ?? [];
+
+    // Filtrar solo los que tengan is_blueprint en true
+    $photos = array_filter($photos, function($photo) {
+        return $photo['is_blueprint'] ?? false;
+    });
+
+    // Ordenar por el campo 'order'
+    usort($photos, function($a, $b) {
+        return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
+    });
+
+    return $photos;
 }
 
 

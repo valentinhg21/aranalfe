@@ -22,22 +22,15 @@ function get_all_property_by_filter(array $params = [], int $limit = 12, int $of
         ];
     }
 
-    $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
-    $cache_key = 'tokko_properties_' . md5($data_json . $limit . $offset . $order_by . $order);
-
-    // Intentar obtener desde cache
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    // Si es bot y no hay cache: evitamos llamada
+    // Si es bot: evitamos llamada
     if (is_bot()) {
-        error_log('[TOKKO][BOT] Cache no encontrada para ' . $cache_key);
+        error_log('[TOKKO][BOT] Llamada bloqueada para bot');
         return [];
     }
 
-    // Fetch desde API
+    $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
+
+    // Fetch desde API sin cache
     $url = $config['property_search_url']
         . '?lang=es_ar'
         . '&format=json'
@@ -61,7 +54,6 @@ function get_all_property_by_filter(array $params = [], int $limit = 12, int $of
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-            set_transient($cache_key, $decoded, HOUR_IN_SECONDS); // Cache por 1 hora
             return $decoded;
         } else {
             error_log("[TOKKO] JSON inválido: " . json_last_error_msg());

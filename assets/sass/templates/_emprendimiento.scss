@@ -7,6 +7,10 @@
   }
   margin: 0;
   color: $black;
+  .splide-planos{
+    display: flex;
+    align-items: center;
+  }
   .section-1 {
     margin-top: 0;
     height: 90dvh;
@@ -709,6 +713,10 @@
           width: 100%;
           height: 100%;
           border-radius: 6px;
+          > a{
+            display: flex;
+            align-items: center;
+          }
           picture,
           img {
             display: flex;
@@ -716,6 +724,11 @@
             height: 100%;
             object-fit: contain;
             border-radius: 6px;
+            max-height: 520px;
+            @include media(sm){
+              max-height: 320px;
+              object-fit: cover;
+            }
           }
         }
         .error-msg {

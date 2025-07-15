@@ -74,8 +74,7 @@ const clickOptionsinputParentLocation = () => {
 
   options.forEach((option) => {
     option.addEventListener("click", (e) => {
-      inputTypeLocation.value = "";
-      inputTypeLocation.dataset.ids = ""
+      // inputTypeLocation.value = "";
       inputTypeParentLocation.getAttribute("ids");
       let TypeParentLocationIds =
         inputTypeParentLocation.getAttribute("data-ids");
@@ -88,7 +87,7 @@ const clickOptionsinputParentLocation = () => {
       ) {
         const listLocation = document.querySelector(".list-type-location");
         const locations = listLocation.querySelectorAll("li");
-       
+
         if (locations.length > 0) {
           const parentNames = inputTypeParentLocation.value
             .split(",")
@@ -99,13 +98,10 @@ const clickOptionsinputParentLocation = () => {
           if (inputTypeParentLocation.value.length > 0) {
             locations.forEach((location) => {
               const parent = location.dataset.parent;
-              autocomplete();
-              location.firstElementChild.classList.remove('select')
               if (parentNames.includes(parent)) {
                 location.classList.remove("d-none");
               } else {
                 location.classList.add("d-none");
-                
               }
             });
           } else {

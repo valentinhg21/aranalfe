@@ -137,6 +137,19 @@ export const buscador = (selectMulti, autocomplete) => {
                params.append('tipo', id);
           });
 
+          // Parents
+          // Selecciono hijos
+          if(validator.isEmpty(inputTypeLocation.value)){
+            const elementos = document.querySelectorAll(`li.options-list-select[data-parent="${inputTypeParentLocation.value}"]`);
+            if(elementos.length > 0){
+              elementos.forEach((el) => {
+                params.append('localidad[]', el.firstElementChild.id);
+
+              })
+            }
+          }
+
+
           if(optionAllLocation.classList.contains('select')){
             // locaciones hijas
             toSlugArrayParams(inputTypeLocation.dataset.ids).forEach(id => {

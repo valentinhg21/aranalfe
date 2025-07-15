@@ -6,6 +6,7 @@ export const singleDevelopment = () => {
   const planos = document.querySelectorAll('.plano');
   const btnClose = document.querySelector('.btn-close');
   const btnUnidades = document.querySelectorAll('.btn-unidad');
+  const planosSplide = document.querySelectorAll('.splide-planos')
   if (gallery) {
     new Splide(gallery, {
       type: "slide",
@@ -46,10 +47,13 @@ export const singleDevelopment = () => {
     });
   }
   selectPisos.forEach((piso) => {
+    
+    planos[0].classList.remove('d-none')
     piso.addEventListener("click", (e) => {
         planos.forEach(plano => {
             plano.classList.add('d-none')
         });
+        
         let optionPiso = piso.firstElementChild.dataset.type
         let errorMsg = document.querySelector('.error-msg')
         let image = document.getElementById(`${optionPiso}`)
@@ -89,5 +93,20 @@ export const singleDevelopment = () => {
         })
     });
   }
+
+  if(planosSplide.length > 0){
+    console.log('aqui')
+    planosSplide.forEach((planos) => {
+      new Splide(planos, {
+        type: "slide",
+        perPage: 1,
+        gap: "1rem",
+        arrows: true,
+        pagination: false,
+      }).mount();
+    })
+  }
+
+  console.log('hola')
 
 };
