@@ -253,3 +253,14 @@ textarea {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
   }
 }
+
+
+.no-active{
+  display: none !important;
+}
+
+.no-results-location.text-muted{
+  color: $black;
+  font-size: 12px !important;
+  margin-top: 8px !important;
+}

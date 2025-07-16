@@ -174,6 +174,47 @@
             }
           }
         }
+        .loader-container{
+          display: none;
+        }
+        &.loading{
+
+          .loader-container{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(112 112 112 / 47%);
+            z-index: 54;
+            border-radius: 6px;
+          }
+          .loader {
+              width: 30px;
+              height: 30px;
+              border: 4px solid #fff;
+              border-bottom-color: transparent;
+              border-radius: 50%;
+              display: inline-block;
+              box-sizing: border-box;
+              animation: rotation 1s linear infinite;
+              // position: absolute;
+              // top: 50%;
+              // left: 50%;
+              // transform: translate(-50%, -50%);
+              z-index: 55;
+            }
+
+            @keyframes rotation {
+              0% {
+                  transform: rotate(0deg);
+              }
+              100% {
+                  transform: rotate(360deg);
+              }
+            } 
+        }
       }
     }
   }

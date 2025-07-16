@@ -451,13 +451,9 @@ get_header('', [
                     <div class="info">
 
                         <?php if($count_prices == 1): ?>
-
                             <span><?php echo esc_html($total_price);?></span>
-
                             <?php else: ?>
-
                                 <div class="info-prices">
-
                                     <div  class="price-usd">
 
                                         <p>PRECIO DE VENTA</p>
@@ -465,17 +461,11 @@ get_header('', [
                                         <span><?php echo esc_html($total_price);?></span>
 
                                     </div>
-
                                     <div class="price-ars">
-
                                         <p>PRECIO DE ALQUILER</p>
-
                                         <span ><?php echo esc_html($total_price_alquiler);?></span>
-
                                     </div>
-
                                 </div>
-
                         <?php endif; ?>
 
                         <h1><?php echo esc_html($address);?></h1>
@@ -771,13 +761,23 @@ get_header('', [
                 <form id="singlePropertyForm" data-origen="Form Propiedad" data-property="<?php echo $current_id?>" data-tags="Consulta de propiedad" data-event="form_propiedad">
 
                     <div class="content p-relative">
-
+                        <?php 
+                            $valuePrice =  $total_price;
+                            $valuePriceAlquiler =  $total_price_alquiler;
+                            $operationTypeForm = $operation_type;
+                            if($count_prices !== 1){
+                                $operationTypeForm = 'Venta y Alquiler';
+                            }
+                        ?>
+                        
                         <input type="hidden" value="<?php echo esc_url(home_url( add_query_arg( null, null ) )); ?>" id="propertyName">
-
                         <input type="hidden" value="<?php echo esc_html($type_property); ?>"  id="propertyType">
-
-                        <input type="hidden" value="<?php echo esc_html($operation_type);?>" id="propertyOperation">
-
+                        <input type="hidden" value="<?php echo esc_html($operationTypeForm);?>" id="propertyOperation">
+                        <input type="hidden" value="<?php echo esc_html($address);?>" id="propertyAddress">
+                        <input type="hidden"  value="<?php echo esc_html($property['location']['name']);?>" id="propertyBarrio">
+                        <input type="hidden"  value="<?php echo esc_html($valuePrice);?>" id="propertyPrice">
+                        <input type="hidden"  value="<?php echo esc_html($valuePriceAlquiler);?>" id="propertyPriceAlquiler">
+                        <input type="hidden"  value="<?php echo esc_html($total_surface);?>" id="propertyMetros">
                         <button type="button" class="d-none-sm" id="closeFormRequest">
 
                             <i class="fa-solid fa-xmark"></i>

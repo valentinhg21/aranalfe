@@ -4,6 +4,7 @@ export const buscador = (selectMulti, autocomplete) => {
   const inputTypeOperation = document.getElementById("input-type-operation");
 
   const buttonSearch = document.getElementById("search-button");
+  // CLICK OPCIONES ALQUILER COMPRAR
 
   if (inputTypeOperation) {
     const listContainer = inputTypeOperation.nextElementSibling;
@@ -12,6 +13,7 @@ export const buscador = (selectMulti, autocomplete) => {
 
     options.forEach((option) => {
       option.addEventListener("click", (e) => {
+        
         if (option.dataset.type === "1") {
           // inputTypeProperty.value = "Tipo de propiedad";
 
@@ -21,11 +23,13 @@ export const buscador = (selectMulti, autocomplete) => {
 
           usuario_search_home.type_operation = [1];
 
-          // fetchDataSearch({
-          //   operation_types: [1],
-          // }).then((data) => {
-          //   changeValues(data, listContainer, "TYPE_OPERATION");
-          // });
+          getDataSummary({
+            operation_types: [1],
+            property_types: [inputTypeProperty.dataset.ids],
+          }).then((data) => {
+            console.log(data)
+            changeValues(data.objects, listContainer, "TYPE_OPERATION");
+          });
         } else {
           // inputTypeProperty.value = "Tipo de propiedad";
 
@@ -35,14 +39,17 @@ export const buscador = (selectMulti, autocomplete) => {
 
           usuario_search_home.type_operation = [2];
 
-          // fetchDataSearch({
-          //   operation_types: [2],
-          // }).then((data) => {
-          //   changeValues(data, listContainer, "TYPE_OPERATION");
-          // });
+          getDataSummary({
+            operation_types: [2],
+            property_types: [inputTypeProperty.dataset.ids],
+          }).then((data) => {
+            console.log(data)
+            changeValues(data.objects, listContainer, "TYPE_OPERATION");
+          });
         }
       });
     });
+    
   }
 
   if (btnTypeOperationMobile.length > 0) {
@@ -53,16 +60,15 @@ export const buscador = (selectMulti, autocomplete) => {
         });
 
         btn.classList.add("active");
-
         let currentOperation = Number(btn.getAttribute("data-type")) || 1;
-
         usuario_search_home.type_operation = [currentOperation];
-
-        // fetchDataSearch({
-        //   operation_types: [currentOperation],
-        // }).then((data) => {
-        //   changeValues(data, "", "TYPE_OPERATION");
-        // });
+        getDataSummary({
+            operation_types: [currentOperation],
+            property_types: [inputTypeProperty.dataset.ids],
+          }).then((data) => {
+            console.log(data)
+            changeValues(data.objects, '', "TYPE_OPERATION");
+          });
       });
     });
   }

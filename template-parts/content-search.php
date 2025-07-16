@@ -16,6 +16,7 @@
 
     <div class="search-container">
 
+        
         <div class="select-operation-mobile d-none-md">
 
             <ul>
@@ -65,35 +66,30 @@
         </div>
 
         <div class="select-type">
-
             <div class="select-container select-simple-list">
-
                 <div class="field-container-input__icon">
-
                     <i class="fa-solid fa-chevron-down"></i>
-
                 </div>
-
                 <input type="text" readonly placeholder="Tipo de propiedad" data-ids="7" value="Tipo de propiedad" id="input-type-property" data-text="Tipo de propiedad">
                 <div class="list-select">
                     <ul class="list-type-property">
-                        <li class="options-list-select">
-                            <p id="7" class="select">Locales</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="7" class="option-property select">Locales</p>
                         </li>
-                        <li class="options-list-select">
-                            <p id="2">Departamento</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="2" class="option-property">Departamento</p>
                         </li>
-                        <li class="options-list-select">
-                            <p id="8">Edificio Comercial</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="8" class="option-property">Edificio Comercial</p>
                         </li>
-                        <li class="options-list-select">
-                            <p id="10">Cochera</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="10" class="option-property">Cochera</p>
                         </li>
-                        <li class="options-list-select">
-                            <p id="1">Terreno</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="1" class="option-property">Terreno</p>
                         </li>
-                        <li class="options-list-select">
-                            <p id="5">Oficina</p>
+                        <li class="options-list-select option-property-types">
+                            <p id="5" class="option-property">Oficina</p>
                         </li>
                     </ul>
                 </div>
@@ -126,9 +122,9 @@
 
                                 <?php $name = get_sub_field( 'name', 'options' ); ?>
 
-                                <li class="options-list-select">
+                                <li class="options-list-select option-parent">
 
-                                    <p id="<?php echo $id; ?>"><?php echo $name ?></p>
+                                    <p id="<?php echo $id; ?>" class="option-click-parent"><?php echo $name ?></p>
 
                                 </li>
 
@@ -166,7 +162,7 @@
 
                                 <?php $parentName = get_sub_field( 'parent_name', 'options' ); ?>
 
-                                <li class="options-list-select" data-parent="<?php echo $parentName ?>">
+                                <li class="options-list-select option-location" data-parent="<?php echo $parentName ?>">
 
                                     <p id="<?php echo $id; ?>"><?php echo $name ?></p>
 
@@ -213,7 +209,9 @@
             </button>
 
         </div>
-
+        <div class="loader-container">
+            <span class="loader"></span>
+        </div>
     </div>
 
 </form>

@@ -105,7 +105,7 @@
         "parent_name": "Palermo"
     },
     {
-        "count": 19,
+        "count": 16,
         "location_id": 24701,
         "location_name": "Puerto Madero",
         "parent_id": 146,
@@ -140,7 +140,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 3,
+        "count": 4,
         "location_id": 24703,
         "location_name": "San Nicolás",
         "parent_id": 146,

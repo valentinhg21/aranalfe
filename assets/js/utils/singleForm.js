@@ -82,7 +82,12 @@ export const singleForm = () => {
     const propertyName = document.getElementById('propertyName')
     const property_id = formSingleProperty.dataset.property;
     const propertyOp = document.getElementById('propertyOperation')
-    const propertyType = document.getElementById('propertyType')
+    const propertyType = document.getElementById('propertyType');
+    const propertyAddress = document.getElementById('propertyAddress');
+    const propertyBarrio = document.getElementById('propertyBarrio');
+    const propertyPrice = document.getElementById('propertyPrice')
+    const propertyAlquiler = document.getElementById('propertyPriceAlquiler')
+    const propertyMetros = document.getElementById('propertyMetros')
     const formDataProperty = new FormData();
     
     formSingleProperty.addEventListener("submit", (e) => {
@@ -126,6 +131,11 @@ export const singleForm = () => {
       formDataProperty.append("property_name", propertyName.value);
       formDataProperty.append("property_operation", propertyOp.value);
       formDataProperty.append("property_type", propertyType.value);
+      formDataProperty.append("property_address", propertyAddress.value);
+      formDataProperty.append("property_barrio", propertyBarrio.value);
+      formDataProperty.append("property_price", propertyPrice.value);
+      formDataProperty.append("property_price_alquiler", propertyAlquiler.value);
+      formDataProperty.append("property_metros", propertyMetros.value);
       loading(true);
       sendForm(formDataProperty, formSingleProperty, formSingleProperty.dataset.event);
     });
