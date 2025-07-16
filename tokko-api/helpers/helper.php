@@ -1418,3 +1418,11 @@ function get_status_property(int $status): string {
             return 'Estado desconocido';
     }
 }
+
+function get_object_position(string $acf = ''): string {
+   
+    $position = strtolower(trim($acf));
+
+
+    return 'style="object-position: ' . esc_attr($position) . ';"';
+}

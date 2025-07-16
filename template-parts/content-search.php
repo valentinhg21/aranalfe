@@ -45,13 +45,13 @@
 
                     <ul>
 
-                        <li class="options-list-select">
+                        <li class="options-list-select option-type-operation option-comprar">
 
                             <p data-type="1">Comprar</p>
 
                         </li>
 
-                        <li class="options-list-select">
+                        <li class="options-list-select option-type-operation">
 
                             <p data-type="2">Alquiler</p>
 

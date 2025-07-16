@@ -40,10 +40,10 @@
                 "id": ""
             },
             "choices": {
-                "Top,": "Top,",
-                "Center,": "Center,",
-                "Bottom,": "Bottom,",
-                "Left Center,": "Left Center,",
+                "Top": "Top",
+                "Center": "Center",
+                "Bottom": "Bottom",
+                "Left Center": "Left Center",
                 "Right Center": "Right Center"
             },
             "default_value": "Center",
@@ -221,5 +221,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1752692770
+    "modified": 1752693918
 }

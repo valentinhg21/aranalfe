@@ -145,91 +145,91 @@ const clickOptionsinputParentLocation = () => {
 };
 
 // BUILT
-const changeValues = (data, container, method) => {
-  let optionsPropertyTypes = document.querySelector(".option-property-types");
-  let listParentContainer = document.querySelector(".list-type-parentlocation");
-  let listLocationContainer = document.querySelector(".list-type-location");
-  if (method === "TYPE_OPERATION") {
-    const property_types = data.property_types;
-    const parent_locations = data.parent_locations;
-    const locations = data.locations;
-    let propertyHTML = "";
-    let parentHTML = "";
-    let locationHTML = "";
+// const changeValues = (data, container, method) => {
+//   let optionsPropertyTypes = document.querySelector(".option-property-types");
+//   let listParentContainer = document.querySelector(".list-type-parentlocation");
+//   let listLocationContainer = document.querySelector(".list-type-location");
+//   if (method === "TYPE_OPERATION") {
+//     const property_types = data.property_types;
+//     const parent_locations = data.parent_locations;
+//     const locations = data.locations;
+//     let propertyHTML = "";
+//     let parentHTML = "";
+//     let locationHTML = "";
     
-    // console.log(optionsPropertyTypes)
-    // Limpiar los contenedores antes de agregar los nuevos elementos
-    // listPropertyContainer.innerHTML = "";
-    // listParentContainer.innerHTML = "";
-    // listLocationContainer.innerHTML = "";
+//     // console.log(optionsPropertyTypes)
+//     // Limpiar los contenedores antes de agregar los nuevos elementos
+//     // listPropertyContainer.innerHTML = "";
+//     // listParentContainer.innerHTML = "";
+//     // listLocationContainer.innerHTML = "";
 
-    // if (property_types.length > 0) {
-    //   property_types.forEach((property) => {
-    //     propertyHTML += `<li class="options-list-select"><p id="${property.id}">${property.type}</p></li>`;
-    //   });
-    //   listPropertyContainer.innerHTML = propertyHTML;
-    // }
+//     // if (property_types.length > 0) {
+//     //   property_types.forEach((property) => {
+//     //     propertyHTML += `<li class="options-list-select"><p id="${property.id}">${property.type}</p></li>`;
+//     //   });
+//     //   listPropertyContainer.innerHTML = propertyHTML;
+//     // }
 
-    // if (parent_locations.length > 0) {
-    //   parent_locations.forEach((parent) => {
-    //     parentHTML += `<li class="options-list-select"><p id="${parent.parent_id}">${parent.parent_name}</p></li>`;
-    //   });
-    //   listParentContainer.innerHTML = parentHTML;
-    // }
+//     // if (parent_locations.length > 0) {
+//     //   parent_locations.forEach((parent) => {
+//     //     parentHTML += `<li class="options-list-select"><p id="${parent.parent_id}">${parent.parent_name}</p></li>`;
+//     //   });
+//     //   listParentContainer.innerHTML = parentHTML;
+//     // }
 
-    // if (locations.length > 0) {
-    //   locations.forEach((location) => {
-    //     locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
-    //   });
-    //   listLocationContainer.innerHTML = locationHTML;
-    // }
-  }
+//     // if (locations.length > 0) {
+//     //   locations.forEach((location) => {
+//     //     locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
+//     //   });
+//     //   listLocationContainer.innerHTML = locationHTML;
+//     // }
+//   }
 
-  // if (method === "TYPE_PROPERTY") {
-  //   const parent_locations = data.parent_locations;
-  //   const locations = data.locations;
-  //   listParentContainer.innerHTML = "";
-  //   listLocationContainer.innerHTML = "";
+//   // if (method === "TYPE_PROPERTY") {
+//   //   const parent_locations = data.parent_locations;
+//   //   const locations = data.locations;
+//   //   listParentContainer.innerHTML = "";
+//   //   listLocationContainer.innerHTML = "";
 
-  //   let parentHTML = "";
-  //   let locationHTML = "";
+//   //   let parentHTML = "";
+//   //   let locationHTML = "";
 
-  //   if (parent_locations.length > 0) {
+//   //   if (parent_locations.length > 0) {
 
-  //     parent_locations.forEach((parent) => {
-  //       parentHTML += `<li class="options-list-select"><p id="${parent.parent_id}">${parent.parent_name}</p></li>`;
-  //     });
-  //     listParentContainer.innerHTML = parentHTML;
-  //   }
+//   //     parent_locations.forEach((parent) => {
+//   //       parentHTML += `<li class="options-list-select"><p id="${parent.parent_id}">${parent.parent_name}</p></li>`;
+//   //     });
+//   //     listParentContainer.innerHTML = parentHTML;
+//   //   }
 
-  //   if (locations.length > 0) {
+//   //   if (locations.length > 0) {
   
 
 
-  //     locations.forEach((location) => {
-  //       locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
-  //     });
-  //     listLocationContainer.innerHTML = locationHTML;
-  //   }
-  // }
+//   //     locations.forEach((location) => {
+//   //       locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
+//   //     });
+//   //     listLocationContainer.innerHTML = locationHTML;
+//   //   }
+//   // }
 
-  // if (method === "TYPE_PARENTLOCATION") {
-  //   const locations = data.locations;
-  //   listLocationContainer.innerHTML = "";
-  //   let locationHTML = "";
-  //   if (locations.length > 0) {
-  //     locations.forEach((location) => {
-  //       locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
-  //     });
-  //     listLocationContainer.innerHTML = locationHTML;
-  //   }
-  // }
+//   // if (method === "TYPE_PARENTLOCATION") {
+//   //   const locations = data.locations;
+//   //   listLocationContainer.innerHTML = "";
+//   //   let locationHTML = "";
+//   //   if (locations.length > 0) {
+//   //     locations.forEach((location) => {
+//   //       locationHTML += `<li class="options-list-select" data-parent="${location.parent_name}"><p id="${location.location_id}">${location.location_name}</p></li>`;
+//   //     });
+//   //     listLocationContainer.innerHTML = locationHTML;
+//   //   }
+//   // }
 
-  selectMulti();
-  autocomplete();
-  clickOptionsinputTypeProperty();
-  clickOptionsinputParentLocation();
-};
+//   selectMulti();
+//   autocomplete();
+//   clickOptionsinputTypeProperty();
+//   clickOptionsinputParentLocation();
+// };
 
 const toSlugArray = (value) => {
   return value

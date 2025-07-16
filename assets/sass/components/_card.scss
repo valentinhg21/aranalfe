@@ -21,10 +21,10 @@
       transition: $slow;
       object-fit: cover;
       // object-position: 0 35%;
-      object-position: center;
+      // object-position: center;
       @include media(xs){
         // object-position: 0 16%;
-        object-position: center;
+        // object-position: center;
       }
     }
     @include media(md) {

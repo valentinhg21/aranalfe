@@ -3,9 +3,17 @@ export const buscador = (selectMulti, autocomplete) => {
 
   const inputTypeOperation = document.getElementById("input-type-operation");
 
+  
   const buttonSearch = document.getElementById("search-button");
   // CLICK OPCIONES ALQUILER COMPRAR
-
+  // loadingSearch(true)
+  // getDataSummary({
+  //           operation_types: [1],
+  //           property_types: [inputTypeProperty.dataset.ids],
+  //         }).then((data) => {
+          
+  //           changeValues(data.objects, '', "TYPE_OPERATION");
+  //         });
   if (inputTypeOperation) {
     const listContainer = inputTypeOperation.nextElementSibling;
 
@@ -13,22 +21,22 @@ export const buscador = (selectMulti, autocomplete) => {
 
     options.forEach((option) => {
       option.addEventListener("click", (e) => {
-        
+          // loadingSearch(true)
         if (option.dataset.type === "1") {
           // inputTypeProperty.value = "Tipo de propiedad";
 
           // inputTypeParentLocation.value = "";
 
           // inputTypeLocation.value = "";
-
+          
           usuario_search_home.type_operation = [1];
 
           getDataSummary({
             operation_types: [1],
             property_types: [inputTypeProperty.dataset.ids],
           }).then((data) => {
-            console.log(data)
-            changeValues(data.objects, listContainer, "TYPE_OPERATION");
+         
+            changeValues(data.objects, '', "TYPE_OPERATION");
           });
         } else {
           // inputTypeProperty.value = "Tipo de propiedad";
@@ -55,6 +63,7 @@ export const buscador = (selectMulti, autocomplete) => {
   if (btnTypeOperationMobile.length > 0) {
     btnTypeOperationMobile.forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        // loadingSearch(true)
         btnTypeOperationMobile.forEach((btn) => {
           btn.classList.remove("active");
         });
@@ -74,6 +83,7 @@ export const buscador = (selectMulti, autocomplete) => {
   }
 
   if (inputTypeProperty) {
+    
     clickOptionsinputTypeProperty();
   }
 

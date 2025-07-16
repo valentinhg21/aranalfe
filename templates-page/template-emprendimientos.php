@@ -149,11 +149,8 @@ foreach ($developments as $dev) {
                 <?php foreach ($grouped as $key => $items): ?>
 
                     <div class="tab-content-group<?php echo $key === 'ver-todas' ? ' active' : ''; ?>"
-
                         data-tab-content="<?php echo esc_attr($key); ?>">
-
                         <div class="row">
-
                             <?php foreach ($items as $item):
 
                                 $id = $item['id'];
@@ -168,19 +165,23 @@ foreach ($developments as $dev) {
 
                                 $status = get_construction_status($item['construction_status']);
 
+                                $post = get_page_by_path(slugify($item['name']), OBJECT, 'emprendimiento');
+                                $object_position = 'center';
+                                if ($post) {
+                                    $object_position = get_field('imagen', $post->ID) ?? 'center'; 
+                     
+                                }
                               
 
                                 ?>
 
                                 <div class="col-md-4 col-12 mb-md-4 ">
 
-                                    <a href="<?php echo $permalink;?>" class="card-feature" data-id="<?php echo $id;?>">
+                                    <a href="<?php echo $permalink;?>" class="card-feature" data-id="<?php echo $id;?>" title="Emprendimiento - <?php echo $name;?>">
 
                                         <div class="image">
 
-                                            <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($name); ?>"
-
-                                                width="100%" height="100%" loading="lazy">
+                                            <img <?php echo get_object_position($object_position);?> src="<?php echo esc_url($image); ?>" alt="En la imagen se muestra el emprendimiento - <?php echo $name?>" width="100%" height="100%" loading="lazy" >
 
                                         </div>
 
