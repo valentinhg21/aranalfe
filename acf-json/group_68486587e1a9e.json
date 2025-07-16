@@ -26,6 +26,38 @@
             "append": ""
         },
         {
+            "key": "field_6877f7921d59e",
+            "label": "Imagen",
+            "name": "imagen",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Posición de la imagen de la tarjeta de emprendimiento",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Top,": "Top,",
+                "Center,": "Center,",
+                "Bottom,": "Bottom,",
+                "Left Center,": "Left Center,",
+                "Right Center": "Right Center"
+            },
+            "default_value": "Center",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
             "key": "field_684866524550d",
             "label": "Cantidad de pisos",
             "name": "cantidad_de_pisos",
@@ -189,5 +221,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1752268798
+    "modified": 1752692770
 }

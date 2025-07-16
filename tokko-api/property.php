@@ -357,5 +357,3 @@ function get_details_property(int $id): array {
 
 
 
-
-

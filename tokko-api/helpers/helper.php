@@ -1402,3 +1402,19 @@ function render_order_options($current_order_by, $current_order) {
     }
 
 }
+
+
+function get_status_property(int $status): string {
+    switch ($status) {
+        case 1:
+            return 'A cotizar';
+        case 2:
+            return 'Disponible';
+        case 3:
+            return 'Reservada';
+        case 4:
+            return 'No disponible';
+        default:
+            return 'Estado desconocido';
+    }
+}
