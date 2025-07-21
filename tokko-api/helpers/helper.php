@@ -1367,7 +1367,7 @@ function render_order_options($current_order_by, $current_order) {
 
     $options = [
 
-        ['label' => 'Más reciente', 'order_by' => 'created_date', 'order' => 'ASC'],
+        ['label' => 'Más reciente', 'order_by' => 'created_at', 'order' => 'DESC'],
 
         ['label' => 'Precio más bajo', 'order_by' => 'price', 'order' => 'ASC'],
 

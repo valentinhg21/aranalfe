@@ -44,7 +44,7 @@ export const select = () => {
                 let inputs = select.querySelectorAll('input[type="checkbox"]');
             
                 inputs.forEach(input => {
-                  console.log(input.dataset.nombre)
+               
                 });
               
               }

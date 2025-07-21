@@ -85,7 +85,7 @@ export const singleDevelopment = () => {
             });
             let id = btn.firstElementChild.dataset.panel
             let panel = document.getElementById(id);
-            console.log(id)
+         
             if(panel){
                 panel.classList.add('active')
                 btn.classList.add('active')
@@ -95,7 +95,7 @@ export const singleDevelopment = () => {
   }
 
   if(planosSplide.length > 0){
-    console.log('aqui')
+   
     planosSplide.forEach((planos) => {
       new Splide(planos, {
         type: "slide",
@@ -107,6 +107,6 @@ export const singleDevelopment = () => {
     })
   }
 
-  console.log('hola')
+ 
 
 };

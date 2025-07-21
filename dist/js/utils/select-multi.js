@@ -8,7 +8,7 @@ export const selectMulti = () => {
       if (inputSelect) {
         const listContainer = select.querySelector(".list-select");
         const opciones = listContainer.querySelectorAll("p");
-        console.log(opciones);
+     
         const selectedValues = new Set();
 
         if (opciones.length > 8) {

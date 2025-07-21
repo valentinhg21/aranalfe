@@ -28,7 +28,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 32,
+        "count": 31,
         "location_id": 24682,
         "location_name": "Belgrano",
         "parent_id": 146,
@@ -140,7 +140,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 5,
         "location_id": 24703,
         "location_name": "San Nicolás",
         "parent_id": 146,

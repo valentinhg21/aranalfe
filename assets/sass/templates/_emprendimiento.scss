@@ -43,6 +43,16 @@
         position: absolute;
         bottom: 0;
         right: 0;
+        transition: $fast;
+        &:hover{
+          background: $white;
+          color: $black;
+          svg{
+            *{
+              color: $black;
+            }
+          }
+        }
       }
       h1 {
         color: #fff;

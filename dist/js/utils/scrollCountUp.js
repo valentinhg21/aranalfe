@@ -2,7 +2,7 @@ export const scrollCountUp = (CountUp) => {
  
 
     let counters = document.querySelectorAll('.counter')
-    console.log(counters)
+   
     if(counters.length > 0){
         counters.forEach(counter => {
             if (counter.id === '' && counter.dataset.value === 0) {
