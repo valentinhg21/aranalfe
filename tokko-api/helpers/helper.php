@@ -468,49 +468,25 @@ function actualizar_query_param($clave, $valor, $multi = false): string {
 // --- FILTRO: OPERACIÓN ---
 
 function generar_filtros_operacion(array $data, array $params): array {
-
     $ventas = ['count' => 0];
-
     $alquiler = ['count' => 0];
-
-
-
     foreach ($data as $item) {
-
         if (!isset($item['operation_type'])) continue;
-
-
-
         if ((int)$item['operation_type'] === 1) {
-
             $ventas = $item;
-
         } elseif ((int)$item['operation_type'] === 2) {
-
             $alquiler = $item;
-
         }
-
     }
 
 
 
     $params = array_map('intval', $params);
-
     $checked_ventas = in_array(1, $params);
-
     $checked_alquiler = in_array(2, $params);
-
-
-
     $url_ventas = actualizar_query_param('operacion', '1', false);
-
     $url_alquiler = actualizar_query_param('operacion', '2', false);
-
-
-
     return [
-
         [
 
             'label' => 'Ventas',
@@ -1425,4 +1401,8 @@ function get_object_position(string $acf = ''): string {
 
 
     return 'style="object-position: ' . esc_attr($position) . ';"';
+}
+
+function render_filters_apply(){
+    return '<div>Filter</div>';
 }

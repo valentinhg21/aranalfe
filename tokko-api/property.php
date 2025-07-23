@@ -163,95 +163,44 @@ function get_search_summary(array $params = []): array {
 // --- FUNCIÓN PRINCIPAL ---
 
 function get_create_filter_data(array $dataFilter = []): array {
-
-
-
     // DATA FILTER
-
     $data_locations = $dataFilter['locations'] ?? [];
-
     $data_type_operation = $dataFilter['operation_types'] ?? [];
-
     $data_type_property = $dataFilter['property_types'] ?? [];
-
     $data_age = $dataFilter['age'] ?? [];
-
     $data_room = $dataFilter['room_amount'] ?? [];
-
     $suite_amount = $dataFilter['suite_amount'] ?? [];
 
-
-
     // QUERYS PARAMS
-
-  
-
     $type_operation = isset($_GET['operacion']) ? sanitize_text_field($_GET['operacion']) : [1,2];
-
     $type_operation = is_array($type_operation) ? $type_operation : [$type_operation];
 
-
-
-
-
     // QUERY LOCATION
-
     $location = $_GET['localidad'] ?? [];
-
     $location = is_array($location) ? $location : [$location];
-
     $location = array_map('intval', $location);
 
-
-
-
-
     // QUERY TIPO PROPIEDAD
-
     $type_property = $_GET['tipo'] ?? [];
-
     $type_property = is_array($type_property) ? $type_property : [$type_property];
-
     $type_property = array_map('intval', $type_property);
 
-
-
     // QUERY ANTIGUEDAD
-
     $age = isset($_GET['antiguedad']) ? $_GET['antiguedad'] : [];
 
-
-
-
-
     // Query Ambientes
-
     $ambientes_slug = isset($_GET['ambientes']) ? (int) $_GET['ambientes'] : 0;
-
     $dormitorios_slug = isset($_GET['dormitorio']) ? (int) $_GET['dormitorio'] : 0;
 
 
-
-
-
-    
-
     return [
-
         'Tipo de operación' => generar_filtros_operacion($data_type_operation, $type_operation),
-
         'Ubicación' => generar_filtros_ubicacion($location),
-
         'Tipo de propiedad' => generar_filtros_tipo($data_type_property, $type_property),
-
         'Antiguedad' => generar_filtros_antiguedad($data_age, $age),
-
         'Ambientes' => generar_filtros_ambientes($data_room, $ambientes_slug),
-
         'Dormitorios' => generar_filtros_dormitorios($suite_amount, $dormitorios_slug),
-
     ];
-
 }
 
 // FILTROS SERVICIOS Y OTROS

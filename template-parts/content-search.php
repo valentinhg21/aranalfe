@@ -185,9 +185,7 @@
         <div class="submit">
 
             <button type="submit" class="btn btn-search" id="search-button">
-
                 <span class="d-none-md">Buscar</span>
-
                 <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg"
 
                     class="d-flex-md d-none">
@@ -205,7 +203,6 @@
                         stroke-linecap="round" />
 
                 </svg>
-
             </button>
 
         </div>

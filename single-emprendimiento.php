@@ -8,8 +8,6 @@ $current_id = $_GET['id'] ?? get_field('id') ?? 0;
 
 $development = get_development_by_id($current_id)['objects'][0];
 
-
-
 if (!$development) {
 
     global $wp_query;
@@ -670,7 +668,6 @@ if ( get_field( 'activar' ) ){
                                             $total_price = render_price_format($price, $currency_price);
 
                                             $address = $unidad['address'];
-
                                             $permalink = return_url() . '/propiedad/' .  slugify($address) . '/' . $unidad['id'];
 
                                             $real_adress = $unidad['real_address'];

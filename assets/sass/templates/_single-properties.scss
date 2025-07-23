@@ -343,6 +343,9 @@
       transition: $fast;
       opacity: 0;
       visibility: hidden;
+      @include media(xs){
+        height: 85dvh;
+      }
       .leaflet-popup-content {
         padding: 0 !important;
         margin: 0 !important;
@@ -370,6 +373,71 @@
         }
 
       }
+  }
+
+  // FORMULARIO
+  .form-location{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    .input__container{
+      width: 100%;
+      display: flex;
+      background: #fff;
+      padding: 4px;
+      border-radius: 6px;
+      height: 50px;
+      input{
+        width: 86% !important;
+        outline: none;
+        border: none;
+        font-size: 14px;
+        height: 24px;
+        color: $black;
+        padding: 8px;
+        
+      }
+      .btn-search{
+        @include media(md){
+          min-width: auto !important;
+          max-width: auto;
+        }
+      }
+      .ts-wrapper{
+        width: 86%;
+        border: 0;
+        outline: none;
+        padding: 0;
+        .ts-control{
+          border: 0;
+          display: flex;
+          flex-direction: row;
+          width: 86%;           /* ancho fijo */
+          white-space: nowrap;    /* evita salto de línea */
+          overflow-x: auto;       /* scroll horizontal */
+          overflow-y: hidden;
+          scrollbar-width: thin;  /* scroll delgado (opcional) */
+          flex-wrap: nowrap;
+          padding-bottom: 0;
+          .item{
+            display: inline-block;  /* mantiene los ítems en una línea */
+          }
+        }
+        &.multi{
+          .ts-control{
+            > div{
+              background: $red;
+              color: $white;
+              border-radius: 6px;
+            }  
+          }
+        }
+        .remove{
+          border-left: 0;
+        }
+      }
+    }
   }
 }
 
@@ -428,4 +496,31 @@
       }
     }
   }
+}
+.ts-dropdown{
+  border: 1px solid #e5e5e5;
+  border-top:1px solid #e5e5e5 !important;
+}
+.ts-dropdown [data-selectable].option{
+  padding: 10px 10px;
+  border-bottom: 1px solid #c4c4c4;
+}
+.ts-dropdown [data-selectable].option:not(.active){
+  color: $black !important;
+
+}
+.ts-dropdown .active{
+  background-color: $red;
+  color: $white !important;
+  
+}
+
+.option.active{
+  color: $white !important;
+}
+
+.optgroup-header{
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #c4c4c4;
 }

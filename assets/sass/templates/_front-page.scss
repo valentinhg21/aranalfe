@@ -11,16 +11,16 @@
     text-align: center;
     position: relative;
     background-image: var(--background-image-desktop);
-    @include media(md){
+    @include media(md) {
       min-height: 500px;
       margin-bottom: 8rem;
       background-position: bottom;
     }
-    @include media(xs){
+    @include media(xs) {
       min-height: 390px;
       margin-bottom: 12rem;
     }
-    @include media(sm){
+    @include media(sm) {
       background-image: var(--background-image-mobile);
     }
     &::before {
@@ -29,11 +29,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      @include media-down(sm){
+      @include media-down(sm) {
         @include gradient(top);
       }
-     
-      @include media(sm){
+
+      @include media(sm) {
         background: #0000005d;
       }
     }
@@ -43,13 +43,13 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      @include media(md){
+      @include media(md) {
         margin-bottom: 4rem;
       }
-      p{
+      p {
         font-size: 18px;
         margin-bottom: 8px;
-        @include media(xs){
+        @include media(xs) {
           font-size: 12px;
         }
       }
@@ -69,11 +69,11 @@
         width: 100%;
         margin: 0 auto;
 
-        @include media(md){
+        @include media(md) {
           position: absolute;
           top: 11rem;
           left: 0;
-          box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+          box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         .search-container {
           display: grid;
@@ -89,7 +89,7 @@
           > div {
             border-right: 1px solid #939393;
             @include media(md) {
-              border: 1px solid #DBDBDB;
+              border: 1px solid #dbdbdb;
               border-radius: 6px;
               padding: 1px;
             }
@@ -97,7 +97,7 @@
               &:nth-child(4) {
                 border-right: 1px solid #939393;
               }
-              &:nth-child(5){
+              &:nth-child(5) {
                 border-right: 0;
                 // padding-right: 4rem;
               }
@@ -117,20 +117,22 @@
               }
             }
           }
-          .select-container{
-            input{
+          .select-container {
+            input {
               padding: 1rem 3rem 1rem 1rem;
               border-radius: 5px;
               cursor: pointer;
             }
-            .field-container-input__icon{
-              i{
+            .field-container-input__icon {
+              i {
                 transition: $fast;
               }
             }
-            &.open-select{
-              .field-container-input__icon{
-                i{transform: rotate(180deg);}
+            &.open-select {
+              .field-container-input__icon {
+                i {
+                  transform: rotate(180deg);
+                }
               }
             }
           }
@@ -142,8 +144,6 @@
               top: 9px;
               right: 7px;
             }
-
- 
           }
           .select-operation-mobile {
             border: 1px solid transparent;
@@ -174,12 +174,11 @@
             }
           }
         }
-        .loader-container{
+        .loader-container {
           display: none;
         }
-        &.loading{
-
-          .loader-container{
+        &.loading {
+          .loader-container {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -191,34 +190,71 @@
             border-radius: 6px;
           }
           .loader {
-              width: 30px;
-              height: 30px;
-              border: 4px solid #fff;
-              border-bottom-color: transparent;
-              border-radius: 50%;
-              display: inline-block;
-              box-sizing: border-box;
-              animation: rotation 1s linear infinite;
-              // position: absolute;
-              // top: 50%;
-              // left: 50%;
-              // transform: translate(-50%, -50%);
-              z-index: 55;
-            }
+            width: 30px;
+            height: 30px;
+            border: 4px solid #fff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+            // position: absolute;
+            // top: 50%;
+            // left: 50%;
+            // transform: translate(-50%, -50%);
+            z-index: 55;
+          }
 
-            @keyframes rotation {
-              0% {
-                  transform: rotate(0deg);
-              }
-              100% {
-                  transform: rotate(360deg);
-              }
-            } 
+          @keyframes rotation {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
         }
       }
     }
   }
+  .category-featured {
+    padding: 4.25rem 0;
+    background-color: $white;
+    @include media(md) {
+      padding: 1.75rem 0;
+    }
 
+    .row {
+      padding-top: 32px;
+      @include media(md) {
+        padding-top: 18px;
+      }
+      .card-category {
+        height: 420px;
+        @include media(md) {
+          height: 250px;
+        }
+        @include media(xs) {
+          height: 200px;
+        }
+        .image {
+          display: flex;
+          width: 100%;
+          border-top-left-radius: 6px;
+          border-top-right-radius: 6px;
+          overflow: hidden;
+          transition: $slow;
+          picture,
+          img {
+            transition: $slow;
+            object-fit: cover;
+
+            object-position: center;
+          }
+        }
+      }
+    }
+  }
   .developments-feature {
     padding: 4.25rem 0;
     @include media(md) {
@@ -232,9 +268,22 @@
       }
     }
   }
-  .property {
+  .property-feature {
     padding: 4.25rem 0;
     background-color: $gray;
+    @include media(md) {
+      padding: 1.75rem 0;
+    }
+    .row {
+      padding-top: 32px;
+      @include media(md) {
+        padding-top: 18px;
+      }
+    }
+  }
+  .property {
+    padding: 4.25rem 0;
+    background-color: $white;
     @include media(md) {
       padding: 1.75rem 0;
     }
@@ -258,11 +307,11 @@
     text-align: center;
     position: relative;
     padding: 4.375rem 0;
-    @include media(md){
-        padding: 3.125rem 0;
+    @include media(md) {
+      padding: 3.125rem 0;
     }
-    @include media(xs){
-        padding: 1.625rem 0;
+    @include media(xs) {
+      padding: 1.625rem 0;
     }
     &::before {
       @include bg-presets();
@@ -303,29 +352,29 @@
           background: rgba(255, 255, 255, 0.24);
           padding: 30px 26px;
           backdrop-filter: blur(9px);
-           @include media(sm){
+          @include media(sm) {
             flex-direction: row;
             gap: 5px;
             min-height: initial;
             padding: 8px 16px;
             justify-content: flex-start;
-           }
+          }
           p {
             font-size: 1rem;
-             @include media(sm){
-                font-size: 14px;
-             }
+            @include media(sm) {
+              font-size: 14px;
+            }
           }
           .number {
             font-weight: 500;
             font-size: 48px;
             margin-bottom: 5px;
-            @include media(md){
-                margin-bottom: 0;
-                font-size: 30px;
+            @include media(md) {
+              margin-bottom: 0;
+              font-size: 30px;
             }
-            @include media(sm){
-                font-size: 26px;
+            @include media(sm) {
+              font-size: 26px;
             }
           }
         }
