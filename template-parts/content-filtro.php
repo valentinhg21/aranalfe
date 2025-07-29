@@ -259,7 +259,7 @@ $filtros_tag = get_query_var('filtros_tag');
     <?php foreach ($filtros_tag as $titulo => $opciones): ?>
 
         <?php if (!empty($opciones) && is_array($opciones)): ?>
-            <?php if($titulo !== 'Servicios'): ?>
+            <?php if($titulo !== 'Servicios' && $titulo !== 'Otros'): ?>
             <div class="filter">
                 
                 <p><?= esc_html($titulo) ?></p>

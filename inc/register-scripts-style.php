@@ -29,14 +29,23 @@ add_action('wp_enqueue_scripts', 'libraries');
 
 
 
-function zetenta_theme_styles(){
+function zetenta_theme_styles() {
     $url_fontawesome = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
-    wp_register_style('fontawesome', $url_fontawesome, array(), '6.4.2', 'all');
-    wp_register_style('zetenta-styles', get_stylesheet_uri(), array('fontawesome', 'sweetalert2-css', 'leaflet-css', 'splide-css', 'fancybox-css', 'splide-css', 'tom-select-css'), '1.0', 'all');
+    wp_register_style('fontawesome', $url_fontawesome, [], '6.4.2', 'all');
+
+    $css_file = get_stylesheet_directory() . '/dist/css/theme.min.css';
+    $css_uri  = get_stylesheet_directory_uri() . '/dist/css/theme.min.css';
+    $version  = file_exists($css_file) ? filemtime($css_file) : time();
+
+    wp_register_style(
+        'zetenta-styles',
+        $css_uri,
+        ['fontawesome', 'sweetalert2-css', 'leaflet-css', 'splide-css', 'fancybox-css', 'tom-select-css'],
+        $version,
+        'all'
+    );
     wp_enqueue_style('zetenta-styles');
-
 }
-
 add_action('wp_enqueue_scripts', 'zetenta_theme_styles');
 
 function zetenta_theme_scripts(){
@@ -62,7 +71,11 @@ add_action('wp_enqueue_scripts', 'zetenta_theme_scripts');
 
 
 
-
+function zetenta_disable_browser_cache() {
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+}
+add_action('send_headers', 'zetenta_disable_browser_cache');
 
 
 

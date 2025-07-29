@@ -602,51 +602,25 @@ function generar_filtros_ubicacion(array $params): array {
 //  FILTRO TYPE PROPERTY
 
 function generar_filtros_tipo(array $data, array $params): array {
-
-    if (empty($data)) {
-
-        return [];
-
-    }
-
     $out = [];
-
+    $property_types = get_only_property_types();
   
-
-    foreach ($data as $type) {
-
-        $label = $type['type'];
-
+    foreach ($property_types as $type) {
+        $label = $type['type']; // o 'tag_name' según tu estructura
         $count = $type['count'];
-
-        $id = (int) $type['id'];
-
-
+        $id = (int) $type['id']; // o 'tag_id' según tu estructura
 
         $checked = in_array($id, $params, true);
-
-        $url = actualizar_query_param('tipo', $id, true);
-
-
+        $url = actualizar_query_param('tipo', $id, true); // true => multiple opción
 
         $out[] = [
-
-            'label' => $label . ' (' . $count . ')',
-
+            'label' => $label,
             'checked' => $checked,
-
             'url' => $url
-
         ];
-
     }
 
-
-
     return $out;
-
-
-
 }
 
 
@@ -1273,46 +1247,35 @@ function build_url_with_order(string $order_by, string $order): string {
 
 
 
-function obtener_locacion_por_id(array $locations, $ids): array {
-
+function obtener_locacion_por_id(array $ids = [], $locations): array {
     $ids = is_array($ids) ? $ids : [$ids];
-
     $result = [];
 
     foreach ($locations as $location) {
-
-        if (in_array((int)$location['location_id'], $ids, true)) {
-
-            $result[] = $location;
-
+        if (!is_array($location)) {
+            continue; // salta los valores que no sean arrays
         }
 
+        if (isset($location['id']) && in_array((int)$location['id'], $ids, true)) {
+            $result[] = $location;
+        }
     }
 
     return $result;
-
 }
 
 
 
-function obtener_propiedad_por_id(array $locations, $ids): array {
-
+function obtener_propiedad_por_id(array $ids, array $locations): array {
     $ids = is_array($ids) ? $ids : [$ids];
-
     $result = [];
 
     foreach ($locations as $location) {
-
         if (in_array((int)$location['id'], $ids, true)) {
-
             $result[] = $location;
-
         }
-
     }
-
     return $result;
-
 }
 
 
@@ -1403,6 +1366,107 @@ function get_object_position(string $acf = ''): string {
     return 'style="object-position: ' . esc_attr($position) . ';"';
 }
 
-function render_filters_apply(){
-    return '<div>Filter</div>';
+function render_filters_apply($data, $barrios) {
+    if (empty($data) || empty($barrios)) return '';
+
+    $output = '';
+    $current_url = $_SERVER['REQUEST_URI'];
+    $parsed_url = parse_url($current_url);
+    parse_str($parsed_url['query'] ?? '', $query_params);
+
+    foreach ($data as $id) {
+        foreach ($barrios as $barrio) {
+            if ((string)$id === $barrio['id']) {
+                // Remover solo ese ID del array de localidad
+                $modified_params = $query_params;
+                if (isset($modified_params['localidad'])) {
+                    $modified_params['localidad'] = array_filter(
+                        $modified_params['localidad'],
+                        fn($val) => (string)$val !== (string)$id
+                    );
+                }
+
+                // Reconstruir URL
+                $base = $parsed_url['path'];
+                $query_string = http_build_query($modified_params);
+                $url = $base . ($query_string ? '?' . $query_string : '');
+
+                $output .= '<a href="' . esc_url($url) . '" class="filter-tag">' . esc_html($barrio['name']) . ' &times;</a> ';
+                break;
+            }
+        }
+    }
+
+    
+    $no_localidad = $query_params;
+    unset($no_localidad['localidad']);
+    $clear_url = $parsed_url['path'] . (http_build_query($no_localidad) ? '?' . http_build_query($no_localidad) : '');
+    $output .= '<a class="label-filter" href="' . esc_url($clear_url) . '" class="filter-clear">Borrar filtros</a>';
+    return '<div class="filter-wrap">' . $output . '</div>';
+}
+
+function render_property_title($params, $ubicacion_localidad_slug, $barrios, $type_property_slug, $dataFilter) {
+    $locations_texts = [];
+    $property_texts = [];
+
+    $hasOperacion = !empty($params['operacion']);
+    $hasLocalidad = !empty($params['localidad']);
+    $hasTipo = !empty($params['tipo']);
+
+    if ($hasLocalidad) {
+        $locations_texts = obtener_locacion_por_id($ubicacion_localidad_slug, $barrios);
+    }
+
+    if ($hasTipo) {
+        $property_texts = obtener_propiedad_por_id($type_property_slug, $dataFilter['property_types'] ?? []);
+    }
+
+    $operacion_label = null;
+    if ($hasOperacion) {
+        if (is_array($params['operacion'])) {
+            $operacion_label = null;
+        } else {
+            $operacion_label = $params['operacion'] === '1' ? 'Venta' : 'Alquiler';
+        }
+    }
+
+    echo '<h1>';
+
+    if (!$hasOperacion && !$hasLocalidad && !$hasTipo) {
+        // Ningún filtro, h1 vacío
+        echo 'Todas las propiedades disponibles';
+    } else {
+        if (!$operacion_label) {
+            if ($property_texts) {
+                $types = array_map(fn($p) => esc_html($p['type']), $property_texts);
+                $types_unique = array_unique($types);
+                $types_text = implode(', ', $types_unique);
+                echo  $types_text . ' disponible';
+            } else {
+                echo 'Todas las propiedades disponibles';
+            }
+        } else {
+            if ($property_texts) {
+                foreach ($property_texts as $prop) {
+                    echo esc_html($prop['type']) . ' ';
+                }
+            } else {
+                echo 'Propiedades ';
+            }
+            echo 'en ' . esc_html($operacion_label);
+        }
+
+        if ($locations_texts) {
+            echo ' en ';
+            $total = count($locations_texts);
+            foreach ($locations_texts as $i => $loc) {
+                echo esc_html($loc['name']);
+                if ($i < $total - 1) {
+                    echo ', ';
+                }
+            }
+        }
+    }
+
+    echo '</h1>';
 }

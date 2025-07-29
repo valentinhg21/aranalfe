@@ -188,6 +188,8 @@ $filter_data = get_create_filter_data($dataFilter);
 $filter_tag = get_create_filter_tag($dataFilter);
 $search_location = isset($summary_data['objects']['locations']) ? $summary_data['objects']['locations'] : [];
 $barrios = get_field('barrios', 'options') ?? [];
+
+
 ?>
 
 
@@ -213,7 +215,7 @@ $barrios = get_field('barrios', 'options') ?? [];
         </style>
         <div class=" d-none data-hide">
 
-                <?php if (!empty($propertys)): ?>
+                <?php if (!empty($params_2)): ?>
 
                     <table border="1" cellpadding="5" cellspacing="0">
 
@@ -279,70 +281,41 @@ $barrios = get_field('barrios', 'options') ?? [];
                     <?php endif; ?>
 
                     <button type="button" class="close-filter d-none-sm">
-
                         <i class="fa-solid fa-xmark"></i>
-
                     </button>
-
                     <div class="filters-container">
-                        <form class="form-location">
+                        <form class="form-location d-flex-md d-none">
                             <div class="input__container">
-                                <input type="text" id="location-input" placeholder="Seleccionar barrios">
-                                <button type="submit" class="btn btn-search" id="search-location">
+                                <input type="text" class="location-input" id="location-input" placeholder="Seleccionar barrios">
+                                <button type="submit" class="btn btn-search search-location" id="search-location">
                                     <?php render_svg(SVG . '/icon-search.svg'); ?>
                                 </button>
                             </div>
                         </form>
-                        <?php echo render_filters_apply(); ?>
+                        <?php echo render_filters_apply($ubicacion_localidad_slug, $barrios); ?>
+                        
                         <?php set_query_var('filtros', $filter_data); ?>
                         <?php set_query_var('filtros_tag', $filter_tag); ?>
                         <?php get_template_part('/template-parts/content', 'filtro');?>
                     </div>
-
                 </aside>
             </div>
             <div class="col-lg-9 col-sm-8 col-12">
+                <section class="d-none-md form-location-mobile">
+                    <form class="form-location">
+                            <div class="input__container">
+                                <input class="location-input" type="text" id="location-input" placeholder="Seleccionar barrios">
+                                <button type="submit" class="btn btn-search search-location" id="search-location">
+                                    <?php render_svg(SVG . '/icon-search.svg'); ?>
+                                </button>
+                            </div>
+                    </form>
+                    <?php echo render_filters_apply($ubicacion_localidad_slug, $barrios); ?>
+                </section>
+
                 <section class="block-order-map">
                     <?php if($total_count != 0): ?>
-                        <?php
-                        // Si hay operación, localidad y tipo
-                        if (!empty($_GET['operacion']) && !empty($_GET['localidad']) && !empty($_GET['tipo'])): 
-                            $locations_texts = obtener_locacion_por_id($dataFilter['locations'], $ubicacion_localidad_slug) ?? [];
-                            $property_texts = obtener_propiedad_por_id($dataFilter['property_types'], $type_property_slug ) ?? [];
-                            ?>
-                            <h1>
-                                <?php foreach ($property_texts as $prop): ?>
-                                    <?= $prop['type']; ?>
-                                <?php endforeach; ?>
-                                en <?= $operacion_slug === '1' ? 'Venta' : 'Alquiler' ?> en 
-                                <?php foreach ($locations_texts as $loc): ?>
-                                    <?= $loc['location_name']; ?>
-                                <?php endforeach; ?> 
-                            </h1>
-                        <?php
-                        // Si hay operación y localidad
-                        elseif (!empty($_GET['operacion']) && !empty($_GET['localidad'])): 
-                            $locations_texts = obtener_locacion_por_id($dataFilter['locations'], $ubicacion_localidad_slug) ?? [];
-                            ?>
-                            <h1>
-                                Propiedades en <?= $operacion_slug === '1' ? 'Venta' : 'Alquiler' ?> en 
-                                <?php foreach ($locations_texts as $loc): ?>
-                                    <?= $loc['location_name']; ?>
-                                <?php endforeach; ?>
-                            </h1>
-                        <?php
-                        // Si solo hay operación
-                        elseif (!empty($_GET['operacion']) && empty($_GET['localidad'])): ?>
-                            <h1>
-                                Propiedades en <?= $operacion_slug === '1' ? 'venta' : 'alquiler'; ?>
-                            </h1>
-                        <?php
-                        // Si no hay ningún filtro
-                        elseif (empty($_GET)): ?>
-                            <h1>Todas las propiedades disponibles</h1>
-                        <?php else: ?>
-                            <h1>Todas las propiedades disponibles</h1>
-                        <?php endif; ?>
+                        <?php render_property_title($_GET, $ubicacion_localidad_slug, $barrios, $type_property_slug, $dataFilter);?>
                         <?php else: ?>
                             <h1></h1>
                     <?php endif; ?>
@@ -417,18 +390,30 @@ $barrios = get_field('barrios', 'options') ?? [];
                                     $name = $property['name'] ?? '';
                                     $image = $property['photos'][0]['image'] ?? '';
                                     $location = get_full_location($property['location']['full_location']);
-                                    $currency_price = $property['operations'][0]['prices'][0]['currency'];
+                                    $operation_order = $property['operations'];
+
+                                    usort($operation_order, function ($a, $b) {
+                                        return $a['operation_id'] <=> $b['operation_id'];
+                                    });
+
+                                   
+                           
+                                    $currency_price = $operation_order[0]['prices'][0]['currency'];
                                     if(count($property['operations']) === 2){
+                                   
                                         if($operacion_slug === '2'){
-                                            $price = $property['operations'][1]['prices'][0]['price'];
-                                            $operation_type = $property['operations'][1]['operation_type'];
+                                            $price = $operation_order[1]['prices'][0]['price'];
+                                            $operation_type = $operation_order[1]['operation_type'];
+
                                         }else{
-                                            $price = $property['operations'][0]['prices'][0]['price'];
-                                            $operation_type = $property['operations'][0]['operation_type'];
+                                            
+                                            $price = $operation_order[0]['prices'][0]['price'];
+                                            $operation_type = $operation_order[0]['operation_type'];
+                                            
                                         }
                                     }else{
-                                        $price = $property['operations'][0]['prices'][0]['price'];
-                                        $operation_type = $property['operations'][0]['operation_type'];
+                                        $price = $operation_order[0]['prices'][0]['price'];
+                                        $operation_type = $operation_order[0]['operation_type'];
                                     }
                                     $total_price = render_price_format($price, $currency_price);
                                     $type_property = $property['type']['name'];
@@ -443,53 +428,29 @@ $barrios = get_field('barrios', 'options') ?? [];
                                         title="<?php echo $operation_type;?> / <?php echo $type_property;?> -  <?php echo $total_price;?>  - <?php echo  $address;?> - <?php echo $location;?>"
                                         target="_blank">
                                         <div class="image">
-
                                             <button type="button" class="favorite">
-
                                                 <?php render_svg(SVG . '/icon-favorite.svg'); ?>
-
                                             </button>
-
                                             <img src="<?php echo $image;?>" alt="<?php echo $name;?>" width="100%" height="100%"
-
                                                 loading="lazy">
-
                                             <div class="price">
-
                                                 <p class="type"><?php echo $operation_type;?> / <?php echo $type_property;?></p>
-
                                                 <p class="amount"><?php echo $total_price;?></p>
-
                                             </div>
-
                                         </div>
-
                                         <div class="body">
-
                                             <div class="location">
-
                                                 <p class="name"><?php echo  $address;?></p>
-
                                                 <p class="district"><?php echo $location;?></p>
-
                                             </div>
-
                                             <div class="specs">
-
                                                 <p class="total"><?php echo $total_surface;?></p>
-
                                                 <p class="bathroom_amount"><?php echo $bathroom_amount;?></p>
-
                                                 <p>M<sup>2</sup></p>
-
                                                 <p>Baños</p>
-
                                             </div>
-
                                         </div>
-
                                     </a>
-
                                 </div>
                                 <?php endforeach; ?>
                              </div>

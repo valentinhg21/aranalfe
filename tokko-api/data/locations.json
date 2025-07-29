@@ -1,20 +1,6 @@
 [
     {
-        "count": 1,
-        "location_id": 24673,
-        "location_name": "Almagro",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
-    },
-    {
-        "count": 1,
-        "location_id": 24676,
-        "location_name": "Balvanera",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
-    },
-    {
-        "count": 13,
+        "count": 12,
         "location_id": 24677,
         "location_name": "Barracas",
         "parent_id": 146,
@@ -28,7 +14,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 30,
+        "count": 29,
         "location_id": 24682,
         "location_name": "Belgrano",
         "parent_id": 146,
@@ -56,7 +42,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 3,
+        "count": 4,
         "location_id": 24708,
         "location_name": "Congreso",
         "parent_id": 146,
@@ -105,6 +91,13 @@
         "parent_name": "Palermo"
     },
     {
+        "count": 1,
+        "location_id": 24733,
+        "location_name": "Palermo Soho",
+        "parent_id": 24728,
+        "parent_name": "Palermo"
+    },
+    {
         "count": 16,
         "location_id": 24701,
         "location_name": "Puerto Madero",
@@ -119,7 +112,7 @@
         "parent_name": "Maldonado"
     },
     {
-        "count": 19,
+        "count": 21,
         "location_id": 24681,
         "location_name": "Recoleta",
         "parent_id": 146,
@@ -187,5 +180,12 @@
         "location_name": "Villa Santos Tesei",
         "parent_id": 25973,
         "parent_name": "Hurlingham"
+    },
+    {
+        "count": 1,
+        "location_id": 24753,
+        "location_name": "Villa Urquiza",
+        "parent_id": 146,
+        "parent_name": "Capital Federal"
     }
 ]

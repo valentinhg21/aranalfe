@@ -19,6 +19,27 @@
             "layout": "row",
             "sub_fields": [
                 {
+                    "key": "field_68891ea6811b6",
+                    "label": "Ocultar",
+                    "name": "ocultar",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Ocultar sección.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "Si",
+                    "ui_off_text": "No",
+                    "ui": 1
+                },
+                {
                     "key": "field_685d5d1e2a120",
                     "label": "Texto",
                     "name": "texto",
@@ -104,6 +125,27 @@
             },
             "layout": "row",
             "sub_fields": [
+                {
+                    "key": "field_68891ebb8dc52",
+                    "label": "Ocultar",
+                    "name": "ocultar",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Ocultar sección.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "Si",
+                    "ui_off_text": "No",
+                    "ui": 1
+                },
                 {
                     "key": "field_687ea0385d2ac",
                     "label": "Titulo",
@@ -253,6 +295,27 @@
             "layout": "row",
             "sub_fields": [
                 {
+                    "key": "field_68891ecdb5c78",
+                    "label": "Ocultar",
+                    "name": "ocultar",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Ocultar sección.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "Si",
+                    "ui_off_text": "No",
+                    "ui": 1
+                },
+                {
                     "key": "field_6823a824747e9",
                     "label": "Titulo",
                     "name": "titulo",
@@ -291,6 +354,27 @@
             },
             "layout": "row",
             "sub_fields": [
+                {
+                    "key": "field_68891f36252ac",
+                    "label": "Ocultar",
+                    "name": "ocultar",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Ocultar sección.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "Si",
+                    "ui_off_text": "No",
+                    "ui": 1
+                },
                 {
                     "key": "field_687e6c1ff46df",
                     "label": "Titulo",
@@ -347,6 +431,27 @@
             },
             "layout": "row",
             "sub_fields": [
+                {
+                    "key": "field_68891edf2b40e",
+                    "label": "Ocultar",
+                    "name": "ocultar",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Ocultar sección.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "Si",
+                    "ui_off_text": "No",
+                    "ui": 1
+                },
                 {
                     "key": "field_6823a86d747ef",
                     "label": "Titulo",
@@ -686,5 +791,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1753129939
+    "modified": 1753816899
 }

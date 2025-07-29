@@ -149,75 +149,106 @@ export const mapPropertys = () => {
     })
   }
 
-  // SELECT
-  const location = document.getElementById('location-input');
-  const searchSubmit = document.getElementById('search-location')
-  if (location) {
-    // 1. Extraer los location_id desde locations_data
+  // SELECT - inicializar TomSelect en todos los location-input
+  const locationInputs = document.querySelectorAll('.location-input');
+
+  if (locationInputs.length) {
+    // Mostrar los optgroups disponibles (debug)
+    const optgroupDebug = [...new Set(locations_theme.map(loc => loc.parent_name))];
+    console.log('Optgroups detectados:', optgroupDebug);
+
+    // 1. Extraer location_ids
     const location_ids = locations_data.map(loc => String(loc.location_id));
 
-
-    // 2. Filtrar locations_theme según esos IDs
-    const filteredOptions = locations_theme
-      .filter(loc => location_ids.includes(String(loc.id))) // forzamos a string por si acaso
-      .map(loc => ({
-        value: loc.id,
-        text: loc.name,
-        optgroup: loc.parent_name
-      }));
-
-    // 3. Armar optgroups únicos desde los parent_name usados
-    const optgroups = [...new Set(filteredOptions.map(opt => opt.optgroup))].map(name => ({
+    // 2. Forzar orden de optgroups según datos reales
+    const optgroupNames = ['Capital Federal', 'Provincia de BsAs']; // asegurate que coincidan
+    const optgroups = optgroupNames.map(name => ({
       value: name,
       label: name
     }));
 
+    // 3. Opciones "Todos"
+    const extraOptions = [
+      {
+        value: 'all_capital',
+        text: 'Todos Capital Federal',
+        optgroup: 'Capital Federal'
+      },
+      {
+        value: 'all_provincia',
+        text: 'Todos Provincia de BsAs',
+        optgroup: 'Provincia de BsAs'
+      }
+    ];
 
+    // 4. Opciones normales
+    const filteredOptions = [
+      ...extraOptions,
+      ...locations_theme.map(loc => ({
+        value: loc.id,
+        text: loc.name,
+        optgroup: loc.parent_name
+      }))
+    ];
 
-
-
-    // 4. Inicializar Tom Select
-    const settings = {
-      plugins: ['remove_button'],
-      persist: false,
-      create: false,
-      maxItems: null,
-      options: filteredOptions,
-      optgroups: optgroups,
-      optgroupField: 'optgroup'
-    };
-
-    new TomSelect(location, settings);
+    // 5. Inicializar TomSelect
+    locationInputs.forEach(location => {
+      const settings = {
+        plugins: ['remove_button'],
+        persist: false,
+        create: false,
+        maxItems: null,
+        options: filteredOptions,
+        optgroups: optgroups,
+        optgroupField: 'optgroup'
+      };
+      new TomSelect(location, settings);
+    });
   }
 
-if (searchSubmit) {
-  searchSubmit.addEventListener('click', e => {
-    e.preventDefault();
+  // Botones buscar (search-location)
+  const searchButtons = document.querySelectorAll('.search-location');
 
-    const items = document.querySelectorAll('.item');
-    const currentParams = new URLSearchParams(window.location.search);
+  searchButtons.forEach(searchSubmit => {
+    searchSubmit.addEventListener('click', e => {
+      e.preventDefault();
 
-    // 🔁 Eliminar todos los localidad[] existentes
-    [...currentParams.keys()].forEach(key => {
-      if (key === 'localidad[]') currentParams.delete(key);
+      const form = searchSubmit.closest('form') || document;
+      const items = form.querySelectorAll('.item');
+      const currentParams = new URLSearchParams(window.location.search);
+
+      // Eliminar localidad[]
+      currentParams.delete('localidad[]');
+
+      if (items.length > 0) {
+        items.forEach(item => {
+          const val = item.dataset.value;
+          console.log('Valor seleccionado:', val);
+
+          if (val === 'all_capital') {
+            const capitalItems = locations_theme.filter(loc => loc.parent_name === 'Capital Federal');
+            console.log('Barrios de Capital:', capitalItems);
+            capitalItems.forEach(loc => currentParams.append('localidad[]', loc.id));
+          } else if (val === 'all_provincia') {
+            const provinciaItems = locations_theme.filter(loc => loc.parent_name === 'Provincia de BsAs');
+            console.log('Barrios de Provincia:', provinciaItems);
+            provinciaItems.forEach(loc => currentParams.append('localidad[]', loc.id));
+          } else {
+            currentParams.append('localidad[]', val);
+          }
+        });
+      }
+
+      // Base URL
+      const origin = window.location.origin;
+      let baseURL = `${origin}/propiedades`;
+      if (origin === "https://test.zetenta.com") {
+        baseURL = `${origin}/aranalfe/propiedades`;
+      }
+
+      const finalURL = `${baseURL}/?${currentParams.toString()}`;
+      console.log('Redireccionando a:', finalURL);
+      window.location.href = finalURL;
     });
-
-    // ✅ Agregar nuevas localidades seleccionadas
-    if (items.length > 0) {
-      items.forEach(item => {
-        currentParams.append("localidad[]", item.dataset.value);
-      });
-    }
-
-    // 🌐 Definir baseURL
-    const origin = window.location.origin;
-    let baseURL = `${origin}/propiedades`;
-    if (origin === "https://test.zetenta.com") {
-      baseURL = `${origin}/aranalfe/propiedades`;
-    }
-
-    const finalURL = `${baseURL}/?${currentParams.toString()}`;
-    window.open(finalURL, "_self");
   });
-}
 };

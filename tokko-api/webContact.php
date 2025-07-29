@@ -65,7 +65,6 @@ function sendTokkoWebContact(array $contactData, string $apiKey): ?array {
 
 function saveDataGoogleSheet(array $data, string $url): ?string {
     $curl = curl_init();
-
     curl_setopt_array($curl, [
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,

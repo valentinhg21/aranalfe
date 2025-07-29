@@ -17,7 +17,7 @@
         'with_tags' => []
         ]
     ];
-    $propertys = get_all_property_by_filter($params, 3, 0, 'created_at', 'DESC');
+    $propertys = get_all_property_by_filter($params, 4, 0, 'created_at', 'DESC');
 
 ?>
 
@@ -33,12 +33,13 @@
             <?php
 
                 $imagen_mobile = get_sub_field( 'imagen' )['url'] ?? $portada_img; 
-
+                $ocultar = get_sub_field( 'ocultar' );
+                $class = $ocultar ? 'd-none' : '';
             ?> 
 
 
 
-                <section class="hero" 
+                <section class="hero <?php echo $class?>" 
 
                 data-image-desktop="<?php echo esc_url( $portada_img ); ?>" 
 
@@ -76,8 +77,22 @@
     <?php if ( have_rows( 'categorias_destacadas' ) ) : ?>
             <?php while ( have_rows( 'categorias_destacadas' ) ) :
                     the_row(); ?>
-            <section class="category-featured">
+            <?php $ocultar = get_sub_field( 'ocultar' );
+                $class = $ocultar ? 'd-none' : ''; ?>
+            <section class="category-featured <?php echo $class;?>">
                 <div class="container">
+                    <?php  $titulo = get_sub_field('titulo'); ?>
+                    <?php  $link = get_sub_field( 'cta' ); ?>
+                    <div class="header-title">
+                        <?php insert_acf($titulo, 'h2'); ?>
+                        <?php if($link): ?>
+                        <div class="button__container d-flex-md d-none">
+                            <a href="<?php echo esc_url($link['url']); ?>" class="btn btn-red-outline" title="Ver mas">
+                                Ver todos
+                            </a>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="row">
                         <?php if ( have_rows( 'categoria' ) ) : ?>
                             <?php while ( have_rows( 'categoria' ) ) :
@@ -88,7 +103,7 @@
                                     $url_parametros = get_sub_field( 'link' );
                                 ?>
 
-                                <div class="col-sm-4 col-6">
+                                <div class="col-sm-4 col-xs-6 col-12">
                                     <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Aguilar Point" target="_blank"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
@@ -101,6 +116,13 @@
                             <?php endwhile; ?>
                         <?php endif; ?>
                     </div>
+                    <div class="button__container d-none-md d-flex justify-center align-items-center mt-4">
+                        <?php if($link ): ?>
+                            <a href="<?php echo esc_url($link['url']); ?>" class="btn btn-red-outline" title="Ver todas las propiedades">
+                                Ver todos
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </section>
             <?php endwhile; ?>
@@ -108,7 +130,9 @@
     <?php if ( have_rows( 'emprendimientos' ) ) : ?>
         <?php while ( have_rows( 'emprendimientos' ) ) :
         the_row(); ?>
-            <section class="developments-feature d-none">
+            <?php $ocultar = get_sub_field( 'ocultar' );
+                $class = $ocultar ? 'd-none' : ''; ?>
+            <section class="developments-feature <?php echo $class;?>">
                 <div class="container">
                     <?php  $titulo = get_sub_field('titulo'); ?>
                     <div class="header-title">
@@ -161,7 +185,9 @@
     <?php if ( have_rows( 'propiedades_destacadas' ) ) : ?>
         <?php while ( have_rows( 'propiedades_destacadas' ) ) :
         the_row(); ?>
-            <section class="property-feature">
+            <?php $ocultar = get_sub_field( 'ocultar' );
+                $class = $ocultar ? 'd-none' : ''; ?>
+            <section class="property-feature <?php echo $class;?>">
                 <div class="container">
                     <?php  $titulo = get_sub_field('titulo'); ?>
                     <?php  $link = get_sub_field( 'cta' ); ?>
@@ -203,7 +229,7 @@
                                     $permalink = return_url() . '/propiedad/' . slugify($address) . '/' . $property['id'];
                                     $created_at = $property['created_at'];
                                 ?>
-                                <div class="col-xxl-4 col-md-4 col-sm-4 col-12"  data-date = "<?php echo $created_at;?>" data-fetaure="<?php echo $feature;?>">
+                                <div class="col-xxl-3 col-md-4 col-xs-6 col-12"  data-date = "<?php echo $created_at;?>" data-fetaure="<?php echo $feature;?>">
                                     <a  class="card-property" href="<?php echo $permalink?>"
                                         title="<?php echo $operation_type;?> / <?php echo $type_property;?> -  <?php echo $total_price;?>  - <?php echo  $address;?> - <?php echo $location;?>"
                                         target="_blank">
@@ -272,7 +298,9 @@
     <?php if ( have_rows( 'propiedades' ) ) : ?>
         <?php while ( have_rows( 'propiedades' ) ) :
         the_row(); ?>
-            <section class="property">
+            <?php $ocultar = get_sub_field( 'ocultar' );
+                $class = $ocultar ? 'd-none' : ''; ?>
+            <section class="property <?php echo $class;?>">
                 <div class="container">
                     <?php  $titulo = get_sub_field('titulo'); ?>
                     <div class="header-title">
@@ -295,7 +323,7 @@
                                 ?>
 
                                 <div class="col-sm-4 col-6">
-                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Aguilar Point" target="_blank"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category-property" title="Aguilar Point" target="_blank"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
                                         </div>

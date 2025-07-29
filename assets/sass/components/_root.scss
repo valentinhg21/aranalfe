@@ -228,6 +228,10 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 4rem;
+  @include media(md){
+  
+  }
 }
 
 .whatsapp-btn {
@@ -263,4 +267,40 @@ textarea {
   color: $black;
   font-size: 12px !important;
   margin-top: 8px !important;
+}
+
+.filter-wrap{
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  @include media(md){
+    margin-top: 20px;
+    gap: 10px;
+  }
+  .filter-tag{
+    background: $red;
+    font-size: 12px;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    border: 1px solid $red;
+    transition: $fast;
+    &:hover{
+      background: $white;
+  
+      color: $red;
+    }
+  }
+  .label-filter{
+    color: $red;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    
+    @include media-down(md){
+      margin-top: 4px;
+    }
+  }
 }
