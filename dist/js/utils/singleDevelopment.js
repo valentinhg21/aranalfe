@@ -107,6 +107,62 @@ export const singleDevelopment = () => {
     })
   }
 
+  const section_five = document.querySelector('.section-5');
+  if(section_five){
+      const selectContainer = document.querySelector('.select-unidades');
+  const input = document.getElementById('select-unidades-input');
+  const listSelect = selectContainer.querySelector('.list-select');
+  const options = listSelect.querySelectorAll('li.options-list-select p');
+
+  // Abrir/cerrar lista al click en input o icono
+  selectContainer.querySelector('.field-container-input__icon').addEventListener('click', toggleList);
+  input.addEventListener('click', toggleList);
+
+  function toggleList() {
+    listSelect.classList.toggle('open');
+  }
+
+  // Seteo inicial del input
+  input.value = 'Ver todos';
+
+  // Al seleccionar una opción
+  options.forEach(option => {
+    option.addEventListener('click', () => {
+      const panelId = option.getAttribute('data-panel');
+      const text = option.textContent.trim();
+
+      // Actualiza input
+      input.value = text;
+
+      // Cierra la lista
+      listSelect.classList.remove('open');
+
+      // Cambia tab activa
+      activarTab(panelId);
+    });
+  });
+
+  function activarTab(id) {
+    // Tabs buttons
+    document.querySelectorAll('.tabs-nav .btn-unidad').forEach(btn => {
+      const p = btn.querySelector('p');
+      if (p.getAttribute('data-panel') === id) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Tabs content
+    document.querySelectorAll('.tab.tab-panel').forEach(tab => {
+      if (tab.id === id) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+  }
+  }
  
 
 };

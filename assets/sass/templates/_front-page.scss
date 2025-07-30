@@ -230,13 +230,13 @@
         padding-top: 18px;
       }
       .card-category {
-        height: 420px;
-        @include media(md) {
-          height: 250px;
-        }
-        @include media(xs) {
-          height: 200px;
-        }
+        // height: 420px;
+        // @include media(md) {
+        //   height: 250px;
+        // }
+        // @include media(xs) {
+        //   height: 200px;
+        // }
         .image {
           display: flex;
           width: 100%;

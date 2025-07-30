@@ -104,7 +104,7 @@
                                 ?>
 
                                 <div class="col-sm-4 col-xs-6 col-12">
-                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Aguilar Point" target="_blank"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Ver categoria <?php echo $title;?>" target="_blank"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
                                         </div>
@@ -323,7 +323,7 @@
                                 ?>
 
                                 <div class="col-sm-4 col-6">
-                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category-property" title="Aguilar Point" target="_blank"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category-property" title="Ver categoria <?php echo $title;?>" target="_blank"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
                                         </div>

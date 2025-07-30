@@ -511,228 +511,158 @@ if ( get_field( 'activar' ) ){
 
     <?php if($unidades['meta']['total_count'] > 0): ?>
 
-    <section class="section-5">
+        <section class="section-5">
+            <div class="container">
+                <div class="d-flex flex-column align-items-center justify-between w-100">
 
-        <div class="container">
+                    <?php
+                        $unidades_flat = $unidades['objects'] ?? [];
+                        $unidades_por_ambiente = [];
 
-            <div class="d-flex flex-column align-items-center justify-between w-100">
+                        foreach ($unidades_flat as $unidad) {
+                            $ambientes = (int)($unidad['room_amount'] ?? 0);
+                            $unidades_por_ambiente[$ambientes][] = $unidad;
+                        }
 
-                <?php 
+                        ksort($unidades_por_ambiente);
+                        $todas_las_unidades = array_merge(...array_values($unidades_por_ambiente));
+                    ?>
 
+                    <div class="header-section-5 d-flex justify-between w-100 align-items-center w-100">
+                        <h2>Unidades disponibles</h2>
 
-
-                    $unidades_flat = $unidades['objects'] ?? [];
-
-
-
-                    $unidades_por_ambiente = [];
-
-
-
-                    foreach ($unidades_flat as $unidad) {
-
-                        $ambientes = (int)($unidad['room_amount'] ?? 0); // accede correctamente
-
-                        $unidades_por_ambiente[$ambientes][] = $unidad;
-
-                    }
-
-
-
-                    ksort($unidades_por_ambiente); // ordena de menor a mayor
-
-
-
-
-
-                   
-
-                ?>
-
-                <div class="header-section-5 d-flex justify-between w-100 align-items-center w-100">
-
-                    <h2>Unidades disponibles</h2>
-
-                    <!-- TABS: encabezado -->
-
-                    <div class="tabs-nav d-none d-flex-md align-items-center justify-between">
-
-                        <?php $i = 0; foreach ($unidades_por_ambiente as $ambientes => $grupo): ?>
-
-                        
-
-                            <div class="btn-unidad <?= $i === 0 ? 'active' : '' ?>">
-
-                                <p data-panel="tab-<?= $ambientes ?>">
-
-                                    <?= $ambientes === 0 ? 'Sin info' : $ambientes . ' ambiente' . ($ambientes > 1 ? 's' : '') ?>
-
-                                </p>
-
+                        <!-- TABS: encabezado -->
+                        <div class="tabs-nav d-none d-flex-md align-items-center justify-between">
+                            <div class="btn-unidad active">
+                                <p data-panel="tab-todos">Ver todos</p>
                             </div>
-
                             <div class="hr"></div>
 
-                        <?php $i++; endforeach; ?>
-
+                            <?php foreach ($unidades_por_ambiente as $ambientes => $grupo): ?>
+                                <div class="btn-unidad">
+                                    <p data-panel="tab-<?= $ambientes ?>">
+                                        <?= $ambientes === 0 ? 'Sin info' : $ambientes . ' ambiente' . ($ambientes > 1 ? 's' : '') ?>
+                                    </p>
+                                </div>
+                                <div class="hr"></div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
 
-                </div>
+                    <!-- Dropdown para mobile -->
+                    <div class="tabs-dropdown d-block d-none-md">
+                        <div class="select-unidades">
+                            <div class="field-container-input__icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <input type="text" readonly value="" id="select-unidades-input">
 
-                <!-- Dropdown para mobile -->
-
-                <div class="tabs-dropdown d-block d-none-md">
-
-                    <div class="select-container select-panel select-simple-list">
-
-                        <div class="field-container-input__icon">
-
-                            <i class="fa-solid fa-chevron-down"></i>
-
-                        </div>
-
-                        <input type="text" readonly value="" id="select-panel" data-type="input-select">
-
-                        <div class="list-select">
-
-                           <ul>
-
-                                <?php foreach ($unidades_por_ambiente as $ambientes => $grupo): ?>
-
-                  
-
+                            <div class="list-select">
+                                <ul>
                                     <li class="options-list-select btn-unidad">
-
-                                        <p data-panel="tab-<?php echo $ambientes?>"><?php echo $ambientes?> Ambientes</p>
-
+                                        <p data-panel="tab-todos">Ver todos</p>
                                     </li>
-
-                                <?php endforeach; ?>
-
-
-
-    
-
-                            </ul>
-
+                                    <?php foreach ($unidades_por_ambiente as $ambientes => $grupo): ?>
+                                        <li class="options-list-select btn-unidad">
+                                            <p data-panel="tab-<?= $ambientes ?>">
+                                                <?= $ambientes === 0 ? 'Sin info' : $ambientes . ' ambientes' ?>
+                                            </p>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
-
             </div>
 
-        </div>
+            <!-- TABS: contenido -->
+            <div class="tabs-content w-100">
 
-                <!-- TABS: contenido -->
-
-                <div class="tabs-content w-100">
-
-                    <?php $i = 1; foreach ($unidades_por_ambiente as $rooms => $grupo): ?>
-
-                        
-
-                        <div  id="tab-<?= $rooms ?>" class="tab tab-panel <?= $i === 1 ? ' active' : '' ?>">
-
-                            <div class="tabla">
-
-                                <div class="tabla-header">
-
-                                    <div class="col">Piso</div>
-
-                                    <div class="col d-none d-block-md">Ambientes</div>
-
-                                    <div class="col d-none-md d-block">Amb.</div>
-
-                                    <div class="col d-none d-block-md">Sup. Interior</div>
-
-                                    <div class="col">Sup. Total</div>
-
-                                    <div class="col">Precio</div>
-
-                                    <div class="col d-none-md acc">ACC</div>
-
-                                </div>
-
-                                <?php foreach ($grupo as $unidad): ?>
-
-                                    <div class="tabla-row">
-
-                                        <?php 
-
-                                            $currency_price = $unidad['operations'][0]['prices'][0]['currency'];
-
-                                            $price = $unidad['operations'][0]['prices'][0]['price']; 
-
-                                            $total_price = render_price_format($price, $currency_price);
-
-                                            $address = $unidad['address'];
-                                            $permalink = return_url() . '/propiedad/' .  slugify($address) . '/' . $unidad['id'];
-
-                                            $real_adress = $unidad['real_address'];
-
-                                            $floor = extractFloorIdentifier($real_adress);
-
-                                       
-
-                                        ?>
-
-                                        <div class="col"><?= $floor ?? '—' ?>&#176;</div>
-
-                                        <div class="col "><?= $unidad['room_amount'] ?? '—' ?></div>
-
-                                        <div class="col d-none d-block-md"><?= $unidad['roofed_surface'] ?? '—' ?> m²</div>
-
-                                        <div class="col"><?= $unidad['total_surface'] ?? '—' ?> m²</div>
-
-                                        <div class="col">
-
-                                            <?php
-
-                                                if (!empty($unidad['web_price'])) {
-
-                                                    echo $total_price;
-
-                                                } else {
-
-                                                    echo 'Consultar';
-
-                                                }
-
-                                            ?>
-
-                                        </div>
-
-                                        <div class="col d-none d-block-md">
-
-                                            <a href="<?php echo $permalink?>" target="_blank" class="btn btn-black-white">Ver</a>
-
-                                        </div>
-
-                                        <div class="col d-none-md d-block">
-
-                                            <a href="<?php echo $permalink?>" target="_blank" class="btn btn-black-white"><i class="fa-solid fa-plus"></i></a>
-
-                                        </div>
-
-                                    </div>
-
-                                <?php endforeach; ?>
-
-                            </div>
-
+                <!-- TAB TODOS -->
+                <div id="tab-todos" class="tab tab-panel active">
+                    <div class="tabla">
+                        <div class="tabla-header">
+                            <div class="col">Piso</div>
+                            <div class="col d-none d-block-md">Ambientes</div>
+                            <div class="col d-none-md d-block">Amb.</div>
+                            <div class="col d-none d-block-md">Sup. Interior</div>
+                            <div class="col">Sup. Total</div>
+                            <div class="col">Precio</div>
+                            <div class="col d-none-md acc">ACC</div>
                         </div>
 
-                    <?php $i++; endforeach; ?>
-
+                        <?php foreach ($todas_las_unidades as $unidad): ?>
+                            <?php
+                                $currency_price = $unidad['operations'][0]['prices'][0]['currency'];
+                                $price = $unidad['operations'][0]['prices'][0]['price'];
+                                $total_price = render_price_format($price, $currency_price);
+                                $address = $unidad['address'];
+                                $permalink = return_url() . '/propiedad/' . slugify($address) . '/' . $unidad['id'];
+                                $real_adress = $unidad['real_address'];
+                                $floor = extractFloorIdentifier($real_adress);
+                            ?>
+                            <div class="tabla-row">
+                                <div class="col"><?= $floor ?? '—' ?>&#176;</div>
+                                <div class="col"><?= $unidad['room_amount'] ?? '—' ?></div>
+                                <div class="col d-none d-block-md"><?= $unidad['roofed_surface'] ?? '—' ?> m²</div>
+                                <div class="col"><?= $unidad['total_surface'] ?? '—' ?> m²</div>
+                                <div class="col"><?= !empty($unidad['web_price']) ? $total_price : 'Consultar' ?></div>
+                                <div class="col d-none d-block-md">
+                                    <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white">Ver</a>
+                                </div>
+                                <div class="col d-none-md d-block">
+                                    <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white"><i class="fa-solid fa-plus"></i></a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
-            
+                <!-- TABS POR AMBIENTES -->
+                <?php foreach ($unidades_por_ambiente as $rooms => $grupo): ?>
+                    <div id="tab-<?= $rooms ?>" class="tab tab-panel">
+                        <div class="tabla">
+                            <div class="tabla-header">
+                                <div class="col">Piso</div>
+                                <div class="col d-none d-block-md">Ambientes</div>
+                                <div class="col d-none-md d-block">Amb.</div>
+                                <div class="col d-none d-block-md">Sup. Interior</div>
+                                <div class="col">Sup. Total</div>
+                                <div class="col">Precio</div>
+                                <div class="col d-none-md acc">ACC</div>
+                            </div>
 
-      
-
-    </section>
+                            <?php foreach ($grupo as $unidad): ?>
+                                <?php
+                                    $currency_price = $unidad['operations'][0]['prices'][0]['currency'];
+                                    $price = $unidad['operations'][0]['prices'][0]['price'];
+                                    $total_price = render_price_format($price, $currency_price);
+                                    $address = $unidad['address'];
+                                    $permalink = return_url() . '/propiedad/' . slugify($address) . '/' . $unidad['id'];
+                                    $real_adress = $unidad['real_address'];
+                                    $floor = extractFloorIdentifier($real_adress);
+                                ?>
+                                <div class="tabla-row">
+                                    <div class="col"><?= $floor ?? '—' ?>&#176;</div>
+                                    <div class="col"><?= $unidad['room_amount'] ?? '—' ?></div>
+                                    <div class="col d-none d-block-md"><?= $unidad['roofed_surface'] ?? '—' ?> m²</div>
+                                    <div class="col"><?= $unidad['total_surface'] ?? '—' ?> m²</div>
+                                    <div class="col"><?= !empty($unidad['web_price']) ? $total_price : 'Consultar' ?></div>
+                                    <div class="col d-none d-block-md">
+                                        <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white">Ver</a>
+                                    </div>
+                                    <div class="col d-none-md d-block">
+                                        <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white"><i class="fa-solid fa-plus"></i></a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
 
     <?php endif; ?>       
 
