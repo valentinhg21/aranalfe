@@ -1,0 +1,46 @@
+{
+  "package-name": "template-html-base",
+  "version": "1.0.0",
+  "description": "Plantilla base para maquetar",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: nmo test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "valentin",
+  "license": "ISC",
+  "dependencies": {
+    "@valentinhg21/template": "^1.0.0",
+    "browser-sync": "^2.27.11",
+    "copy-dir": "^1.3.0",
+    "countup.js": "^2.8.0",
+    "gsap": "^3.11.4",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-mode": "^1.1.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-string-replace": "^1.1.2",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-webp": "^4.0.1",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^9.0.2",
+    "mozjpeg": "^8.0.0",
+    "sas": "^3.0.4",
+    "sass": "^1.57.1",
+    "swiper": "^9.3.2",
+    "uglify": "^0.1.5",
+    "vanilla-rangeslider": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp-file": "^0.4.0",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-prompt": "^1.2.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.1.4",
+    "through2": "^4.0.2"
+  },
+  "name": "template-html-base"
+}

@@ -1,0 +1,39 @@
+// Media
+@import './components/media';
+@import './components/flexbox';
+@import './components/grid';
+@import './components/colors';
+@import './variables/variables';
+@import './components/root';
+
+
+
+// COMPONENTS
+@import './components/positions';
+@import './components/spacing';
+@import './components/buttons';
+@import './components/animations';
+@import './components/hamburguer';
+@import './components/tinymce';
+@import './components/form';
+@import './components/form-parts';
+@import './components/card';
+@import './components/filtros';
+// LAYOUT
+@import './layout/header';
+@import './layout/footer';
+
+
+// Blocks
+
+
+// TEMPLATES
+@import './templates/single';
+@import './templates/front-page';
+@import './templates/single-properties';
+@import './templates/single-detail-property';
+@import './templates/nosotros';
+@import './templates/tasaciones';
+@import './templates/contacto';
+@import './templates/emprendimientos';
+@import './templates/emprendimiento';

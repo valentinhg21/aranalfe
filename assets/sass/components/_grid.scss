@@ -1,0 +1,73 @@
+
+$grid-columns: 12;
+$grid-gutter:1.5em;
+
+
+    .container{
+      max-width: 1366px;
+      width: 100%;
+      margin: 0 auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      @include media(sm){
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+    }
+    .container-fluid {
+
+      width: 100%;
+      margin: 0 auto;
+
+      @include media(sm){
+        width: 100%;
+
+      }
+    }
+
+    .row{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat($grid-columns, 1fr);
+      grid-gap: $grid-gutter;
+    }
+    
+    .w-100{
+      width: 100%;
+    }
+    
+      .grid-4{
+      display: grid;
+      grid-template-columns: repeat(4, 4fr);
+      @include media(md){
+        grid-template-columns: repeat(1, 1fr);
+      }
+
+    }  
+    
+    @mixin create-mq($breakpoint) {
+      @if ($breakpoint == 0) {
+        @content;
+      } @else {
+        @media screen and (min-width: $breakpoint) {
+          @content;
+        }
+      }
+    }
+    
+    @mixin create-col-classes($modifier, $grid-cols, $breakpoint) {
+      @include create-mq($breakpoint) {
+        @for $i from 1 through $grid-columns {
+          .col#{$modifier}-#{$i} {
+            grid-column: span ($i);
+          }
+        }
+      }
+    }
+    
+    @each $modifier , $breakpoint in $map-grid-props {
+        @include create-col-classes($modifier, $grid-columns, $breakpoint);
+    }
+

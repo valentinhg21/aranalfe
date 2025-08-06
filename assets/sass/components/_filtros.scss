@@ -1,0 +1,135 @@
+.filter {
+  > p {
+    color: $black-filtro;
+    * {
+      color: $black-filtro;
+    }
+  }
+
+  .dormitorios,
+  .ambientes {
+    flex-direction: row !important;
+    gap: 1rem !important;
+    li {
+      label {
+        .checkmark {
+          display: none;
+        }
+        a {
+          width: 40px;
+          height: 40px;
+          border: 1px solid #bebebe;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &:hover {
+            background: $red;
+
+            color: $white !important;
+            border: 1px solid $red;
+          }
+        }
+
+        &.checked {
+          a {
+            color: $white !important;
+            background: $red;
+            border: 1px solid $red;
+          }
+        }
+      }
+    }
+  }
+
+  &.filter-price,
+  &.filter-sup {
+    form {
+      .input-min-max {
+        display: flex;
+        label {
+          font-size: 12px;
+          color: #bebebe;
+        }
+        input {
+          border: 1px solid #bebebe;
+          height: 34px;
+          width: 100%;
+          border-radius: 6px;
+          outline: none;
+          color: #bebebe;
+          padding: 0 1rem;
+        }
+      }
+      .currency-price {
+        display: flex;
+        gap: 10px;
+        margin: 10px 0 0 0;
+        label {
+          background: transparent;
+          border: 1px solid #bebebe;
+          border-radius: 12px;
+          font-size: 14px;
+          width: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 26px;
+          position: relative;
+          color: #bebebe;
+          cursor: pointer;
+          input {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+            visibility: hidden;
+          }
+          transition: $fast;
+          &:hover {
+            background: $red;
+            border: 1px solid $red;
+            color: $white;
+          }
+          &.checked {
+            background: $red;
+            border: 1px solid $red;
+            color: $white;
+          }
+        }
+
+      }
+      button {
+        margin-top: 10px;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+        color: $red;
+        border: 1px solid $red;
+        background: transparent;
+        font-weight: bold;
+        cursor: pointer;
+        transition: $fast;
+        outline: none;
+        &:hover {
+          background: $red;
+          color: $white;
+        }
+      }
+
+      .separator {
+          width: 34px;
+   
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          span{
+           color: $black-light;
+           font-weight: bold;
+           position: absolute;
+               top: 24px;
+          }
+      }
+    }
+  }
+}

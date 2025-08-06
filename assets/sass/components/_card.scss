@@ -1,0 +1,394 @@
+.card-feature {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  filter: drop-shadow(4px 4px 28px rgba(0, 0, 0, 0.08));
+  height: 100%;
+
+  position: relative;
+  transition: $slow;
+
+  .image {
+    height: 420px;
+    display: flex;
+    width: 100%;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    overflow: hidden;
+    transition: $slow;
+    picture,
+    img {
+      transition: $slow;
+      object-fit: cover;
+      // object-position: 0 35%;
+      // object-position: center;
+      @include media(xs){
+        // object-position: 0 16%;
+        // object-position: center;
+      }
+    }
+    @include media(md) {
+      height: 250px;
+    }
+    @include media(xs) {
+      height: 200px;
+    }
+  }
+  .content {
+    background: $white;
+    padding: 12px 15px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    min-height: 94px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    @include media(xs) {
+      min-height: 80px;
+    }
+    .status {
+      font-weight: bold;
+      color: $black;
+      font-size: 12px;
+      text-transform: uppercase;
+      @include media(xs) {
+        font-size: 11px;
+      }
+    }
+    .title {
+      font-weight: bold;
+      color: $red;
+      font-size: 24px;
+      @include media(xs) {
+        font-size: 18px;
+      }
+    }
+    .location {
+      font-size: 18px;
+      color: $black;
+      font-weight: 400;
+      @include media(xs) {
+        font-size: 12px;
+      }
+    }
+  }
+  @include media-down(md) {
+    &:hover {
+      transform: translateY(14px);
+      .image {
+        picture,
+        img {
+    
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+}
+
+.card-category {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 450px;
+  position: relative;
+  transition: $slow;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 4px 4px 28px rgba(0, 0, 0, 0.21);
+  @include media(sm) {
+    height: 350px;
+  }
+
+
+  .image {
+    // position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    picture,
+    img {
+      transition: $slow;
+      object-position: top;
+      object-fit: cover;
+    }
+  }
+  .content {
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    width: 100%;
+    z-index: 5;
+    padding: 20px 30px;
+    background: $white;
+    @include media(md) {
+      padding: 20px 16px;
+    }
+    @include media(xs) {
+      padding: 14px 14px;
+    }
+    .title {
+      font-weight: bold;
+      color: $red;
+      font-size: 24px;
+      @include media(xs) {
+        font-size: 18px;
+      }
+    }
+  }
+
+    @include media-down(md) {
+    &:hover {
+      transform: translateY(14px);
+      .image {
+        picture,
+        img {
+    
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+}
+
+.card-property {
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 6px;
+  background: $white;
+  box-shadow: 0px 12px 15px 4px rgba(0,0,0,0.1);
+  @include media(sm){
+  box-shadow: 0px 12px 15px 4px rgba(0,0,0,0.1);
+  }
+  .image {
+    overflow: hidden;
+    height: 240px;
+    display: flex;
+    position: relative;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    picture,
+    img {
+      object-fit: cover;
+      object-position: center;
+      transition: $fast;
+    }
+
+    .favorite {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      border: 0;
+      background: transparent;
+
+      z-index: 20;
+      cursor: pointer;
+      transition: $fast;
+      svg {
+        transition: $slow;
+        * {
+          transition: $slow;
+        }
+      }
+      &:hover {
+        svg {
+          * {
+            fill: $white;
+          }
+        }
+      }
+    }
+
+    .price {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 14px;
+      z-index: 20;
+      .amount {
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+      }
+      .type {
+        font-size: 12px;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+    }
+
+    &::before {
+      @include bg-presets();
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      @include gradient(top, 0.6);
+      z-index: 20;
+    }
+  }
+  .body {
+    background: $white;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 10px;
+    padding: 10px 14px 12px 14px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    p {
+      color: $black;
+      margin-bottom: 4px;
+    }
+    .location {
+      p:first-child {
+        font-weight: 600;
+      }
+
+      .name {
+        font-size: 14px;
+        line-height: 100%;
+        width: 148px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .district {
+        font-size: 12px;
+        width: 148px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      text-align: center;
+      column-gap: 10px;
+      p:nth-child(1),
+      p:nth-child(2) {
+        font-weight: 600;
+      }
+      sup {
+        color: $black;
+        font-size: 8px;
+      }
+      p {
+        font-size: 12px;
+      }
+      .total,
+      .bathroom_amount {
+        font-size: 12px;
+      }
+
+      p:not(.total),
+      p:not(.bathroom_amount) {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      p {
+        sup {
+          position: relative;
+          top: -6px;
+        }
+      }
+    }
+  }
+  &:hover {
+    picture,
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.card-category-property{
+    display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 270px;
+  position: relative;
+  transition: $slow;
+  overflow: hidden;
+  border-radius: 6px;
+  filter: drop-shadow(4px 4px 28px rgba(0, 0, 0, 0.08));
+  @include media(sm) {
+    height: 200px;
+  }
+  @include media(xs) {
+    height: 180px;
+  }
+  &::before {
+    @include bg-presets();
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    @include gradient(top);
+    z-index: 1;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  .image {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    picture,
+    img {
+      transition: $slow;
+      object-position: top;
+      object-fit: cover;
+    }
+  }
+  .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    padding: 20px 30px;
+   
+    @include media(md) {
+      padding: 20px 16px;
+    }
+    @include media(xs) {
+      padding: 14px 10px;
+    }
+    .title {
+      font-weight: bold;
+      color: $white;
+      font-size: 24px;
+      @include media(xs) {
+        font-size: 18px;
+      }
+    }
+  }
+  // @include media-down(md) {
+  //   &:hover {
+  //     .image {
+  //       picture,
+  //       img {
+  //         transform: scale(1.2);
+  //       }
+  //     }
+  //   }
+  // }
+    @include media-down(md) {
+    &:hover {
+      transform: translateY(14px);
+      .image {
+        picture,
+        img {
+    
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+}

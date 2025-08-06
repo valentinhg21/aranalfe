@@ -1,0 +1,79 @@
+
+.template-emprendimientos{
+
+    .section-1{
+        margin: 60px 0 ;
+        @include media(md){
+            margin: 30px 0 60px 0;
+        }
+        .h1{
+            color: black;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; 
+            @include media(md){
+                font-size: 18px;
+                display: block !important;
+            }
+            strong{
+                color: $black;
+                font-weight: bold;
+            }
+        }
+
+        select{
+            margin-top: 25px;
+                color: $black;
+                font-weight: bold;
+                width: 100%;
+                padding: 14px 10px;
+                appearance: none;
+                border-radius: 6px;
+                border: 1px solid #D8D8D8;
+                font-size: 14px;
+                i{
+                    color: $black;
+                  
+                }
+                option{
+                    color: $black;
+                }
+            }
+        .tab-buttons{
+            border: 1px solid #D0D6DD;
+            border-radius: 6px;
+            padding: 20px;
+            gap: 23px;
+            .hr{
+                width: 1px;
+                height: 20px;
+                background-color: #D0D6DD;
+                &:last-of-type{
+                    display: none;
+                }
+            }
+            button{
+                background-color: transparent;
+                color: $black;
+                border: none;
+                cursor: pointer;
+                font-weight: bold;
+                &.active{
+                    font-weight: bold; 
+                    color: $red;
+                }
+            }
+        }
+
+        .tabs-content{
+            margin-top: 30px;
+        }
+        .tab-content-group{
+            display: none;
+            &.active{
+                display: flex;
+            }
+        }
+    }
+}

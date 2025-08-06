@@ -1,0 +1,35 @@
+$times : 1;
+
+
+    @mixin create-mq($breakpoint) {
+      @if ($breakpoint == 0) {
+        @content;
+      } @else {
+        @media screen and (min-width: $breakpoint) {
+          @content;
+        }
+      }
+    }
+    
+    @mixin create-col-classes($modifier, $times, $breakpoint) {
+      @include create-mq($breakpoint) {
+        @for $i from 1 through $times {
+          .p-relative#{$modifier}{
+            position: relative;
+          }
+          .p-absolute#{$modifier}{
+            position: absolute;
+          }
+    
+          
+        }
+    
+      }
+    }
+    
+    @each $modifier, $breakpoint in $map-grid-props {
+        @include create-col-classes($modifier, $times, $breakpoint);
+    }
+
+
+  

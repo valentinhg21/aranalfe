@@ -1,0 +1,206 @@
+.button__container {
+  display: flex;
+  width: 100%;
+}
+
+.btn {
+  padding: 12px 24px;
+  color: $white;
+  background: $white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  outline: none;
+  transition: $fast;
+  font-size: 14px;
+  border: none;
+  color: $black;
+  border: 1px solid $white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(2px);
+  font-weight: bold;
+  // text-transform: uppercase;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+
+  @include media(md) {
+    min-width: 198px;
+  }
+  @include media(sm) {
+    min-width: 143px;
+    padding: 11px 22px;
+  }
+  @include media(xs) {
+    font-size: 14px;
+  }
+  text-decoration: none !important;
+  &:hover {
+    background: transparent;
+    color: $white;
+  }
+  &.font-w-400 {
+    font-weight: 400;
+  }
+}
+
+.btn-search {
+  background: $red;
+  padding: 4px !important;
+  span {
+    color: $white;
+    transition: $fast;
+  }
+
+  @include media(md) {
+    height: 40px;
+    max-width: 100%;
+    min-width: 100%;
+  }
+  &:hover {
+    border-color: $red;
+    span {
+      color: $red;
+    }
+    svg {
+      * {
+        color: $red;
+      }
+    }
+  }
+}
+
+.btn-red-outline {
+  color: $red;
+  border: 1px solid $red;
+  background: transparent;
+  &:hover {
+    color: $white;
+    background: $red;
+  }
+}
+
+.btn-white-black {
+  background: $white;
+  border-color: $black;
+  svg {
+    * {
+      // fill: $black;
+      color: $black;
+    }
+  }
+  &:hover {
+    background: $black;
+    border-color: $black;
+    svg {
+      * {
+        color: $white;
+      }
+    }
+  }
+
+  &.active {
+    background: $black;
+    border-color: $black;
+    svg {
+      * {
+        color: $white;
+      }
+    }
+  }
+}
+
+.btn-icon {
+  i {
+    transition: $fast;
+  }
+  svg {
+    transition: $fast;
+    * {
+      transition: $fast;
+    }
+  }
+}
+
+.btn-red {
+  background: $red;
+  border-color: $red;
+  color: $white;
+  &:hover {
+    background: $black;
+    border-color: $black;
+  }
+}
+
+.btn-black {
+  background: $black;
+  border-color: $black;
+  color: $white;
+  &:hover {
+    background: $red;
+    border-color: $red;
+  }
+}
+
+.btn-black-white {
+  background: $black;
+  border-color: $black;
+  color: $white;
+  &:hover {
+    background: $white;
+    border-color: $white;
+    color: $black;
+  }
+}
+
+.btn-stroke-white {
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.btn-stroke-black {
+  background: transparent;
+  border-color: #dbdbdb;
+  color: $black;
+  svg {
+    * {
+      color: $black;
+    }
+  }
+  &:hover {
+    border-color: $black;
+    background: $black;
+    color: $white;
+    i,
+    svg {
+      * {
+        color: $white;
+      }
+    }
+  }
+}
+
+.btn-stroke-white-to-white {
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  svg {
+    * {
+      color: $black;
+    }
+  }
+  &:hover {
+    border-color: $white;
+    background: $white;
+    color: $black;
+    i,
+    svg {
+      * {
+        color: $black;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@include register-font('metropolis', 400, 'Metropolis-Regular.woff', 'Metropolis-Regular.woff2');
+@include register-font('metropolis', 700, 'Metropolis-Bold.woff', 'Metropolis-Bold.woff2');
+
+
+$Montserrat: "Montserrat", sans-serif;
+$Metropolis: "metropolis", sans-serif;
+
+.t-uppercase {
+  text-transform: uppercase;
+}
+
+

@@ -1,0 +1,93 @@
+.tinymce-custom{
+    > *:last-child{
+        margin-bottom: 0;
+    }
+    h1,h2,h3,h4,h5,h6{
+        margin-bottom: 30px;
+        @include media(md){
+            font-size: 28px;
+        }
+        @include media(sm){
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+    }
+    h2{
+        @include media(sm){
+            font-size: 36px;
+        }
+        @include media(xs){
+            font-size: 24px;
+        }
+    }
+    h3,h4,h5,h6{
+        font-size: 24px;
+    }
+    p{
+        font-size: 24px;
+        font-weight: 350;
+        @include media(xs) {
+            font-size: 18px;
+            
+        }
+        &.texto-p-l{
+            font-size: 32px;
+            @include media(sm) {
+                font-size: 24px;
+            }
+            @include media(xs) {
+                font-size: 20px;
+            }
+        }
+        &.texto-p-s{
+            font-size: 20px;
+            @include media(sm){
+                font-size: 18px;
+            }
+        }
+        &:has(span[style*="text-decoration: underline;"]) {
+          text-decoration: none !important;
+          span{
+            text-decoration: none !important;
+            position: relative;
+            &::before{
+                @include bg-presets();
+                bottom: -5px;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background: $black;
+            }
+          }
+        }
+        &:has(.encabezado){
+            margin-bottom: 0;
+        }
+    
+
+    }
+    a{
+        &:hover{
+            text-decoration: underline;
+        }
+        &:visited{
+            text-decoration: underline;
+        }
+    }
+    ul{
+        list-style-type: none;
+        padding: 0 10px;
+        li{
+            font-size: 20px;
+            font-weight: 350;
+            margin-bottom: 10px;
+            &::before{
+                content: "\2022"; /* Agrega el código Unicode como marcador */
+                margin-right: 10px; /* Añade un poco de espacio entre el marcador y el texto */
+            }
+            @include media(sm){
+                font-size: 18px;
+            }
+        }
+    }
+}
