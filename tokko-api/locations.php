@@ -1,5 +1,4 @@
 <?php
-
 function get_summary_locations(array $params = []): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
 
@@ -37,7 +36,7 @@ function get_summary_locations(array $params = []): array {
     ], $params);
 
     $url = $config['locations_url'] . '?' . http_build_query($params);
-
+    contar_llamada_api($config['locations_url']);
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -59,7 +58,7 @@ function get_summary_locations(array $params = []): array {
     } else {
         error_log("[TOKKO][LOCATIONS] CURL error: $error | HTTP: $http_code");
     }
-
+    
     return [];
 }
 
@@ -70,10 +69,35 @@ function get_only_locations(array $params = []): array {
 }
 
 function save_data_locations(array $params = []) {
+    // Locations
     $data = get_only_locations($params);
-    if (!is_array($data)) return;
-    $file_path = get_template_directory() . '/tokko-api/data/locations.json';
-    file_put_contents($file_path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    if (is_array($data) && count($data) > 0) {
+        $file_path = get_template_directory() . '/tokko-api/data/locations.json';
+        file_put_contents(
+            $file_path,
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        );
+    }
+
+    // Property types
+    $property_types = get_only_property_types();
+    if (is_array($property_types) && count($property_types) > 0) {
+        $file_path = get_template_directory() . '/tokko-api/data/property.json';
+        file_put_contents(
+            $file_path,
+            json_encode($property_types, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        );
+    }
+
+    // Developments
+    $developments = get_developments();
+    if (is_array($developments) && count($developments) > 0) {
+        $file_path = get_template_directory() . '/tokko-api/data/developments.json';
+        file_put_contents(
+            $file_path,
+            json_encode($developments, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        );
+    }
 }
 
 

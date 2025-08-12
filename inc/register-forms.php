@@ -472,20 +472,15 @@ function enviar_consulta_tokko() {
 
 add_action('wp_ajax_get_search', 'get_search');
 add_action('wp_ajax_nopriv_get_search', 'get_search');
-function get_search() {
-    // Leer y decodificar JSON
-    $json = file_get_contents('php://input');
-    $data = json_decode($json, true);
 
-    // Sanitizar y obtener valores
-    $current_localization_type = isset($data['current_localization_type']) ? sanitize_text_field($data['current_localization_type']) : 'country';
-    $current_localization_id = isset($data['current_localization_id']) ? array_map('intval', (array) $data['current_localization_id']) : 1;
-    $operation_types = isset($data['operation_types']) ? array_map('intval', (array) $data['operation_types']) : [1];
-    $property_types = isset($data['property_types']) ? array_map('intval', (array) $data['property_types']) : [1];
+function get_search() {
+    // Leer datos desde $_POST porque viene form-data (no JSON)
+    $operation_types = isset($_POST['operation_types']) ? array_map('intval', (array) $_POST['operation_types']) : [1];
+    $property_types = isset($_POST['property_types']) ? array_map('intval', (array) $_POST['property_types']) : range(1, 28);
 
     $params_2 = [
         'data' => [
-            'current_localization_type' => "country",
+            'current_localization_type' => 'country',
             'current_localization_id' => 1,
             'price_from' => 0,
             'price_to' => 9999999999999,

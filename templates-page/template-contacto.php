@@ -1,11 +1,9 @@
 <?php 
-
 /**
 
  * Template Name: Contacto
 
  */
-
 ?>
 
 <?php get_header(); ?>

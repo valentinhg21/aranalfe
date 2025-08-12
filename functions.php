@@ -8,11 +8,15 @@ define('BLOCK', ROOT . '/blocks');
 define('IMAGE_DEFAULT', ROOT . '/dist/img/image-default/default.png');
 define('SVG', '/dist/img/svg');
 define('IMAGE_RELATIVE', '/dist/img/');
-
-
 // URL PARA LAS REDIRECCIONES DE TOKKO DEPENDIENDO DEL LOCAL
-
-
+$GLOBALS['tokko_call_count'] = 0;
+$GLOBALS['tokko_call_log'] = [];
+function contar_llamada_api($endpoint) {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'IP desconocida';
+    $GLOBALS['tokko_call_count']++;
+    $GLOBALS['tokko_call_log'][] = $endpoint;
+    error_log("[TOKKO API] Llamada a: {$endpoint} | IP: {$ip}");
+}
 
 require_once ('inc/performance/performance.php');
 require_once ('inc/login/login.php');
@@ -39,3 +43,13 @@ require_once ('inc/register-forms.php');
 require_once ('inc/register-sync-acf.php');
 require_once ('inc/register-theme-options.php');
 require_once ('inc/register-cron.php');
+
+add_action('shutdown', function () {
+    if (!isset($_SERVER['REQUEST_URI'])) return;
+
+    // Solo mostrar si es la página de propiedades
+    if (strpos($_SERVER['REQUEST_URI'], '/propiedades/') !== false) {
+        error_log('[TOKKO API] Total llamadas en esta carga: ' . $GLOBALS['tokko_call_count']);
+        error_log('[TOKKO API] Lista de endpoints: ' . implode(', ', $GLOBALS['tokko_call_log']));
+    }
+});

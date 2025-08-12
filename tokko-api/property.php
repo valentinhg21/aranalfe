@@ -1,10 +1,108 @@
 <?php 
 
+function get_all_property_by_filter(
+    array $params = [],
+    int $limit = 12,
+    int $offset = 0,
+    string $order_by = "created_date",
+    string $order = 'ASC'
+): array {
+    $config = require get_template_directory() . '/tokko-api/config.php';
+    $log_file = get_template_directory() . '/tokko.log';
 
+    // Obtener IP del cliente
+    $ip_cliente = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'CLI';
 
+    // Bloquear IPs sospechosas y bots
+    // if (is_bot() || in_array($ip_cliente)) {
+    //     file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Acceso bloqueado para IP: {$ip_cliente}, User-Agent: {$_SERVER['HTTP_USER_AGENT']}\n", FILE_APPEND);
+    //     return [];
+    // }
 
+    if (!isset($params['data'])) {
+        $params['data'] = [
+            'current_localization_id' => 1,
+            'current_localization_type' => 'country',
+            'price_from' => 1,
+            'price_to' => 999999999,
+            'operation_types' => [1, 2],
+            'property_types' => range(1, 28),
+            'currency' => 'ANY',
+            'filters' => [],
+            'with_tags' => [],
+            'without_tags' => []
+        ];
+    }
 
-function get_all_property_by_filter(array $params = [], int $limit = 12, int $offset = 0, string $order_by = "created_date", string $order = 'ASC'): array {
+    $cache_key = 'tokko_props_' . md5(json_encode([$params, $limit, $offset, $order_by, $order]));
+    $cache_time = 300;
+
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | get_all_property_by_filter | TOKKO cache hit\n", FILE_APPEND);
+        return $cached;
+    }
+
+    $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
+    $url = $config['property_search_url']
+        . '?lang=es_ar'
+        . '&format=json'
+        . '&limit=' . $limit
+        . '&offset=' . $offset
+        . '&order_by=' . urlencode($order_by)
+        . '&order=' . urlencode($order)
+        . '&data=' . urlencode($data_json)
+        . '&key=' . $config['api_token'];
+
+    $max_intentos = 3;
+    $intento = 0;
+    contar_llamada_api($config['property_search_url']);
+
+    do {
+        file_put_contents(
+            $log_file,
+            "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Intento ".($intento+1)." | get_all_property_by_filter | URL: {$url}\n",
+            FILE_APPEND
+        );
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        file_put_contents(
+            $log_file,
+            "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Intento ".($intento+1)." | get_all_property_by_filter | HTTP: {$http_code} | Error: {$error}\n",
+            FILE_APPEND
+        );
+
+        if ($response && $http_code === 200) {
+            $decoded = json_decode($response, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                set_transient($cache_key, $decoded, $cache_time);
+                return $decoded;
+            } else {
+                file_put_contents(
+                    $log_file,
+                    "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | get_all_property_by_filter | JSON inválido: ".json_last_error_msg()."\n",
+                    FILE_APPEND
+                );
+            }
+        }
+
+        $intento++;
+        sleep(1);
+    } while ($intento < $max_intentos);
+
+    return [];
+}
+
+function get_all_property_by_filter_test(array $params = [], int $limit = 12, int $offset = 0, string $order_by = "created_date", string $order = 'ASC'): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
 
     if (!isset($params['data'])) {
@@ -22,15 +120,7 @@ function get_all_property_by_filter(array $params = [], int $limit = 12, int $of
         ];
     }
 
-    // Si es bot: evitamos llamada
-    if (is_bot()) {
-        error_log('[TOKKO][BOT] Llamada bloqueada para bot');
-        return [];
-    }
-
     $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
-
-    // Fetch desde API sin cache
     $url = $config['property_search_url']
         . '?lang=es_ar'
         . '&format=json'
@@ -41,55 +131,45 @@ function get_all_property_by_filter(array $params = [], int $limit = 12, int $of
         . '&data=' . urlencode($data_json)
         . '&key=' . $config['api_token'];
 
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    $response = curl_exec($ch);
-    $error = curl_error($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($response && $http_code === 200) {
-        $decoded = json_decode($response, true);
-        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-            return $decoded;
-        } else {
-            error_log("[TOKKO] JSON inválido: " . json_last_error_msg());
-        }
-    } else {
-        error_log("[TOKKO] CURL Error: $error | HTTP: $http_code");
+    // Debug local
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        echo "<pre>URL: $url</pre>";
     }
+
+    $max_intentos = 3;
+    $intento = 0;
+    $response = null;
+    $http_code = 0;
+
+    do {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20); // tiempo razonable
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response && $http_code === 200) {
+            $decoded = json_decode($response, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            } else {
+                error_log("[TOKKO] JSON inválido: " . json_last_error_msg());
+                error_log("[TOKKO] RAW response: " . substr($response, 0, 500)); // acotado por si es largo
+            }
+        } else {
+            error_log("[TOKKO] Intento $intento: CURL Error: $error | HTTP: $http_code");
+        }
+
+        $intento++;
+        sleep(1); // espera entre reintentos
+    } while ($intento < $max_intentos);
 
     return [];
 }
-
-
-
-function get_only_property_by_filter(array $params = []): array {
-    $cache_key = 'tokko_summary_' . md5(json_encode($params));
-
-    // Intentar cache
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    // Si es bot y no hay cache, evitar llamada
-    if (is_bot()) {
-        error_log('[TOKKO][BOT] Cache no encontrada para ' . $cache_key);
-        return [];
-    }
-
-    $data = get_summary_locations($params);
-    $result = $data['objects'] ?? [];
-
-    set_transient($cache_key, $result, HOUR_IN_SECONDS);
-    return $result;
-}
-
-
 
 function get_search_summary(array $params = []): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
@@ -113,27 +193,15 @@ function get_search_summary(array $params = []): array {
     $params['format'] = 'json';
     $params['lang'] = 'es_ar';
 
-    $cache_key = 'tokko_search_summary_' . md5($data_json);
-
-    // Intentar cache
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    // Evitar llamada si es bot y no hay cache
-    if (is_bot()) {
-        error_log('[TOKKO][BOT] Cache no encontrada para ' . $cache_key);
-        return [];
-    }
-
     $url = $config['get_search_summary_url'] . '?' . http_build_query($params);
-
+    contar_llamada_api($config['get_search_summary_url']);
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_TIMEOUT => 20,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
     $response = curl_exec($ch);
     $error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -142,22 +210,21 @@ function get_search_summary(array $params = []): array {
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-            set_transient($cache_key, $decoded, HOUR_IN_SECONDS);
             return $decoded;
-        } else {
-            error_log("[TOKKO][SUMMARY] JSON inválido: " . json_last_error_msg());
         }
+        error_log("[TOKKO][SUMMARY] JSON inválido: " . json_last_error_msg());
     } else {
         error_log("[TOKKO][SUMMARY] CURL Error: $error | HTTP: $http_code");
     }
-
+    
     return [];
 }
 
 
-
-
-
+function get_only_property_by_filter(array $params = []): array {
+    $data = get_summary_locations($params);
+    return $data['objects'] ?? [];
+}
 
 
 // --- FUNCIÓN PRINCIPAL ---
@@ -201,12 +268,12 @@ function get_create_filter_data(array $dataFilter = []): array {
     $dormitorios_slug = array_unique(array_filter($dormitorios_slug)); // limpio
 
     return [
-        'Tipo de operación' => generar_filtros_operacion($data_type_operation, $type_operation),
+        'Tipo de operación' => generar_filtros_operacion($type_operation),
         'Ubicación' => generar_filtros_ubicacion($location),
-        'Tipo de propiedad' => generar_filtros_tipo($data_type_property, $type_property),
+        'Tipo de propiedad' => generar_filtros_tipo($type_property),
         'Antiguedad' => generar_filtros_antiguedad($age),
-        'Ambientes' => generar_filtros_ambientes($data_room, $ambientes_slug),
-        'Dormitorios' => generar_filtros_dormitorios($suite_amount, $dormitorios_slug),
+        'Ambientes' => generar_filtros_ambientes($ambientes_slug),
+        'Dormitorios' => generar_filtros_dormitorios($dormitorios_slug),
     ];
 }
 
@@ -261,20 +328,6 @@ function get_create_filter_tag(array $dataFilter = []): array {
 function get_details_property(int $id): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
 
-    $cache_key = 'tokko_detail_' . $id;
-
-    // Intentar cache
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    // Evitar llamada si es bot y no hay cache
-    if (is_bot()) {
-        error_log('[TOKKO][BOT] Cache no encontrada para detalle ' . $id);
-        return [];
-    }
-
     $params = [
         'key'    => $config['api_token'],
         'format' => 'json',
@@ -283,12 +336,14 @@ function get_details_property(int $id): array {
     ];
 
     $url = $config['property_detail_url'] . '?' . http_build_query($params);
-
+    contar_llamada_api($config['property_detail_url']);
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
     $response = curl_exec($ch);
     $error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -297,15 +352,13 @@ function get_details_property(int $id): array {
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-            set_transient($cache_key, $decoded, HOUR_IN_SECONDS);
             return $decoded;
-        } else {
-            error_log("[TOKKO][DETAIL {$id}] JSON inválido: " . json_last_error_msg());
         }
+        error_log("[TOKKO][DETAIL {$id}] JSON inválido: " . json_last_error_msg());
     } else {
         error_log("[TOKKO][DETAIL {$id}] CURL Error: $error | HTTP: $http_code");
     }
-
+    
     return [];
 }
 

@@ -2,31 +2,20 @@
 function get_developments(array $params = []): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
 
-    $data_json = json_encode($params);
-    $cache_key = 'tokko_developments_' . md5($data_json);
-
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    if (is_bot()) {
-        error_log('[TOKKO][BOT] Cache no encontrada para developmets');
-        return [];
-    }
-
     $params['key'] = $config['api_token'];
     $params = array_merge([
         'format' => 'json',
-        'lang' => 'es_ar'
+        'lang' => 'es_ar',
     ], $params);
 
     $url = $config['developments_url'] . '?' . http_build_query($params);
-
+    contar_llamada_api($config['developments_url']);
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
     $response = curl_exec($ch);
     $error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -35,15 +24,13 @@ function get_developments(array $params = []): array {
     if ($response && $http_code === 200) {
         $data = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
-            set_transient($cache_key, $data, HOUR_IN_SECONDS);
             return $data;
-        } else {
-            error_log("[TOKKO][DEVELOPMENTS] JSON inválido: " . json_last_error_msg());
         }
+        error_log("[TOKKO][DEVELOPMENTS] JSON inválido: " . json_last_error_msg());
     } else {
         error_log("[TOKKO][DEVELOPMENTS] CURL error: $error | HTTP: $http_code");
     }
-
+    
     return [];
 }
 
@@ -71,23 +58,21 @@ function filter_developments(array $params = [], array $filters = [], int $limit
 }
 
 function get_development_by_id(int $id): array {
-    $log_file = __DIR__ . '/tokko-debug.log';
+ 
     $config = require get_template_directory() . '/tokko-api/config.php';
 
-    $cache_key = 'tokko_development_' . $id;
+    if (empty($config['api_token']) || empty($config['developments_url'])) {
+       
+        return [];
+    }
+
+    // 🔹 Cache: clave única por ID
+    $cache_key = 'tokko_dev_' . $id;
+    $cache_time = 300; // segundos
     $cached = get_transient($cache_key);
     if ($cached !== false) {
+
         return $cached;
-    }
-
-    if (is_bot()) {
-        error_log("[TOKKO][BOT] Cache no encontrada para desarrollo ID {$id}");
-        return [];
-    }
-
-    if (empty($config['api_token']) || empty($config['developments_url'])) {
-        file_put_contents($log_file, "[TOKKO][{$id}] Sin config\n", FILE_APPEND);
-        return [];
     }
 
     $url = rtrim($config['developments_url'], '/') . '/' . $id . '/?' . http_build_query([
@@ -97,44 +82,38 @@ function get_development_by_id(int $id): array {
     ]);
 
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
     $response = curl_exec($ch);
     $error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    file_put_contents($log_file, "[TOKKO][{$id}] HTTP: $http_code - Error: $error\n", FILE_APPEND);
+
 
     if ($http_code === 200 && !$error) {
         $data = json_decode($response, true);
         if (is_array($data) && !empty($data)) {
-            file_put_contents($log_file, "[TOKKO][{$id}] OK\n", FILE_APPEND);
+           
+
+            // 🔹 Guardar en cache
             $result = ['objects' => [$data]];
-            set_transient($cache_key, $result, HOUR_IN_SECONDS);
+            set_transient($cache_key, $result, $cache_time);
             return $result;
         } else {
-            file_put_contents($log_file, "[TOKKO][{$id}] JSON vacío\n", FILE_APPEND);
+           
         }
     }
 
     return [];
 }
 
+
 function get_development_units(int $id): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
-
-    $cache_key = 'tokko_development_units_' . $id;
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
-    if (is_bot()) {
-        error_log("[TOKKO][BOT] Cache no encontrada para unidades desarrollo ID {$id}");
-        return [];
-    }
 
     $params = [
         'key' => $config['api_token'],
@@ -155,21 +134,42 @@ function get_development_units(int $id): array {
     ];
 
     $url = $config['development_units_url'] . '?' . http_build_query($params);
-
+    contar_llamada_api($config['development_units_url']);
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
     $response = curl_exec($ch);
+    $error = curl_error($ch);
     curl_close($ch);
 
     $data = json_decode($response, true);
     if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
-        set_transient($cache_key, $data, HOUR_IN_SECONDS);
         return $data;
     }
-
+    error_log("[TOKKO][DEVELOPMENT_UNITS] CURL error: $error");
+    
     return [];
 }
 
 
+function get_detail_development_by_json(int $id) {
+    $file_path = get_template_directory() . '/tokko-api/data/developments.json';
+    if (!file_exists($file_path)) return [];
+
+    $json = file_get_contents($file_path);
+    $data = json_decode($json, true);
+    if (empty($data) || !is_array($data)) return [];
+
+    if (!isset($data['objects']) || !is_array($data['objects'])) return [];
+
+    foreach ($data['objects'] as $development) {
+        if (isset($development['id']) && $development['id'] === $id) {
+            return $development;
+        }
+    }
+
+    return []; // no encontrado
+}

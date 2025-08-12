@@ -1,279 +1,176 @@
-<?php 
+<?php
+
 /**
+
  * Template Name: Propiedades
+
  */
+
 ?>
-
-
 
 <?php get_header(); ?>
 <?php 
-$current_url = (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-// QUERY VARS SLUG
-$page = max(1, get_query_var('paged') ?: 1);
-// OPERACION
-$operacion_slug = isset($_GET['operacion']) ? ($_GET['operacion']) : [1,2];
-// Localidad
-if (isset($_GET['localidad'])) {
-    // Viene como array: localidad[]=2&localidad[]=4
-    $ubicacion_localidad_slug = array_map('intval', (array)$_GET['localidad']);
-    $division_localidad = 'division';
-    $current_localization_id = $ubicacion_localidad_slug[0] ?? 0;
+    $current_url = (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-} else {
-    $ubicacion_localidad_slug = 0;
-    $division_localidad = 'country';
-    $current_localization_id = 0;
-}
+    $page = max(1, get_query_var('paged') ?: 1);
 
-// PROPIEDAD
-if (isset($_GET['tipo'])) {
-    $type_property_slug = array_map('intval', (array)$_GET['tipo']);
-} else {
-    $type_property_slug = range(1, 28);
-}
+    $operacion_slug = isset($_GET['operacion']) ? ($_GET['operacion']) : [1,2];
+    $operacion_slug = (array) $operacion_slug;
+    $operation_type_id = array_map('intval', $operacion_slug);
 
+    if (isset($_GET['localidad'])) {
+        $ubicacion_localidad_slug = array_map('intval', (array)$_GET['localidad']);
+        $division_localidad = 'division';
+        $current_localization_id = $ubicacion_localidad_slug[0] ?? 1;
+    } else {
+        $ubicacion_localidad_slug = 1;
+        $division_localidad = 'country';
+        $current_localization_id = 1;
+    }
 
+    $type_property_slug = isset($_GET['tipo']) ? array_map('intval', (array)$_GET['tipo']) : range(1, 28);
 
-// Antiguedad
-$antiguedad_slug = $_GET['antiguedad'] ?? [];
-$antiguedad_slug = is_array($antiguedad_slug) ? $antiguedad_slug : explode(',', $antiguedad_slug);
-$antiguedad_slug = array_map('sanitize_text_field', $antiguedad_slug);
-$filtro_antiguedad = [];
-
-
-
-// if ($antiguedad_slug) {
-//     if (in_array('terminado', $antiguedad_slug, true) && in_array('en-construccion', $antiguedad_slug, true)) {
-//         // Mostrar todo excepto "a estrenar"
-//         $filtro_antiguedad = [
-//             ['age', '>=', -1]
-//         ];
-//     } elseif (in_array('a-estrenar', $antiguedad_slug, true)) {
-//         $filtro_antiguedad = [
-//             ['age', '=', 0]
-//         ];
-//     } elseif (in_array('en-construccion', $antiguedad_slug, true)) {
-//         $filtro_antiguedad = [
-//             ['age', '=', -1]
-//         ];
-//     } elseif (in_array('terminado', $antiguedad_slug, true)) {
-//         $filtro_antiguedad = [
-//             ['age', '>=', 1]
-//         ];
-//     }
-// }
-if ($antiguedad_slug) {
+    $antiguedad_slug = $_GET['antiguedad'] ?? [];
+    $antiguedad_slug = is_array($antiguedad_slug) ? $antiguedad_slug : explode(',', $antiguedad_slug);
+    $antiguedad_slug = array_map('sanitize_text_field', $antiguedad_slug);
     $filtro_antiguedad = [];
 
-    if (in_array('en-construccion', $antiguedad_slug, true)) {
-        $filtro_antiguedad[] = ['age', '=', -1];
+    if ($antiguedad_slug) {
+        if (in_array('en-construccion', $antiguedad_slug, true)) {
+            $filtro_antiguedad[] = ['age', '=', -1];
+        }
+        if (in_array('a-estrenar', $antiguedad_slug, true)) {
+            $filtro_antiguedad[] = ['age', '=', 0];
+        }
+        if (in_array('terminado', $antiguedad_slug, true)) {
+            $filtro_antiguedad[] = ['age', '>=', 1];
+        }
     }
 
-    if (in_array('a-estrenar', $antiguedad_slug, true)) {
-        $filtro_antiguedad[] = ['age', '=', 0];
-    }
+    $ambientes_slug = $_GET['ambientes'] ?? [];
+    $ambientes_slug = is_array($ambientes_slug) ? $ambientes_slug : explode(',', $ambientes_slug);
+    $ambientes_slug = array_map('intval', $ambientes_slug);
+    $ambientes_slug = array_filter($ambientes_slug, fn($v) => $v > 0);
+    $ambientes_slug = array_unique($ambientes_slug);
 
-    if (in_array('terminado', $antiguedad_slug, true)) {
-        $filtro_antiguedad[] = ['age', '>=', 1];
-    }
-}
-
-
-// Ambientes
-$ambientes_slug = $_GET['ambientes'] ?? [];
-if (!is_array($ambientes_slug)) {
-    $ambientes_slug = explode(',', $ambientes_slug);
-}
-$ambientes_slug = array_map('intval', $ambientes_slug);
-$ambientes_slug = array_filter($ambientes_slug, fn($v) => $v > 0);
-$ambientes_slug = array_unique($ambientes_slug);
-
-$ambientes_filtro = [];
-
-$todos = [1, 2, 3, 4];
-$intersect = array_intersect($ambientes_slug, $todos);
-
-if (count($intersect) === count($todos)) {
-    // Seleccionó todos, no aplico filtro
     $ambientes_filtro = [];
-} elseif (count($ambientes_slug) === 1) {
-    $valor = reset($ambientes_slug);
-    if ($valor === 4) {
-        $ambientes_filtro[] = ['room_amount', '>', 3];
+    $todos = [1, 2, 3, 4];
+    $intersect = array_intersect($ambientes_slug, $todos);
+
+    if (count($intersect) === count($todos)) {
+        $ambientes_filtro = [];
+    } elseif (count($ambientes_slug) === 1) {
+        $valor = reset($ambientes_slug);
+        $ambientes_filtro[] = ($valor === 4) ? ['room_amount', '>', 3] : ['room_amount', '=', $valor];
     } else {
-        $ambientes_filtro[] = ['room_amount', '=', $valor];
-    }
-} else {
-    $hay_4mas = in_array(4, $ambientes_slug, true);
-    $otros = array_filter($ambientes_slug, fn($v) => $v >= 1 && $v <= 3);
-
-    if (!empty($otros)) {
-        $min = min($otros);
-        $max = max($otros);
-
-        if ($hay_4mas) {
-            // Si hay 4+, hacemos solo >= min para que incluya 3 y superiores (4+)
+        $hay_4mas = in_array(4, $ambientes_slug, true);
+        $otros = array_filter($ambientes_slug, fn($v) => $v >= 1 && $v <= 3);
+        if (!empty($otros)) {
+            $min = min($otros);
+            $max = max($otros);
             $ambientes_filtro[] = ['room_amount', '>', $min - 1];
-        } else {
-            // Si no hay 4+, hacemos filtro rango completo
-            $ambientes_filtro[] = ['room_amount', '>', $min - 1];
-            $ambientes_filtro[] = ['room_amount', '<', $max + 1];
+            if (!$hay_4mas) $ambientes_filtro[] = ['room_amount', '<', $max + 1];
+        } elseif ($hay_4mas) {
+            $ambientes_filtro[] = ['room_amount', '>', 3];
         }
-    } elseif ($hay_4mas) {
-        // Sólo filtro 4+
-        $ambientes_filtro[] = ['room_amount', '>', 3];
     }
-}
 
-$dormitorios_slug = $_GET['dormitorio'] ?? [];
-if (!is_array($dormitorios_slug)) {
-    $dormitorios_slug = explode(',', $dormitorios_slug);
-}
-$dormitorios_slug = array_map('intval', $dormitorios_slug);
-$dormitorios_slug = array_filter($dormitorios_slug, fn($v) => $v > 0);
-$dormitorios_slug = array_unique($dormitorios_slug);
+    $dormitorios_slug = $_GET['dormitorio'] ?? [];
+    $dormitorios_slug = is_array($dormitorios_slug) ? $dormitorios_slug : explode(',', $dormitorios_slug);
+    $dormitorios_slug = array_map('intval', $dormitorios_slug);
+    $dormitorios_slug = array_filter($dormitorios_slug, fn($v) => $v > 0);
+    $dormitorios_slug = array_unique($dormitorios_slug);
 
-$dormitorios_filtro = [];
-
-$todos = [1, 2, 3, 4];
-$intersect = array_intersect($dormitorios_slug, $todos);
-
-if (count($intersect) === count($todos)) {
-    // Seleccionó todos, no filtro
     $dormitorios_filtro = [];
-} elseif (count($dormitorios_slug) === 1) {
-    $valor = reset($dormitorios_slug);
-    if ($valor === 4) {
-        $dormitorios_filtro[] = ['suite_amount', '>', 3];
+    $intersect = array_intersect($dormitorios_slug, [1,2,3,4]);
+
+    if (count($intersect) === 4) {
+        $dormitorios_filtro = [];
+    } elseif (count($dormitorios_slug) === 1) {
+        $valor = reset($dormitorios_slug);
+        $dormitorios_filtro[] = ($valor === 4) ? ['suite_amount', '>', 3] : ['suite_amount', '=', $valor];
     } else {
-        $dormitorios_filtro[] = ['suite_amount', '=', $valor];
-    }
-} else {
-    $hay_4mas = in_array(4, $dormitorios_slug, true);
-    $otros = array_filter($dormitorios_slug, fn($v) => $v >= 1 && $v <= 3);
-
-    if (!empty($otros)) {
-        $min = min($otros);
-        $max = max($otros);
-
-        if ($hay_4mas) {
+        $hay_4mas = in_array(4, $dormitorios_slug, true);
+        $otros = array_filter($dormitorios_slug, fn($v) => $v >= 1 && $v <= 3);
+        if (!empty($otros)) {
+            $min = min($otros);
+            $max = max($otros);
             $dormitorios_filtro[] = ['suite_amount', '>', $min - 1];
-        } else {
-            $dormitorios_filtro[] = ['suite_amount', '>', $min - 1];
-            $dormitorios_filtro[] = ['suite_amount', '<', $max + 1];
+            if (!$hay_4mas) $dormitorios_filtro[] = ['suite_amount', '<', $max + 1];
+        } elseif ($hay_4mas) {
+            $dormitorios_filtro[] = ['suite_amount', '>', 3];
         }
-    } elseif ($hay_4mas) {
-        $dormitorios_filtro[] = ['suite_amount', '>', 3];
     }
-}
 
+    $moneda_slug = isset($_GET['moneda']) ? sanitize_text_field($_GET['moneda']) : 'USD';
+    $precio_min_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_min'] ?? '')) !== '' ? (int) $val : 1;
+    $precio_max_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_max'] ?? '')) !== '' ? (int) $val : 999999999;
 
+    $sup_min_slug = ($val_sup = preg_replace('/[^\d]/', '', $_GET['sup_min'] ?? '')) !== '' ? (int) $val_sup : 1;
+    $sup_max_slug = ($val_sup = preg_replace('/[^\d]/', '', $_GET['sup_max'] ?? '')) !== '' ? (int) $val_sup : 999999999;
 
-// FILTRO PRECIO
-$moneda_slug = isset($_GET['moneda']) ? sanitize_text_field($_GET['moneda']) : 'USD';
-$precio_min_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_min'] ?? '')) !== '' ? (int) $val : 1;
-$precio_max_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_max'] ?? '')) !== '' ? (int) $val : 999999999;
-// FILTROS SUPERFICIE
-$sup_min_slug = ($val_sup = preg_replace('/[^\d]/', '', $_GET['sup_min'] ?? '')) !== '' ? (int) $val_sup : 1;
-$sup_max_slug = ($val_sup = preg_replace('/[^\d]/', '', $_GET['sup_max'] ?? '')) !== '' ? (int) $val_sup : 999999999;
-$superficie_filtro = [];
-if($sup_min_slug){
-    $superficie_filtro = ["total_surface", ">", $sup_min_slug];
-}
-if($sup_max_slug){
-    $superficie_filtro = ["total_surface", "<", $sup_min_slug];
-}
-if($sup_min_slug && $sup_max_slug){
-    $superficie_filtro = [["total_surface", ">", $sup_min_slug], ["total_surface", "<", $sup_max_slug]];
-}
-//FILTRO 
-$order_by_slug = isset($_GET['order_by']) ? sanitize_text_field($_GET['order_by']) : 'created_at';
-$order_slug = isset($_GET['order']) ? sanitize_text_field($_GET['order']) : 'desc';
-if($order_by_slug == 'created_date'){
-    $order_by_slug = 'created_at';
-}
-$operation_type_id = $operacion_slug === '1' ? [1] : ($operacion_slug === '2' ? [2] : [1,2]);
-$servicios_filtro = [];
-$offset = ($page - 1) * 12;
-$servicios_activa = [];
-$servicios_otros_activa = [];
-// Capturar y sanitizar servicios
-if (isset($_GET['servicios'])) {
-    $servicios_activa = is_array($_GET['servicios']) 
-        ? array_map('sanitize_text_field', $_GET['servicios']) 
-        : [sanitize_text_field($_GET['servicios'])];
-}
-// Capturar y sanitizar otros servicios
-if (isset($_GET['otros'])) {
-    $servicios_otros_activa = is_array($_GET['otros']) 
-        ? array_map('sanitize_text_field', $_GET['otros']) 
-        : [sanitize_text_field($_GET['otros'])];
-}
-$servicios_filtro = array_unique(array_merge($servicios_activa, $servicios_otros_activa));
-// ORIGINAL
-$params = [
-    'data' => [
-        'current_localization_id' => $ubicacion_localidad_slug, // ID de ciudad/localidad
-        'current_localization_type' => $division_localidad, // "country", "province", "city", "zone"
-        'price_from' => $precio_min_slug,
-        'price_to' => $precio_max_slug,
-        'operation_types' => $operation_type_id, // 1 = Venta
-        'property_types' => $type_property_slug  ,  // 2 = Departamento (por ejemplo)
-        'currency' => in_array($moneda_slug, ['USD', 'ARS']) ? $moneda_slug : 'ANY',
-        'filters' => array_values(array_merge(
-            $filtro_antiguedad ?? [],
-            $ambientes_filtro ?? [],
-            $dormitorios_filtro ?? [],
-            $superficie_filtro ?? []
-        )),
-        'with_tags' => $servicios_filtro
-    ]
-];
-// FETCH API 
-$propertys = get_all_property_by_filter($params, 12, $offset, $order_by_slug, $order_slug);
-$total_count = $propertys['meta']['total_count'] ?? 0;
-$params_2 = [
-    'data' => [
-        // Localization
-        'current_localization_type' => $division_localidad, // 'country', 'state', 'division'
-        'current_localization_id' => $ubicacion_localidad_slug,
-        // Rango de precios6791331v
-        'price_from' => intval($precio_min_slug),
-        'price_to' => intval($precio_max_slug),
-        // Tipo de operación
-        'operation_types' => array_map('intval', (array) $operation_type_id), // Asegura array
-        // Tipos de propiedad
-        'property_types' => array_map('intval', (array) $type_property_slug),
-        // Moneda
-        'currency' => in_array($moneda_slug, ['USD', 'ARS']) ? $moneda_slug : 'ANY',
-        // Filtros avanzados
-        'filters' => array_values(array_merge(
-            $filtro_antiguedad ?? [],
-            $ambientes_filtro ?? [],
-            $dormitorios_filtro ?? [],
-            $superficie_filtro ?? []
-        )),
-        // Tags
-        'with_tags' => array_map('intval', (array) $servicios_filtro)
-    ]
-];
-$summary_data = get_search_summary($params_2) ?? [];
-$dataFilter = (
-    isset($summary_data['objects']) && is_array($summary_data['objects'])
-) ? $summary_data['objects'] : [];
-$filter_data = get_create_filter_data($dataFilter);
-$filter_tag = get_create_filter_tag($dataFilter);
-$search_location = isset($summary_data['objects']['locations']) ? $summary_data['objects']['locations'] : [];
-$barrios = get_field('barrios', 'options') ?? [];
+    $superficie_filtro = [];
+    if($sup_min_slug && !$sup_max_slug){
+        $superficie_filtro[] = ["total_surface", ">", $sup_min_slug];
+    }
+    if($sup_max_slug && !$sup_min_slug){
+        $superficie_filtro[] = ["total_surface", "<", $sup_max_slug];
+    }
+    if($sup_min_slug && $sup_max_slug){
+        $superficie_filtro[] = ["total_surface", ">", $sup_min_slug];
+        $superficie_filtro[] = ["total_surface", "<", $sup_max_slug];
+    }
 
+    $order_by_slug = isset($_GET['order_by']) ? sanitize_text_field($_GET['order_by']) : 'created_at';
+    $order_slug = isset($_GET['order']) ? sanitize_text_field($_GET['order']) : 'desc';
+    if($order_by_slug == 'created_date') $order_by_slug = 'created_at';
 
+    $offset = ($page - 1) * 12;
+
+    $servicios_activa = isset($_GET['servicios']) ? (array) $_GET['servicios'] : [];
+    $servicios_otros_activa = isset($_GET['otros']) ? (array) $_GET['otros'] : [];
+    $servicios_filtro = array_unique(array_merge(
+        array_map('sanitize_text_field', $servicios_activa),
+        array_map('sanitize_text_field', $servicios_otros_activa)
+    ));
+
+    $params = [
+        'data' => [
+            'current_localization_id' => $ubicacion_localidad_slug,
+            'current_localization_type' => $division_localidad,
+            'price_from' => $precio_min_slug,
+            'price_to' => $precio_max_slug,
+            'operation_types' => $operation_type_id,
+            'property_types' => $type_property_slug,
+            'currency' => in_array($moneda_slug, ['USD', 'ARS']) ? $moneda_slug : 'ANY',
+            'filters' => array_values(array_merge(
+                $filtro_antiguedad,
+                $ambientes_filtro,
+                $dormitorios_filtro
+            )),
+            'with_tags' => $servicios_filtro,
+            'without_tags' => []
+        ]
+    ];
+
+    $propertys = get_all_property_by_filter($params, 12, $offset, $order_by_slug, $order_slug);
+    $total_count = $propertys['meta']['total_count'] ?? 0;
+
+    // $params_2 = $params;
+    // $summary_data = get_search_summary($params_2) ?? [];
+    // $dataFilter = (
+    //     isset($summary_data['objects']) && is_array($summary_data['objects'])
+    // ) ? $summary_data['objects'] : [];
+    $filter_data = get_create_filter_data();
+    $filter_tag = get_create_filter_tag();
+    // $search_location = $summary_data['objects']['locations'] ?? [];
+    $barrios = get_field('barrios', 'options') ?? [];
 ?>
 
 
 <script>
-  let locations_data = <?php echo json_encode(array_map(function($l) { return $l; }, $search_location)); ?>;
-  let locations_theme = <?php echo json_encode(array_map(function($l) { return $l; }, $barrios)); ?>;
+    let locations_data = <?php echo json_encode(array_map(function($l) { return $l; }, $barrios)); ?>;
+    let locations_theme = <?php echo json_encode(array_map(function($l) { return $l; }, $barrios)); ?>;
 </script>
 
 <main class="properties" data-id="" data-page="<?php echo $page;?>" data-current="<?php echo $offset;?>"
@@ -292,7 +189,7 @@ $barrios = get_field('barrios', 'options') ?? [];
 
         </style>
         <div class=" d-none data-hide">
-
+             
                 <?php if (!empty($params_2)): ?>
 
                     <table border="1" cellpadding="5" cellspacing="0">
@@ -393,7 +290,7 @@ $barrios = get_field('barrios', 'options') ?? [];
 
                 <section class="block-order-map">
                     <?php if($total_count != 0): ?>
-                        <?php render_property_title($_GET, $ubicacion_localidad_slug, $barrios, $type_property_slug, $dataFilter);?>
+                        <?php render_property_title($_GET, $ubicacion_localidad_slug, $barrios, $type_property_slug);?>
                         <?php else: ?>
                             <h1></h1>
                     <?php endif; ?>
@@ -470,29 +367,29 @@ $barrios = get_field('barrios', 'options') ?? [];
                                     $location = get_full_location($property['location']['full_location']);
                                     $operation_order = $property['operations'];
 
+                                    // Ordenar por operation_id de menor a mayor
                                     usort($operation_order, function ($a, $b) {
                                         return $a['operation_id'] <=> $b['operation_id'];
                                     });
 
-                                   
-                           
                                     $currency_price = $operation_order[0]['prices'][0]['currency'];
-                                    if(count($property['operations']) === 2){
-                                   
-                                        if($operacion_slug === '2'){
+                                 
+                                    if (count($property['operations']) === 2) {
+                                       
+                                        if ((int)$operacion_slug[0] === 2) {
                                             $price = $operation_order[1]['prices'][0]['price'];
                                             $operation_type = $operation_order[1]['operation_type'];
-
-                                        }else{
+                                        } else {
                                             
                                             $price = $operation_order[0]['prices'][0]['price'];
                                             $operation_type = $operation_order[0]['operation_type'];
-                                            
                                         }
-                                    }else{
+                                    } else {
+                                     
                                         $price = $operation_order[0]['prices'][0]['price'];
                                         $operation_type = $operation_order[0]['operation_type'];
                                     }
+
                                     $total_price = render_price_format($price, $currency_price);
                                     $type_property = $property['type']['name'];
                                     $address = $property['address'];

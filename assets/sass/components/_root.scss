@@ -306,3 +306,37 @@ textarea {
     }
   }
 }
+
+.page-404{
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include media(sm){
+    min-height: 60vh;
+  }
+  .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    h1{
+      color: $red;
+      margin-bottom: 10px;
+    }
+    h2{
+      margin-bottom: 10px;
+    }
+    h2,p{
+      color: $black-light;
+      
+    }
+    p{
+      font-size: 18px;
+    }
+  }
+}

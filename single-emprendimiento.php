@@ -1,163 +1,83 @@
 <?php
 
-
-
 $current_id = $_GET['id'] ?? get_field('id') ?? 0;
 
+$primary = get_development_by_id($current_id);
 
-
-$development = get_development_by_id($current_id)['objects'][0];
-
-if (!$development) {
-
-    global $wp_query;
-
-    $wp_query->set_404();
-
-    status_header(404);
-
-    nocache_headers();
-
-    include get_query_template('404');
-
-    exit;
-
+$development = null;
+if (is_array($primary) && isset($primary['objects']) && !empty($primary['objects'])) {
+    $development = $primary['objects'][0];
 }
 
-
-
-
-
-
+if (!$development) {
+    $development = get_detail_development_by_json($current_id);
+}
 
 
 
 $hero_image = get_hero_image_development($development);
-
 $images = get_images_development($development);
 $blue_print_images = get_images_blue_print($development);
 
-
-
 // INFO
-
 $name = $development['name'];
-
 $location = get_full_location($development['location']['full_location']);
-
 $type = $development['type']['name'];
-
 $status = get_construction_status($development['construction_status']);
-
 $units = get_development_units($current_id)['meta']['total_count'] ?? 0;
-
 $construction_date = $development['construction_date'];
-
 $publication_title = $development['publication_title'];
-
 $description = $development['description'];
-
 $tags = $development['tags'];
 
 // Videos
-
 $video_url = fix_youtube_embed_url($development['videos'][0]['player_url'] ?? '');
-
 $video_title = $development['videos'][0]['title'] ?? '';
 
-
-
-// Ubicaicon
-
+// Ubicación
 $address_development = $development['address'];
 
-
-
-
-
 // Geo
-
 $lat = $development['geo_lat'];
-
 $long = $development['geo_long'];
 
-
-
-// Get all propertys by id developmeent
-
+// Get all properties by id development
 $params = [
-
     'data' => [
-
         'current_localization_id' => 1,
-
         'current_localization_type' => 'country',
-
-        "price_from" => 1,
-
-        "price_to" => 999999999999,
-
-        "operation_types" => [1, 2, 3],
-
-        "property_types" => range(1, 25),
-
+        'price_from' => 1,
+        'price_to' => 999999999999,
+        'operation_types' => [1, 2, 3],
+        'property_types' => range(1, 25),
         'currency' => 'ANY',
-
-        "filters" => [
-
-          ["development__id", "=", $current_id]
-
+        'filters' => [
+            ["development__id", "=", $current_id]
         ]
-
     ]
-
 ];
-
-
 
 $unidades = get_all_property_by_filter($params, 100, 0);
 
 if (isset($unidades['objects']) && is_array($unidades['objects'])) {
-
     usort($unidades['objects'], function($a, $b) {
-
         $floorA = extractFloorIdentifier($a['real_address']);
-
         $floorB = extractFloorIdentifier($b['real_address']);
-
         if ($floorA === null && $floorB === null) return 0;
-
         if ($floorA === null) return 1;
-
         if ($floorB === null) return -1;
-
         return $floorA <=> $floorB;
-
     });
-
 } else {
-
     $unidades['objects'] = [];
-
 }
 
-
-
-// Obtener el precio maxi y precio minimo
-
+// Obtener precio máximo y mínimo
 $prices = get_min_max_price($unidades);
 
-
-$hay_planos = false;
-
-if ( get_field( 'activar' ) ){
-    $hay_planos = true;
-}
-
+$hay_planos = get_field('activar') ? true : false;
 
 ?>
-
-
 
 <?php get_header(); ?>
 

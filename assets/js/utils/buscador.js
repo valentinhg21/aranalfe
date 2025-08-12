@@ -4,9 +4,11 @@ export const buscador = (selectMulti, autocomplete) => {
   const buttonSearch = document.getElementById("search-button");
 
   if(document.querySelector('.search')){
-    getDataSummary({
-      operation_types: [1],
-      property_types: [inputTypeProperty.dataset.ids],
+    getSearchSummaryAPI({
+      data: {
+        operation_types: [1],
+        property_types: [inputTypeProperty.dataset.ids],
+      }
     }).then((data) => {
       changeValues(data.objects, "", "TYPE_OPERATION");
     });
@@ -21,17 +23,21 @@ export const buscador = (selectMulti, autocomplete) => {
       option.addEventListener("click", (e) => {
         if (option.dataset.type === "1") {
           usuario_search_home.type_operation = [1];
-          getDataSummary({
+          getSearchSummaryAPI({
+            data: {
             operation_types: [1],
             property_types: [inputTypeProperty.dataset.ids],
+            }
           }).then((data) => {
             changeValues(data.objects, "", "TYPE_OPERATION");
           });
         } else {
           usuario_search_home.type_operation = [2];
-          getDataSummary({
+          getSearchSummaryAPI({
+            data: {
             operation_types: [2],
             property_types: [inputTypeProperty.dataset.ids],
+            }
           }).then((data) => {
             changeValues(data.objects, listContainer, "TYPE_OPERATION");
           });
@@ -49,9 +55,11 @@ export const buscador = (selectMulti, autocomplete) => {
         btn.classList.add("active");
         let currentOperation = Number(btn.getAttribute("data-type")) || 1;
         usuario_search_home.type_operation = [currentOperation];
-        getDataSummary({
-          operation_types: [currentOperation],
-          property_types: [inputTypeProperty.dataset.ids],
+        getSearchSummaryAPI({
+          data: {
+            operation_types: [currentOperation],
+            property_types: [inputTypeProperty.dataset.ids],
+          }
         }).then((data) => {
           changeValues(data.objects, "", "TYPE_OPERATION");
         });

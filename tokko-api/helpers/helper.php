@@ -1,7 +1,7 @@
 <?php 
 function is_bot(): bool {
     $bots = [
-        'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 'YandexBot',
+        'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 'YandexBot',
         'Sogou', 'Exabot', 'facebot', 'facebookexternalhit', 'ia_archiver',
         'AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot', 'Amazonbot',
         'PetalBot', 'Bytespider', 'GPTBot', 'ClaudeBot'
@@ -14,6 +14,32 @@ function is_bot(): bool {
         }
     }
     return false;
+}
+
+function ip_es_arg_uy(string $ip): bool {
+    $cache_key = 'geoip_' . md5($ip);
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        return $cached;
+    }
+
+    $url = "http://ip-api.com/json/{$ip}?fields=status,countryCode";
+    $response = @file_get_contents($url);
+    if ($response === false) {
+        // No se pudo geolocalizar, bloqueamos por seguridad
+        set_transient($cache_key, false, 86400);
+        return false;
+    }
+
+    $data = json_decode($response, true);
+    if (!isset($data['status']) || $data['status'] !== 'success') {
+        set_transient($cache_key, false, 86400);
+        return false;
+    }
+
+    $allowed = in_array($data['countryCode'], ['AR', 'UY']);
+    set_transient($cache_key, $allowed, 86400); // cache 1 día
+    return $allowed;
 }
 
 
@@ -417,20 +443,7 @@ function actualizar_query_param($clave, $valor, $multi = false): string {
 
 // --- FILTRO: OPERACIÓN ---
 
-function generar_filtros_operacion(array $data, array $params): array {
-    $ventas = ['count' => 0];
-    $alquiler = ['count' => 0];
-    foreach ($data as $item) {
-        if (!isset($item['operation_type'])) continue;
-        if ((int)$item['operation_type'] === 1) {
-            $ventas = $item;
-        } elseif ((int)$item['operation_type'] === 2) {
-            $alquiler = $item;
-        }
-    }
-
-
-
+function generar_filtros_operacion(array $params): array {
     $params = array_map('intval', $params);
     $checked_ventas = in_array(1, $params);
     $checked_alquiler = in_array(2, $params);
@@ -438,105 +451,43 @@ function generar_filtros_operacion(array $data, array $params): array {
     $url_alquiler = actualizar_query_param('operacion', '2', false);
     return [
         [
-
             'label' => 'Ventas',
-
             'checked' => $checked_ventas && !$checked_alquiler || count($params) === 2,
-
             'url' => $url_ventas
-
         ],
-
         [
-
             'label' => 'Alquiler',
-
             'checked' => $checked_alquiler && !$checked_ventas || count($params) === 2,
-
             'url' => $url_alquiler
-
         ]
-
     ];
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // --- FILTRO: UBICACIÓN ---
 
 function generar_filtros_ubicacion(array $params): array {
-
     $file_path = get_template_directory() . '/tokko-api/data/locations.json';
-
     if (!file_exists($file_path)) return [];
-
     $json = file_get_contents($file_path);
-
     $data = json_decode($json, true);
-
-
-
     if (empty($data) || !is_array($data)) return [];
-
     $out = [];
-
-
-
     foreach ($data as $loc) {
-
         $label = $loc['location_name'] ?? '';
-
         if($label = $loc['location_name'] === 'Centro (Capital Federal)'){
-
             $label = $loc['location_name'] = 'Centro/Microcentro';
-
         }else{
-
             $label = $loc['location_name'];
-
         }
-
         $id = (int) ($loc['location_id'] ?? 0);
-
-
-
         if (!$id) continue;
-
-
-
         $checked = in_array($id, $params, true);
-
         $url = actualizar_query_param('localidad', $id, true);
-
-
-
         $out[] = [
-
             'label' => $label,
-
             'checked' => $checked,
-
             'url' => $url
-
         ];
-
     }
 
 
@@ -551,10 +502,13 @@ function generar_filtros_ubicacion(array $params): array {
 
 //  FILTRO TYPE PROPERTY
 
-function generar_filtros_tipo(array $data, array $params): array {
+function generar_filtros_tipo(array $params): array {
+    $file_path = get_template_directory() . '/tokko-api/data/property.json';
+    if (!file_exists($file_path)) return [];
+    $json = file_get_contents($file_path);
+    $property_types = json_decode($json, true);
+    if (empty($property_types) || !is_array($property_types)) return [];
     $out = [];
-    $property_types = get_only_property_types();
-  
     foreach ($property_types as $type) {
         $label = $type['type']; // o 'tag_name' según tu estructura
         $count = $type['count'];
@@ -602,41 +556,23 @@ function generar_filtros_antiguedad(array $params): array {
 
 
 
-// ---- FILTRO: AMBINTES --
-
-function generar_filtros_ambientes(array $data, array $params): array {
+// ---- FILTRO: AMBIENTES --
+function generar_filtros_ambientes(array $params): array {
     $params = array_map('intval', $params); // asegurarse que sean ints
-
     $agrupados = [
         '1' => ['label' => '1', 'count' => 0],
         '2' => ['label' => '2', 'count' => 0],
         '3' => ['label' => '3', 'count' => 0],
         '4' => ['label' => '4+', 'count' => 0],
     ];
-
-    foreach ($data as $type) {
-        $amount = (int) $type['amount'];
-        $count = (int) $type['count'];
-
-        if ($amount === 1) {
-            $agrupados['1']['count'] += $count;
-        } elseif ($amount === 2) {
-            $agrupados['2']['count'] += $count;
-        } elseif ($amount === 3) {
-            $agrupados['3']['count'] += $count;
-        } elseif ($amount > 3) {
-            $agrupados['4']['count'] += $count;
-        }
-    }
-
     $out = [];
-
     foreach ($agrupados as $id => $info) {
         $checked = in_array((int)$id, $params, true);
         $url = actualizar_query_param('ambientes', $id, true); // selección múltiple
 
         $out[] = [
             'label'   => $info['label'],
+            'count'   => $info['count'],
             'checked' => $checked,
             'url'     => $url
         ];
@@ -647,44 +583,26 @@ function generar_filtros_ambientes(array $data, array $params): array {
 
 // FILTROS DORMITORIOS
 
-function generar_filtros_dormitorios(array $data, $params): array {
-    if (!is_array($params)) {
-        $params = [$params];
-    }
-    $params = array_map('intval', $params); // <-- Agregar esto
+function generar_filtros_dormitorios(array $params): array {
+    $params = array_map('intval', (array) $params); // siempre array de ints
 
     $agrupados = [
-        '1' => ['label' => '1', 'count' => 0],
-        '2' => ['label' => '2', 'count' => 0],
-        '3' => ['label' => '3', 'count' => 0],
-        '4' => ['label' => '4+', 'count' => 0],
+        '1' => ['label' => '1',   'count' => 0],
+        '2' => ['label' => '2',   'count' => 0],
+        '3' => ['label' => '3',   'count' => 0],
+        '4' => ['label' => '4+',  'count' => 0],
     ];
 
-    foreach ($data as $type) {
-        $amount = (int) $type['amount'];
-        $count = (int) $type['count'];
-
-        if ($amount === 1) {
-            $agrupados['1']['count'] += $count;
-        } elseif ($amount === 2) {
-            $agrupados['2']['count'] += $count;
-        } elseif ($amount === 3) {
-            $agrupados['3']['count'] += $count;
-        } elseif ($amount > 3) {
-            $agrupados['4']['count'] += $count;
-        }
-    }
-
     $out = [];
-
     foreach ($agrupados as $id => $info) {
         $checked = in_array((int)$id, $params, true);
         $url = actualizar_query_param('dormitorio', $id, true);
 
         $out[] = [
-            'label' => $info['label'],
+            'label'   => $info['label'],
+            'count'   => $info['count'],
             'checked' => $checked,
-            'url' => $url
+            'url'     => $url
         ];
     }
 
@@ -1055,15 +973,12 @@ function build_url_with_order(string $order_by, string $order): string {
 
 
 
-function obtener_locacion_por_id(array $ids = [], $locations): array {
+function obtener_locacion_por_id(array $locations, array $ids = []): array {
     $ids = is_array($ids) ? $ids : [$ids];
     $result = [];
 
     foreach ($locations as $location) {
-        if (!is_array($location)) {
-            continue; // salta los valores que no sean arrays
-        }
-
+        if (!is_array($location)) continue;
         if (isset($location['id']) && in_array((int)$location['id'], $ids, true)) {
             $result[] = $location;
         }
@@ -1074,13 +989,18 @@ function obtener_locacion_por_id(array $ids = [], $locations): array {
 
 
 
-function obtener_propiedad_por_id(array $ids, array $locations): array {
+function obtener_propiedad_por_id(array $ids): array {
     $ids = is_array($ids) ? $ids : [$ids];
     $result = [];
+    $file_path = get_template_directory() . '/tokko-api/data/property.json';
+    if (!file_exists($file_path)) return [];
+    $json = file_get_contents($file_path);
+    $property_types = json_decode($json, true);
+    if (empty($property_types) || !is_array($property_types)) return [];
 
-    foreach ($locations as $location) {
-        if (in_array((int)$location['id'], $ids, true)) {
-            $result[] = $location;
+    foreach ($property_types as $property) {
+        if (in_array((int)$property['id'], $ids, true)) {
+            $result[] = $property;
         }
     }
     return $result;
@@ -1177,6 +1097,15 @@ function get_object_position(string $acf = ''): string {
 function render_filters_apply($data, $barrios) {
     if (empty($data) || empty($barrios)) return '';
 
+    // Forzar que $data sea array para evitar warning
+    if (!is_array($data)) {
+        $data = [(string) $data];
+    }
+
+    // Si $data contiene solo un valor vacío o "1", no lo tomamos como localidad válida
+    $localidades_activas = array_filter($data, fn($val) => (string)trim($val) !== '' && (string)$val !== '1');
+    if (empty($localidades_activas)) return '';
+
     $output = '';
     $current_url = $_SERVER['REQUEST_URI'];
     $parsed_url = parse_url($current_url);
@@ -1185,16 +1114,24 @@ function render_filters_apply($data, $barrios) {
     foreach ($data as $id) {
         foreach ($barrios as $barrio) {
             if ((string)$id === $barrio['id']) {
-                // Remover solo ese ID del array de localidad
                 $modified_params = $query_params;
+
                 if (isset($modified_params['localidad'])) {
+                    $localidad_param = $modified_params['localidad'];
+                    if (!is_array($localidad_param)) {
+                        $localidad_param = [(string)$localidad_param];
+                    }
+
                     $modified_params['localidad'] = array_filter(
-                        $modified_params['localidad'],
+                        $localidad_param,
                         fn($val) => (string)$val !== (string)$id
                     );
+
+                    if (empty($modified_params['localidad'])) {
+                        unset($modified_params['localidad']);
+                    }
                 }
 
-                // Reconstruir URL
                 $base = $parsed_url['path'];
                 $query_string = http_build_query($modified_params);
                 $url = $base . ($query_string ? '?' . $query_string : '');
@@ -1205,15 +1142,19 @@ function render_filters_apply($data, $barrios) {
         }
     }
 
-    
-    $no_localidad = $query_params;
-    unset($no_localidad['localidad']);
-    $clear_url = $parsed_url['path'] . (http_build_query($no_localidad) ? '?' . http_build_query($no_localidad) : '');
-    $output .= '<a class="label-filter" href="' . esc_url($clear_url) . '" class="filter-clear">Borrar filtros</a>';
+    // Si hay localidades activas, mostrar botón "Borrar filtros"
+    if (!empty($localidades_activas)) {
+        $no_localidad = $query_params;
+        unset($no_localidad['localidad']);
+        $clear_url = $parsed_url['path'] . (http_build_query($no_localidad) ? '?' . http_build_query($no_localidad) : '');
+        $output .= '<a class="label-filter" href="' . esc_url($clear_url) . '" class="filter-clear">Borrar filtros</a>';
+    }
+
     return '<div class="filter-wrap">' . $output . '</div>';
 }
 
-function render_property_title($params, $ubicacion_localidad_slug, $barrios, $type_property_slug, $dataFilter) {
+
+function render_property_title($params, $ubicacion_localidad_slug, $barrios, $type_property_slug) {
     $locations_texts = [];
     $property_texts = [];
 
@@ -1226,7 +1167,7 @@ function render_property_title($params, $ubicacion_localidad_slug, $barrios, $ty
     }
 
     if ($hasTipo) {
-        $property_texts = obtener_propiedad_por_id($type_property_slug, $dataFilter['property_types'] ?? []);
+        $property_texts = obtener_propiedad_por_id($type_property_slug);
     }
 
     $operacion_label = null;

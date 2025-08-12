@@ -1,0 +1,32 @@
+[
+    {
+        "count": 92,
+        "id": 2,
+        "type": "Departamento"
+    },
+    {
+        "count": 39,
+        "id": 7,
+        "type": "Locales"
+    },
+    {
+        "count": 1,
+        "id": 8,
+        "type": "Edificio Comercial"
+    },
+    {
+        "count": 4,
+        "id": 10,
+        "type": "Cochera"
+    },
+    {
+        "count": 5,
+        "id": 1,
+        "type": "Terreno"
+    },
+    {
+        "count": 17,
+        "id": 5,
+        "type": "Oficina"
+    }
+]
