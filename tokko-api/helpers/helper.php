@@ -1242,3 +1242,25 @@ function render_property_title($params, $ubicacion_localidad_slug, $barrios, $ty
 
     echo '</h1>';
 }
+
+function get_feature_video(array $data): array {
+    if (empty($data)) {
+        return [];
+    }
+
+    // Filtrar por título que contenga comillas
+    $filtered = array_filter($data, function($video) {
+        return strpos($video['title'], '"') !== false;
+    });
+
+    // Usar filtrados si existen, si no usar todos
+    $videosToSearch = !empty($filtered) ? $filtered : $data;
+
+    // Ordenar por 'order'
+    usort($videosToSearch, function($a, $b) {
+        return $a['order'] <=> $b['order'];
+    });
+
+    // Retornar solo el primero
+    return reset($videosToSearch);
+}

@@ -31,8 +31,10 @@ $description = $development['description'];
 $tags = $development['tags'];
 
 // Videos
-$video_url = fix_youtube_embed_url($development['videos'][0]['player_url'] ?? '');
-$video_title = $development['videos'][0]['title'] ?? '';
+// Filtrar video:
+$feature_video = get_feature_video($development['videos']);
+$video_url = fix_youtube_embed_url($feature_video['player_url'] ?? '');
+$feature_title = $feature_video['title'] ?? '';
 
 // Ubicación
 $address_development = $development['address'];
@@ -595,7 +597,7 @@ $hay_planos = get_field('activar') ? true : false;
                 <div class="video p-relative">
 
                     <iframe src="<?php echo esc_url($video_url);?>" 
-
+                            title="<?php echo esc_attr($feature_title);?>"
                             frameborder="0" 
 
                             controls="true"
