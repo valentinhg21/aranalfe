@@ -21,11 +21,11 @@
     if (isset($_GET['localidad'])) {
         $ubicacion_localidad_slug = array_map('intval', (array)$_GET['localidad']);
         $division_localidad = 'division';
-        $current_localization_id = $ubicacion_localidad_slug[0] ?? 1;
+        $current_localization_id = $ubicacion_localidad_slug[0] ?? 0;
     } else {
-        $ubicacion_localidad_slug = 1;
+        $ubicacion_localidad_slug = 0;
         $division_localidad = 'country';
-        $current_localization_id = 1;
+        $current_localization_id = 0;
     }
 
     $type_property_slug = isset($_GET['tipo']) ? array_map('intval', (array)$_GET['tipo']) : range(1, 28);
@@ -43,9 +43,11 @@
             $filtro_antiguedad[] = ['age', '=', 0];
         }
         if (in_array('terminado', $antiguedad_slug, true)) {
-            $filtro_antiguedad[] = ['age', '>=', 1];
+            $filtro_antiguedad[] = ['age', '>', 1];
         }
     }
+
+
 
     $ambientes_slug = $_GET['ambientes'] ?? [];
     $ambientes_slug = is_array($ambientes_slug) ? $ambientes_slug : explode(',', $ambientes_slug);
@@ -244,21 +246,20 @@
 
         </div>
         <div class="row">
-            <div class="col-lg-3 col-sm-4 col-12 col-filtros">
+            <div class="col-lg-3 col-sm-4 col-12 col-filtros p-relative">
                 <aside class="block-filters">
                     <?php if($total_count === 1): ?>
-                    <p class="found">Encontraste <strong><?php echo $total_count;?> propiedad</strong></p>
+                        <p class="found">Encontraste <strong><?php echo $total_count;?> propiedad</strong></p>
 
                     <?php else: ?>
 
-                    <p class="found">Encontraste <strong><?php echo $total_count;?> propiedades</strong></p>
+                        <p class="found">Encontraste <strong><?php echo $total_count;?> propiedades</strong></p>
 
                     <?php endif; ?>
-
                     <button type="button" class="close-filter d-none-sm">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
-                    <div class="filters-container">
+                    <div>
                         <form class="form-location d-flex-md d-none">
                             <div class="input__container">
                                 <input type="text" class="location-input" id="location-input" placeholder="Seleccionar barrios">
@@ -266,13 +267,15 @@
                                     <?php render_svg(SVG . '/icon-search.svg'); ?>
                                 </button>
                             </div>
+                            <?php echo render_filters_apply($ubicacion_localidad_slug, $barrios); ?>
                         </form>
-                        <?php echo render_filters_apply($ubicacion_localidad_slug, $barrios); ?>
-                        
+                    </div>
+                    <form id="filtros-form" class="filters-container p-relative" method="get" action="/propiedades/">
                         <?php set_query_var('filtros', $filter_data); ?>
                         <?php set_query_var('filtros_tag', $filter_tag); ?>
                         <?php get_template_part('/template-parts/content', 'filtro');?>
-                    </div>
+                    </form>
+
                 </aside>
             </div>
             <div class="col-lg-9 col-sm-8 col-12">
@@ -286,6 +289,7 @@
                             </div>
                     </form>
                     <?php echo render_filters_apply($ubicacion_localidad_slug, $barrios); ?>
+                    
                 </section>
 
                 <section class="block-order-map">
@@ -373,24 +377,29 @@
                                     });
 
                                     $currency_price = $operation_order[0]['prices'][0]['currency'];
-                                 
+                                    
                                     if (count($property['operations']) === 2) {
                                        
                                         if ((int)$operacion_slug[0] === 2) {
                                             $price = $operation_order[1]['prices'][0]['price'];
+                     
                                             $operation_type = $operation_order[1]['operation_type'];
+
                                         } else {
                                             
                                             $price = $operation_order[0]['prices'][0]['price'];
                                             $operation_type = $operation_order[0]['operation_type'];
                                         }
                                     } else {
-                                     
+                                        
                                         $price = $operation_order[0]['prices'][0]['price'];
                                         $operation_type = $operation_order[0]['operation_type'];
                                     }
-
-                                    $total_price = render_price_format($price, $currency_price);
+                                    if($operation_type === 'Alquiler'){
+                                        $total_price = render_price_format($price, 'ARS');
+                                    }else{
+                                        $total_price = render_price_format($price, 'USD');
+                                    }
                                     $type_property = $property['type']['name'];
                                     $address = $property['address'];
                                     $total_surface = $property['total_surface'];

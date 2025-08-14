@@ -1,12 +1,5 @@
 [
     {
-        "count": 1,
-        "location_id": 24676,
-        "location_name": "Balvanera",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
-    },
-    {
         "count": 13,
         "location_id": 24677,
         "location_name": "Barracas",
@@ -14,7 +7,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 3,
+        "count": 5,
         "location_id": 24678,
         "location_name": "Barrio Norte",
         "parent_id": 146,
@@ -84,7 +77,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 16,
+        "count": 15,
         "location_id": 24728,
         "location_name": "Palermo",
         "parent_id": 146,
@@ -171,13 +164,6 @@
         "count": 1,
         "location_id": 24745,
         "location_name": "Villa Luro",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
-    },
-    {
-        "count": 1,
-        "location_id": 239352,
-        "location_name": "Villa Santa Rita",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },

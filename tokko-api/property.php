@@ -1,5 +1,6 @@
 <?php 
-
+// $_SERVER['REMOTE_ADDR'] = '66.249.70.64';
+// $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 function get_all_property_by_filter(
     array $params = [],
     int $limit = 12,
@@ -7,42 +8,56 @@ function get_all_property_by_filter(
     string $order_by = "created_date",
     string $order = 'ASC'
 ): array {
-    $config = require get_template_directory() . '/tokko-api/config.php';
-    $log_file = get_template_directory() . '/tokko.log';
 
-    // Obtener IP del cliente
-    $ip_cliente = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'CLI';
-
-    // Bloquear IPs sospechosas y bots
-    // if (is_bot() || in_array($ip_cliente)) {
-    //     file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Acceso bloqueado para IP: {$ip_cliente}, User-Agent: {$_SERVER['HTTP_USER_AGENT']}\n", FILE_APPEND);
-    //     return [];
-    // }
+    $config     = require get_template_directory() . '/tokko-api/config.php';
+    $log_file   = get_template_directory() . '/tokko.log';
+    $ip_cliente = $_SERVER['REMOTE_ADDR'] ?? '';
 
     if (!isset($params['data'])) {
         $params['data'] = [
             'current_localization_id' => 1,
             'current_localization_type' => 'country',
-            'price_from' => 1,
-            'price_to' => 999999999,
+            'price_from'   => 1,
+            'price_to'     => 999999999,
             'operation_types' => [1, 2],
-            'property_types' => range(1, 28),
-            'currency' => 'ANY',
-            'filters' => [],
-            'with_tags' => [],
-            'without_tags' => []
+            'property_types'  => range(1, 28),
+            'currency'    => 'ANY',
+            'filters'     => [],
+            'with_tags'   => [],
+            'without_tags'=> []
         ];
     }
 
-    $cache_key = 'tokko_props_' . md5(json_encode([$params, $limit, $offset, $order_by, $order]));
-    $cache_time = 300;
+    $transient_new = 'tokko_props_new_' . md5(json_encode([$params, $limit, $offset, $order_by, $order]));
+    $transient_old = 'tokko_props_old';
+    $new_time      = 120;   // 2 minutos
+    $old_time      = 86400;  // 1 hora
 
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | get_all_property_by_filter | TOKKO cache hit\n", FILE_APPEND);
-        return $cached;
+    // 1. Bots: usar NEW si existe, sino OLD
+    if (is_bot()) {
+        $new_cache = get_transient($transient_new);
+        $old_cache = get_transient($transient_old);
+
+        if ($new_cache !== false) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Bot recibe NEW transient (IP: {$ip_cliente})\n", FILE_APPEND);
+            return $new_cache;
+        } elseif ($old_cache !== false) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Bot recibe OLD transient (IP: {$ip_cliente})\n", FILE_APPEND);
+            return $old_cache;
+        } else {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Bot sin transient, placeholder entregado (IP: {$ip_cliente})\n", FILE_APPEND);
+            return ['properties'=>[], 'placeholder'=>true];
+        }
     }
 
+    // 2. Usuario normal: verificar transient NEW primero
+    $cached_transient = get_transient($transient_new);
+    if ($cached_transient !== false) {
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transient NEW entregado a usuario (IP: {$ip_cliente})\n", FILE_APPEND);
+        return $cached_transient;
+    }
+
+    // 3. Fetch API
     $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
     $url = $config['property_search_url']
         . '?lang=es_ar'
@@ -54,50 +69,38 @@ function get_all_property_by_filter(
         . '&data=' . urlencode($data_json)
         . '&key=' . $config['api_token'];
 
-    $max_intentos = 3;
-    $intento = 0;
-    contar_llamada_api($config['property_search_url']);
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_TIMEOUT        => 20,
+        CURLOPT_FOLLOWLOCATION => true
+    ]);
 
-    do {
-        file_put_contents(
-            $log_file,
-            "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Intento ".($intento+1)." | get_all_property_by_filter | URL: {$url}\n",
-            FILE_APPEND
-        );
+    $response  = curl_exec($ch);
+    $error     = curl_error($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $response = curl_exec($ch);
-        $error = curl_error($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+    file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
 
-        file_put_contents(
-            $log_file,
-            "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Intento ".($intento+1)." | get_all_property_by_filter | HTTP: {$http_code} | Error: {$error}\n",
-            FILE_APPEND
-        );
+    if ($response && $http_code === 200) {
+        $decoded = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
 
-        if ($response && $http_code === 200) {
-            $decoded = json_decode($response, true);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                set_transient($cache_key, $decoded, $cache_time);
-                return $decoded;
-            } else {
-                file_put_contents(
-                    $log_file,
-                    "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | get_all_property_by_filter | JSON inválido: ".json_last_error_msg()."\n",
-                    FILE_APPEND
-                );
-            }
+            // Guardar NEW transient (usuarios)
+            set_transient($transient_new, $decoded, $new_time);
+
+            // Actualizar OLD transient (bots) solo si no existe o siempre reemplazar
+            set_transient($transient_old, $decoded, $old_time);
+
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transient NEW creado para usuario y OLD actualizado para bots (IP: {$ip_cliente})\n", FILE_APPEND);
+
+            return $decoded;
         }
 
-        $intento++;
-        sleep(1);
-    } while ($intento < $max_intentos);
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] JSON inválido: ".json_last_error_msg()."\n", FILE_APPEND);
+    }
 
     return [];
 }
@@ -239,8 +242,9 @@ function get_create_filter_data(array $dataFilter = []): array {
     $suite_amount = $dataFilter['suite_amount'] ?? [];
 
     // QUERYS PARAMS
-    $type_operation = isset($_GET['operacion']) ? sanitize_text_field($_GET['operacion']) : [1,2];
+    $type_operation = $_GET['operacion'] ?? []; // si no viene, default [1,2]
     $type_operation = is_array($type_operation) ? $type_operation : [$type_operation];
+    $type_operation = array_map('intval', $type_operation); // asegurarse de que sean enteros
 
     // QUERY LOCATION
     $location = $_GET['localidad'] ?? [];
@@ -326,7 +330,10 @@ function get_create_filter_tag(array $dataFilter = []): array {
 // FUNCION PARA CAPTURAR DATO DE UNA PROPIEDAD
 
 function get_details_property(int $id): array {
+
     $config = require get_template_directory() . '/tokko-api/config.php';
+    $log_file = get_template_directory() . '/tokko.log';
+    $ip_cliente = $_SERVER['REMOTE_ADDR'] ?? '';
 
     $params = [
         'key'    => $config['api_token'],
@@ -335,13 +342,44 @@ function get_details_property(int $id): array {
         'id'     => $id
     ];
 
+    $transient_key = md5(json_encode($params));
+    $transient_new = 'tokko_detail_new_' . $transient_key;
+    $transient_old = 'tokko_detail_old_' . $transient_key;
+    $new_time      = 120;   // 2 minutos
+    $old_time      = 3600;  // 1 hora
+
+    // 1. Bots: usar NEW si existe, sino OLD
+    if (is_bot()) {
+        $new_cache = get_transient($transient_new);
+        $old_cache = get_transient($transient_old);
+
+        if ($new_cache !== false) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Bot recibe NEW transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+            return $new_cache;
+        } elseif ($old_cache !== false) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Bot recibe OLD transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+            return $old_cache;
+        } else {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Bot sin transient, placeholder entregado (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+            return ['property'=>[], 'placeholder'=>true];
+        }
+    }
+
+    // 2. Usuario normal: verificar NEW transient primero
+    $cached_transient = get_transient($transient_new);
+    if ($cached_transient !== false) {
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Transient NEW entregado a usuario (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+        return $cached_transient;
+    }
+
+    // 3. Fetch API
     $url = $config['property_detail_url'] . '?' . http_build_query($params);
-    contar_llamada_api($config['property_detail_url']);
+
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_TIMEOUT => 10,
+        CURLOPT_TIMEOUT        => 10,
         CURLOPT_FOLLOWLOCATION => true,
     ]);
     $response = curl_exec($ch);
@@ -349,16 +387,28 @@ function get_details_property(int $id): array {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
+    file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Single Property | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
+
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+
+            // Guardar NEW transient
+            set_transient($transient_new, $decoded, $new_time);
+
+            // Actualizar OLD transient para bots
+            set_transient($transient_old, $decoded, $old_time);
+
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Transient NEW creado para usuario y OLD actualizado para bots (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+
             return $decoded;
         }
-        error_log("[TOKKO][DETAIL {$id}] JSON inválido: " . json_last_error_msg());
+
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property JSON inválido: ".json_last_error_msg()."\n", FILE_APPEND);
     } else {
-        error_log("[TOKKO][DETAIL {$id}] CURL Error: $error | HTTP: $http_code");
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property CURL Error: {$error} | HTTP: {$http_code}\n", FILE_APPEND);
     }
-    
+
     return [];
 }
 

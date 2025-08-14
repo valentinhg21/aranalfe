@@ -554,23 +554,12 @@
             "videos": [
                 {
                     "description": "",
-                    "id": 10494,
-                    "order": 1,
-                    "player_url": "https:\/\/www.youtube.com\/embed\/4SzQu-6qqrY",
-                    "provider": "youtube",
-                    "provider_id": 2,
-                    "title": "Avance de Obra - Life Palermo",
-                    "url": "https:\/\/www.youtube.com\/watch?v=4SzQu-6qqrY",
-                    "video_id": "4SzQu-6qqrY"
-                },
-                {
-                    "description": "",
                     "id": 13144,
                     "order": 2,
                     "player_url": "https:\/\/www.youtube.com\/embed\/_MikkifLDbQ",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": "Life Palermo.",
+                    "title": "\"Life Palermo\"",
                     "url": "https:\/\/www.youtube.com\/watch?v=_MikkifLDbQ",
                     "video_id": "_MikkifLDbQ"
                 }
@@ -732,19 +721,10 @@
                 },
                 {
                     "description": null,
-                    "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163.jpg",
-                    "is_blueprint": false,
-                    "is_front_cover": false,
-                    "order": 11,
-                    "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163.jpg",
-                    "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163_thumb.jpg"
-                },
-                {
-                    "description": null,
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/32992463325324561825925536488476819888285723344721733977843918214165217718829.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 12,
+                    "order": 11,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/32992463325324561825925536488476819888285723344721733977843918214165217718829.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/32992463325324561825925536488476819888285723344721733977843918214165217718829_thumb.jpg"
                 },
@@ -753,7 +733,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_95870573409053070049055032538767966405888925425736532956405809891298541601500.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 13,
+                    "order": 12,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_95870573409053070049055032538767966405888925425736532956405809891298541601500.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_95870573409053070049055032538767966405888925425736532956405809891298541601500_thumb.jpg"
                 },
@@ -762,7 +742,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_2655645287456543728301903780999359014536657594636682915295239924339956697615.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 14,
+                    "order": 13,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_2655645287456543728301903780999359014536657594636682915295239924339956697615.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_2655645287456543728301903780999359014536657594636682915295239924339956697615_thumb.jpg"
                 },
@@ -771,7 +751,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_109592978304980768281849529108905131565611719777318940604904056463607334324805.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 15,
+                    "order": 14,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_109592978304980768281849529108905131565611719777318940604904056463607334324805.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_109592978304980768281849529108905131565611719777318940604904056463607334324805_thumb.jpg"
                 },
@@ -780,7 +760,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_64964850918925951771256087648685481161045226854596427391544986155254085518933.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 16,
+                    "order": 15,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_64964850918925951771256087648685481161045226854596427391544986155254085518933.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_64964850918925951771256087648685481161045226854596427391544986155254085518933_thumb.jpg"
                 },
@@ -789,7 +769,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_13414517566351810912691375772318862640884571396151139707876996772399597719706.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 17,
+                    "order": 16,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_13414517566351810912691375772318862640884571396151139707876996772399597719706.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_13414517566351810912691375772318862640884571396151139707876996772399597719706_thumb.jpg"
                 },
@@ -798,7 +778,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_3036264360158416988028882839722014834787499891334334654563217862847933474338.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 18,
+                    "order": 17,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_3036264360158416988028882839722014834787499891334334654563217862847933474338.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_3036264360158416988028882839722014834787499891334334654563217862847933474338_thumb.jpg"
                 },
@@ -807,7 +787,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_42465713124361106956123670870623023803277225051169063882658795847576813187760.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 19,
+                    "order": 18,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_42465713124361106956123670870623023803277225051169063882658795847576813187760.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_42465713124361106956123670870623023803277225051169063882658795847576813187760_thumb.jpg"
                 },
@@ -816,7 +796,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_46591062793630664024650038240186295449600915608221678897409512865113211106506.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 20,
+                    "order": 19,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_46591062793630664024650038240186295449600915608221678897409512865113211106506.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_46591062793630664024650038240186295449600915608221678897409512865113211106506_thumb.jpg"
                 },
@@ -825,7 +805,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_47214314039733113907120589887583428792154737821858237020143270651136815268048.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 21,
+                    "order": 20,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_47214314039733113907120589887583428792154737821858237020143270651136815268048.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_47214314039733113907120589887583428792154737821858237020143270651136815268048_thumb.jpg"
                 },
@@ -834,7 +814,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_40628510480724758064372433052555045371851107277673844395174803383164975658128.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 22,
+                    "order": 21,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_40628510480724758064372433052555045371851107277673844395174803383164975658128.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_40628510480724758064372433052555045371851107277673844395174803383164975658128_thumb.jpg"
                 },
@@ -843,7 +823,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_68475048535919296685748127940798784429560164279950094344036009766292520165296.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 23,
+                    "order": 22,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_68475048535919296685748127940798784429560164279950094344036009766292520165296.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_68475048535919296685748127940798784429560164279950094344036009766292520165296_thumb.jpg"
                 },
@@ -852,7 +832,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_92111430266353693396438724782817765740083452442723732966765818224674865446463.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 24,
+                    "order": 23,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_92111430266353693396438724782817765740083452442723732966765818224674865446463.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_92111430266353693396438724782817765740083452442723732966765818224674865446463_thumb.jpg"
                 },
@@ -861,7 +841,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_63741082332940938128892346966246762981762112079838359775167619094440756211560.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 25,
+                    "order": 24,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_63741082332940938128892346966246762981762112079838359775167619094440756211560.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_63741082332940938128892346966246762981762112079838359775167619094440756211560_thumb.jpg"
                 },
@@ -870,7 +850,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_10540840163972486377599905846969188853877882372705190811668793630025709811430.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 26,
+                    "order": 25,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_10540840163972486377599905846969188853877882372705190811668793630025709811430.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_10540840163972486377599905846969188853877882372705190811668793630025709811430_thumb.jpg"
                 },
@@ -879,7 +859,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_67951911167353798797272304315552281941345779408747161296430987060767009377088.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 27,
+                    "order": 26,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_67951911167353798797272304315552281941345779408747161296430987060767009377088.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_67951911167353798797272304315552281941345779408747161296430987060767009377088_thumb.jpg"
                 },
@@ -888,7 +868,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_60071607013867368987013810697088642867139417949260067269394729705057666334386.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 28,
+                    "order": 27,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_60071607013867368987013810697088642867139417949260067269394729705057666334386.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_60071607013867368987013810697088642867139417949260067269394729705057666334386_thumb.jpg"
                 },
@@ -897,7 +877,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_101704483301547833327527776531144899104585525311139133661278643370732969258210.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 29,
+                    "order": 28,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_101704483301547833327527776531144899104585525311139133661278643370732969258210.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_101704483301547833327527776531144899104585525311139133661278643370732969258210_thumb.jpg"
                 },
@@ -906,7 +886,7 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_115227791951815743609069738195476640805032873439112673586380557933671563252770.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 30,
+                    "order": 29,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_115227791951815743609069738195476640805032873439112673586380557933671563252770.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_115227791951815743609069738195476640805032873439112673586380557933671563252770_thumb.jpg"
                 },
@@ -915,9 +895,18 @@
                     "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_4652908418706427340441274261710277336875841217007012544179889370199007141572.jpg",
                     "is_blueprint": false,
                     "is_front_cover": false,
-                    "order": 31,
+                    "order": 30,
                     "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_4652908418706427340441274261710277336875841217007012544179889370199007141572.jpg",
                     "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_4652908418706427340441274261710277336875841217007012544179889370199007141572_thumb.jpg"
+                },
+                {
+                    "description": null,
+                    "image": "https:\/\/static.tokkobroker.com\/dev_pictures\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163.jpg",
+                    "is_blueprint": false,
+                    "is_front_cover": false,
+                    "order": 31,
+                    "original": "https:\/\/static.tokkobroker.com\/dev_original_pictures\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163.jpg",
+                    "thumb": "https:\/\/static.tokkobroker.com\/dev_thumbs\/46209_46997593003078855417468413773184624293677200207990234876917670956764104527163_thumb.jpg"
                 },
                 {
                     "description": null,
@@ -1836,12 +1825,12 @@
                     "description": "",
                     "id": 10276,
                     "order": 1,
-                    "player_url": "https:\/\/www.youtube.com\/embed\/4_SyGYI-bF8",
+                    "player_url": "https:\/\/www.youtube.com\/embed\/w87vhdhew3Q",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": "Nueva Torre en Belgrano",
-                    "url": "https:\/\/www.youtube.com\/watch?v=4_SyGYI-bF8",
-                    "video_id": "4_SyGYI-bF8"
+                    "title": "\"Nueva Torre en Belgrano\"",
+                    "url": "https:\/\/www.youtube.com\/watch?v=w87vhdhew3Q",
+                    "video_id": "w87vhdhew3Q"
                 },
                 {
                     "description": "",
@@ -1850,7 +1839,7 @@
                     "player_url": "https:\/\/www.youtube.com\/embed\/Sz7M-EHz7aY",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": " Feel Belgrano, avance de obra",
+                    "title": "\"Feel Belgrano, avance de obra\"",
                     "url": "https:\/\/www.youtube.com\/watch?v=Sz7M-EHz7aY",
                     "video_id": "Sz7M-EHz7aY"
                 },
@@ -2911,7 +2900,7 @@
                     "player_url": "https:\/\/www.youtube.com\/embed\/Yst96tr1DT4",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": "9 de Julio 3 Estudios, avance de obra.",
+                    "title": "\"9 de Julio 3 Estudios, avance de obra, Abril 2025\"",
                     "url": "https:\/\/www.youtube.com\/watch?v=Yst96tr1DT4",
                     "video_id": "Yst96tr1DT4"
                 }
@@ -3270,7 +3259,7 @@
                     "player_url": "https:\/\/www.youtube.com\/embed\/fZwN7bQE5sM",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": " Moca2, avance de obra.",
+                    "title": " \"Moca2, avance de obra Junio 2025\"",
                     "url": "https:\/\/www.youtube.com\/watch?v=fZwN7bQE5sM",
                     "video_id": "fZwN7bQE5sM"
                 }
@@ -3816,7 +3805,7 @@
                     "player_url": "https:\/\/www.youtube.com\/embed\/XfOoLuHzsQw",
                     "provider": "youtube",
                     "provider_id": 2,
-                    "title": "SLS Punta del Este",
+                    "title": "\"SLS Punta del Este\"",
                     "url": "https:\/\/www.youtube.com\/watch?v=XfOoLuHzsQw",
                     "video_id": "XfOoLuHzsQw"
                 }

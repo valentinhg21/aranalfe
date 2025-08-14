@@ -4,7 +4,7 @@ $current_id = $_GET['id'] ?? get_field('id') ?? 0;
 
 $primary = get_development_by_id($current_id);
 
-$development = null;
+$development = [];
 if (is_array($primary) && isset($primary['objects']) && !empty($primary['objects'])) {
     $development = $primary['objects'][0];
 }

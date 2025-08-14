@@ -1,19 +1,31 @@
 <?php 
 function is_bot(): bool {
-    $bots = [
-        'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 'YandexBot',
-        'Sogou', 'Exabot', 'facebot', 'facebookexternalhit', 'ia_archiver',
-        'AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot', 'Amazonbot',
-        'PetalBot', 'Bytespider', 'GPTBot', 'ClaudeBot'
+    // Lista de bots buenos que NO deberían usar cache
+    $good_bots = [
+        'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot'
     ];
 
     $agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-    foreach ($bots as $bot) {
+    $ip    = $_SERVER['REMOTE_ADDR'] ?? '';
+
+    // Si la IP comienza con 66.249 → es bot
+    if (strpos($ip, '66.249') === 0) {
+        return true;
+    }
+
+    // Revisar user-agent
+    foreach ($good_bots as $bot) {
         if (stripos($agent, $bot) !== false) {
-            return true;
+            return false; // Bot bueno
         }
     }
-    return false;
+
+    // Si contiene "bot", "spider" o "crawler" → bot malo
+    if (preg_match('/bot|spider|crawler/i', $agent)) {
+        return true;
+    }
+
+    return false; // Usuario normal
 }
 
 function ip_es_arg_uy(string $ip): bool {
@@ -444,23 +456,28 @@ function actualizar_query_param($clave, $valor, $multi = false): string {
 // --- FILTRO: OPERACIÓN ---
 
 function generar_filtros_operacion(array $params): array {
-    $params = array_map('intval', $params);
-    $checked_ventas = in_array(1, $params);
-    $checked_alquiler = in_array(2, $params);
-    $url_ventas = actualizar_query_param('operacion', '1', false);
-    $url_alquiler = actualizar_query_param('operacion', '2', false);
-    return [
-        [
-            'label' => 'Ventas',
-            'checked' => $checked_ventas && !$checked_alquiler || count($params) === 2,
-            'url' => $url_ventas
-        ],
-        [
-            'label' => 'Alquiler',
-            'checked' => $checked_alquiler && !$checked_ventas || count($params) === 2,
-            'url' => $url_alquiler
-        ]
+  
+    $params = array_map('intval', $params); // asegurar enteros
+    $operaciones = [
+        1 => 'Ventas',
+        2 => 'Alquiler'
     ];
+
+    $out = [];
+    foreach ($operaciones as $id => $label) {
+        $checked = !empty($params) && in_array($id, $params, true); // solo marcar si hay params
+        $url = actualizar_query_param('operacion', $id, true); // true => multiple opción
+
+        $out[] = [
+            'label' => $label,
+            'checked' => $checked,
+            'url' => $url,
+            'param' => 'operacion',
+            'value' => $id
+        ];
+    }
+
+    return $out;
 }
 
 // --- FILTRO: UBICACIÓN ---
@@ -486,7 +503,9 @@ function generar_filtros_ubicacion(array $params): array {
         $out[] = [
             'label' => $label,
             'checked' => $checked,
-            'url' => $url
+            'url' => $url,
+            'param' => 'localidad',
+            'value' => $id
         ];
     }
 
@@ -520,7 +539,9 @@ function generar_filtros_tipo(array $params): array {
         $out[] = [
             'label' => $label,
             'checked' => $checked,
-            'url' => $url
+            'url' => $url,
+            'param' => 'tipo',
+            'value' => $id
         ];
     }
 
@@ -545,7 +566,9 @@ function generar_filtros_antiguedad(array $params): array {
         $out[] = [
             'label' => $label,
             'checked' => $checked,
-            'url' => $url
+            'url' => $url,
+            'param' => 'antiguedad',
+            'value' => $id
         ];
     }
 
@@ -574,7 +597,9 @@ function generar_filtros_ambientes(array $params): array {
             'label'   => $info['label'],
             'count'   => $info['count'],
             'checked' => $checked,
-            'url'     => $url
+            'url'     => $url,
+            'param' => 'ambientes',
+            'value' => $info['label']
         ];
     }
 
@@ -602,15 +627,14 @@ function generar_filtros_dormitorios(array $params): array {
             'label'   => $info['label'],
             'count'   => $info['count'],
             'checked' => $checked,
-            'url'     => $url
+            'url'     => $url,
+            'param' => 'dormitorio',
+            'value' => $info['label']
         ];
     }
 
     return $out;
 }
-
-
-
 
 
 function generar_filtros_servicios(array $data, array $params) {
@@ -948,29 +972,28 @@ function ids_from_query($query) {
 
 
 function build_url_with_order(string $order_by, string $order): string {
-
     $params = $_GET;
-
-    // Limpiar valores anteriores
-
     unset($params['order_by'], $params['order']);
 
-    // Agregar los nuevos
+    $queryParts = [];
 
-    $params['order_by'] = $order_by;
+    foreach ($params as $key => $value) {
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                $queryParts[] = urlencode($key) . '[]=' . urlencode($v);
+            }
+        } else {
+            $queryParts[] = urlencode($key) . '=' . urlencode($value);
+        }
+    }
 
-    $params['order'] = $order;
-
-    // Armar base URL sin query
+    $queryParts[] = 'order_by=' . urlencode($order_by);
+    $queryParts[] = 'order=' . urlencode($order);
 
     $base_url = strtok($_SERVER['REQUEST_URI'], '?');
 
-    // Devolver URL con nuevos params
-
-    return $base_url . '?' . http_build_query($params);
-
+    return $base_url . '?' . implode('&', $queryParts);
 }
-
 
 
 function obtener_locacion_por_id(array $locations, array $ids = []): array {

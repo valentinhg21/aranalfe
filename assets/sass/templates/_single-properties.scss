@@ -31,6 +31,7 @@
         opacity: 1;
         z-index: 999999;
       }
+      padding: 40px 20px 16rem 20px;
     }
     @include media(xs) {
       top: 50px;
@@ -43,6 +44,7 @@
       outline: 0;
       background: transparent;
       font-size: 24px;
+     
       i {
         color: $black;
       }
@@ -50,6 +52,7 @@
     }
     .found {
       color: $black;
+      margin-bottom: 1rem;
       strong {
         color: $black;
       }
@@ -62,6 +65,8 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      // max-height: 50rem;
+      // overflow-y: scroll;
       @include media(sm){
         margin-top: 0;
       }
@@ -91,7 +96,10 @@
             display: flex;
             gap: 10px;
             color: $black;
-            a {
+            a,button {
+              outline: none;
+              border: 0;
+              background: transparent;
               font-size: 14px;
               cursor: pointer;
               display: flex;
@@ -128,9 +136,33 @@
           input:checked ~ .checkmark:after {
             opacity: 1;
           }
+
+          label.checked{
+            .checkmark:after{
+              opacity: 1;
+            }
+          }
+        }
+ 
+      }
+
+    }
+    .clean-filter{
+        background: #f6f6f6;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 2rem 0 4rem 0;
+        @include media(sm){
+          position: fixed;
+          padding: 2rem 2rem;
+          left: 0;
+        }
+        @include media(xs){
+          padding: 1rem 20px;
         }
       }
-    }
   }
   // BLOQUE FILTROS ORDER MAPA Y LISTA
   .block-order-map {
@@ -382,6 +414,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    flex-direction: column;
     .input__container {
       width: 100%;
       display: flex;
@@ -389,6 +422,7 @@
       padding: 4px;
       border-radius: 6px;
       height: 50px;
+      justify-content: space-between;
       @include media(md) {
         background: #ededed;
       }
@@ -450,6 +484,17 @@
         }
       }
     }
+    .filter-wrap{
+      margin: 20px 0 0 0;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
   }
 }
 

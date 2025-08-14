@@ -44,12 +44,3 @@ require_once ('inc/register-sync-acf.php');
 require_once ('inc/register-theme-options.php');
 require_once ('inc/register-cron.php');
 
-add_action('shutdown', function () {
-    if (!isset($_SERVER['REQUEST_URI'])) return;
-
-    // Solo mostrar si es la página de propiedades
-    if (strpos($_SERVER['REQUEST_URI'], '/propiedades/') !== false) {
-        error_log('[TOKKO API] Total llamadas en esta carga: ' . $GLOBALS['tokko_call_count']);
-        error_log('[TOKKO API] Lista de endpoints: ' . implode(', ', $GLOBALS['tokko_call_log']));
-    }
-});

@@ -7,7 +7,7 @@ export const mapPropertys = () => {
   let zoom = 14;
   if (mapElement) {
 
-    if(propertiesData.length > 0){
+    if (propertiesData.length > 0) {
       lat = parseFloat(propertiesData[0].lat)
       long = parseFloat(propertiesData[0].lng)
     }
@@ -121,13 +121,13 @@ export const mapPropertys = () => {
       let row = document.querySelector(".row-results");
       let body = document.querySelector('.theme')
       console.log(long)
-      if(toggleBtn.classList.contains('active')){
+      if (toggleBtn.classList.contains('active')) {
         toggleBtn.classList.remove("active");
         mapView.classList.remove("show");
         mapView.parentElement.style.overflowY = "scroll";
         row.classList.remove("d-none");
         body.classList.remove('hidden');
-      }else{
+      } else {
         toggleBtn.classList.add("active");
         mapView.classList.add("show");
         mapView.parentElement.style.overflowY = "hidden";
@@ -138,14 +138,14 @@ export const mapPropertys = () => {
 
     });
   }
-  if(btnOpenFilter){
-    btnOpenFilter.addEventListener('click', e =>{
-        let filters = document.querySelector('.block-filters')
-        filters.classList.add('show')
+  if (btnOpenFilter) {
+    btnOpenFilter.addEventListener('click', e => {
+      let filters = document.querySelector('.block-filters')
+      filters.classList.add('show')
     })
     closeFilter.addEventListener('click', e => {
-        let filters = document.querySelector('.block-filters')
-        filters.classList.remove('show')
+      let filters = document.querySelector('.block-filters')
+      filters.classList.remove('show')
     })
   }
 
@@ -251,4 +251,93 @@ export const mapPropertys = () => {
       window.location.href = finalURL;
     });
   });
+  const pageResults = document.querySelector('.properties');
+  if (pageResults) {
+      const form = document.getElementById('filtros-form');
+      const filtros = form.querySelectorAll('.button-filter');
+      const limpiarBtn = document.getElementById('limpiar-filtros');
+
+      // Reconstruir hidden inputs desde URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      filtros.forEach(filtro => {
+          const param = filtro.dataset.param;
+          const value = filtro.dataset.value;
+          if (!param || !value) return;
+
+          const name = param + '[]';
+          const values = urlParams.getAll(name);
+
+          if (values.includes(value)) {
+              const label = filtro.closest('label');
+              label.classList.add('checked');
+
+              let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
+              if (!hidden) {
+                  hidden = document.createElement('input');
+                  hidden.type = 'hidden';
+                  hidden.name = name;
+                  hidden.value = value;
+                  form.appendChild(hidden);
+              }
+          }
+      });
+
+      // Toggle al click y actualizar hidden inputs
+      filtros.forEach(filtro => {
+          filtro.addEventListener('click', e => {
+              e.preventDefault();
+              const label = filtro.closest('label');
+              label.classList.toggle('checked');
+
+              const param = filtro.dataset.param;
+              const value = filtro.dataset.value;
+              if (!param || !value) return;
+
+              const name = param + '[]';
+              let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
+
+              if (label.classList.contains('checked')) {
+                  if (!hidden) {
+                      hidden = document.createElement('input');
+                      hidden.type = 'hidden';
+                      hidden.name = name;
+                      hidden.value = value;
+                      form.appendChild(hidden);
+                  }
+              } else {
+                  if (hidden) hidden.remove();
+              }
+          });
+      });
+
+      // Limpiar todos los filtros
+      if (limpiarBtn) {
+          limpiarBtn.addEventListener('click', e => {
+              e.preventDefault();
+
+              // Quitar checked visual
+              filtros.forEach(filtro => {
+                  filtro.closest('label').classList.remove('checked');
+              });
+
+              // Borrar todos los hidden inputs
+              const hiddens = form.querySelectorAll('input[type="hidden"]');
+              hiddens.forEach(input => input.remove());
+
+              // Reset inputs de texto y radios (precio, sup, moneda, etc)
+              const inputs = form.querySelectorAll('input[type="number"], input[type="radio"]');
+              inputs.forEach(input => {
+                  if (input.type === 'number') {
+                      input.value = input.min || '';
+                  } else if (input.type === 'radio') {
+                      input.checked = false;
+                  }
+              });
+
+              // Recargar página sin query params
+              window.location.href = form.action || window.location.pathname;
+          });
+      }
+  }
 };

@@ -15,16 +15,17 @@
         .checkmark {
           display: none;
         }
-        a {
+        a,button {
           width: 40px;
           height: 40px;
-          border: 1px solid #bebebe;
+          border: 1px solid #bebebe !important;
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
+          transition: $fast;
           &:hover {
-            background: $red;
+            background: $red !important;
 
             color: $white !important;
             border: 1px solid $red;
@@ -32,10 +33,10 @@
         }
 
         &.checked {
-          a {
+          a,button {
             color: $white !important;
-            background: $red;
-            border: 1px solid $red;
+            background: $red !important;
+            border: 1px solid $red !important;
           }
         }
       }
@@ -44,9 +45,10 @@
 
   &.filter-price,
   &.filter-sup {
-    form {
+   
       .input-min-max {
         display: flex;
+
         label {
           font-size: 12px;
           color: #bebebe;
@@ -130,6 +132,6 @@
                top: 24px;
           }
       }
-    }
+    
   }
 }

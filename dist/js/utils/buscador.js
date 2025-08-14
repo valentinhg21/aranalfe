@@ -111,7 +111,7 @@ export const buscador = (selectMulti, autocomplete) => {
           )?.firstElementChild;
         const operationValue = usuario_search_home.type_operation[0];
         if (operationValue === 1 || operationValue === 2) {
-          params.append("operacion", operationValue.toString());
+          params.append("operacion[]", operationValue.toString());
         }
         toSlugArrayParams(inputTypeProperty.dataset.ids).forEach((id) => {
           params.append("tipo", id);
