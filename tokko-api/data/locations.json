@@ -7,14 +7,14 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 5,
+        "count": 4,
         "location_id": 24678,
         "location_name": "Barrio Norte",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },
     {
-        "count": 29,
+        "count": 30,
         "location_id": 24682,
         "location_name": "Belgrano",
         "parent_id": 146,
@@ -42,7 +42,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 2,
         "location_id": 24708,
         "location_name": "Congreso",
         "parent_id": 146,
@@ -63,7 +63,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 13,
+        "count": 14,
         "location_id": 24699,
         "location_name": "Microcentro",
         "parent_id": 24697,
@@ -77,7 +77,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 15,
+        "count": 16,
         "location_id": 24728,
         "location_name": "Palermo",
         "parent_id": 146,
@@ -112,7 +112,7 @@
         "parent_name": "Maldonado"
     },
     {
-        "count": 22,
+        "count": 23,
         "location_id": 24681,
         "location_name": "Recoleta",
         "parent_id": 146,
@@ -133,7 +133,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 3,
+        "count": 4,
         "location_id": 24703,
         "location_name": "San Nicolás",
         "parent_id": 146,

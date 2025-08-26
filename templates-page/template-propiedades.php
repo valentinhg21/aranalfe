@@ -104,7 +104,7 @@
         }
     }
 
-    $moneda_slug = isset($_GET['moneda']) ? sanitize_text_field($_GET['moneda']) : 'USD';
+    $moneda_slug = isset($_GET['moneda']) ? sanitize_text_field($_GET['moneda']) : 'ANY';
     $precio_min_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_min'] ?? '')) !== '' ? (int) $val : 1;
     $precio_max_slug = ($val = preg_replace('/[^\d]/', '', $_GET['precio_max'] ?? '')) !== '' ? (int) $val : 999999999;
 
@@ -167,6 +167,8 @@
     $filter_tag = get_create_filter_tag();
     // $search_location = $summary_data['objects']['locations'] ?? [];
     $barrios = get_field('barrios', 'options') ?? [];
+
+    
 ?>
 
 

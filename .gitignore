@@ -1,3 +1,5 @@
 node_modules
 testeo.php
-./tokko.log
+dist
+/tokko.log
+tokko.log

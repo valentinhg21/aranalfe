@@ -1264,3 +1264,50 @@ function get_feature_video(array $data): array {
     // Retornar solo el primero
     return reset($videosToSearch);
 }
+
+function sort_prices_by_operation(array $data): array {
+    // Definir un orden de prioridad para los tipos de operación.
+    $orden_prioridad = ['Venta' => 1, 'Alquiler' => 2];
+
+    // Usar usort para ordenar el array.
+    usort($data, function ($a, $b) use ($orden_prioridad) {
+        $tipo_a = $a['operation_type'] ?? '';
+        $tipo_b = $b['operation_type'] ?? '';
+
+        $prioridad_a = $orden_prioridad[$tipo_a] ?? 99;
+        $prioridad_b = $orden_prioridad[$tipo_b] ?? 99;
+
+        // Comparar prioridades.
+        if ($prioridad_a === $prioridad_b) {
+            return 0; // Mantener el orden relativo si las prioridades son iguales.
+        }
+
+        return $prioridad_a <=> $prioridad_b;
+    });
+
+    return $data;
+}
+
+function render_all_prices_formatted(array $operations): array
+{
+    $formatted_prices = [];
+
+    foreach ($operations as $operation) {
+        $operation_type = $operation['operation_type'] ?? 'Desconocido';
+        $prices = $operation['prices'] ?? [];
+
+        foreach ($prices as $price_data) {
+            $price = $price_data['price'] ?? 0;
+            $currency = $price_data['currency'] ?? '';
+
+            if ($price > 0 && !empty($currency)) {
+                $formatted_prices[] = [
+                    'operation_type' => $operation_type,
+                    'formatted_price' => render_price_format($price, $currency)
+                ];
+            }
+        }
+    }
+
+    return $formatted_prices;
+}

@@ -562,6 +562,14 @@
             }
           }
         }
+        &.description{
+          p{
+            margin-bottom: 10px !important;
+          }
+          br{
+            display: block !important;
+          }
+        }
       }
     }
   }

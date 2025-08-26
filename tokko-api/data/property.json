@@ -1,11 +1,11 @@
 [
     {
-        "count": 90,
+        "count": 89,
         "id": 2,
         "type": "Departamento"
     },
     {
-        "count": 41,
+        "count": 43,
         "id": 7,
         "type": "Locales"
     },
@@ -20,7 +20,7 @@
         "type": "Cochera"
     },
     {
-        "count": 5,
+        "count": 6,
         "id": 1,
         "type": "Terreno"
     },
