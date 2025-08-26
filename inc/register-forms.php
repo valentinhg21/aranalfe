@@ -481,12 +481,12 @@ function get_search() {
     $params_2 = [
         'data' => [
             'current_localization_type' => 'country',
-            'current_localization_id' => 1,
+            'current_localization_id' => 0,
             'price_from' => 0,
             'price_to' => 9999999999999,
             'operation_types' => $operation_types,
             'property_types' => $property_types,
-            'currency' => 'USD',
+            'currency' => 'ANY',
             'filters' => [],
             'with_tags' => []
         ]

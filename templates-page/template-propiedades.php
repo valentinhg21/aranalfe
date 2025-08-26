@@ -166,7 +166,10 @@
     $filter_data = get_create_filter_data();
     $filter_tag = get_create_filter_tag();
     // $search_location = $summary_data['objects']['locations'] ?? [];
-    $barrios = get_field('barrios', 'options') ?? [];
+    $locations_data = get_locations(get_only_locations());
+    // $barrios_2 = get_field('barrios', 'options') ?? [];
+
+    $barrios = $locations_data['locations'];
 
     
 ?>

@@ -4096,7 +4096,19 @@
                 "name": "Edificio"
             },
             "users_in_charge": [],
-            "videos": [],
+            "videos": [
+                {
+                    "description": "Cumplimos más de 60 años de trayectoria, siempre con nuestro compromiso de brindar el más alto nivel de servicio en cada operación.\n\nAl día de hoy, seguimos trabajando día a día con la misma dedicación con la que comenzamos buscando siempre ser un activo de confianza y profesionalidad para nuestros clientes.",
+                    "id": 13377,
+                    "order": 1,
+                    "player_url": "https:\/\/www.youtube.com\/embed\/iEBAht45arI",
+                    "provider": "youtube",
+                    "provider_id": 2,
+                    "title": "Somos Aranalfe.",
+                    "url": "https:\/\/www.youtube.com\/watch?v=iEBAht45arI",
+                    "video_id": "iEBAht45arI"
+                }
+            ],
             "web_url": "https:\/\/aranalfe.com\/emprendimiento\/aguilar-2483\/62216"
         }
     ]

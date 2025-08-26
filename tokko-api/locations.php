@@ -68,6 +68,122 @@ function get_only_locations(array $params = []): array {
     return $data['objects']['locations'] ?? [];
 }
 
+function get_locations($data = []) {
+
+    $my_rules = [];
+
+    if (have_rows('cambiar_nombres_de_barrioslocalidades', 'options')) {
+        while (have_rows('cambiar_nombres_de_barrioslocalidades', 'options')) {
+            the_row();
+
+            $nombre = get_sub_field('nombre', 'options');
+            $nombre_nuevo = get_sub_field('nombre_nuevo', 'options');
+
+            if ($nombre && $nombre_nuevo) {
+                $my_rules[$nombre] = $nombre_nuevo;
+            }
+        }
+    }
+
+    $remove_rules = [];
+
+    if (have_rows('excluir_barrioslocalidades', 'options')) {
+        while (have_rows('excluir_barrioslocalidades', 'options')) {
+            the_row();
+
+            $nombre = get_sub_field('nombre', 'options');
+
+
+            if ($nombre) {
+                $remove_rules[$nombre] = $nombre;
+            }
+        }
+    }
+
+
+    
+    if (empty($data)) {
+        return [
+            'locations' => [],
+            'parents'   => [],
+            'removed'   => [],
+        ];
+    }
+    
+    $hierarchy_map = [];
+    foreach ($data as $location) {
+        $hierarchy_map[$location['location_id']] = $location;
+    }
+
+    $locations_out   = [];
+    $parents_out     = [];
+    $removed_out     = [];
+    $seen_locations  = [];
+    $seen_parents    = [];
+
+    foreach ($data as &$location) {
+        $current_parent_id = $location['parent_id'];
+        $path = [];
+        
+        while (isset($hierarchy_map[$current_parent_id])) {
+            if (in_array($current_parent_id, $path)) {
+                break;
+            }
+            $path[] = $current_parent_id;
+            $current_parent_id = $hierarchy_map[$current_parent_id]['parent_id'];
+        }
+        
+        if (!empty($path)) {
+            $grandparent_id = end($path);
+            $location['parent_id']   = $hierarchy_map[$grandparent_id]['parent_id'];
+            $location['parent_name'] = $hierarchy_map[$grandparent_id]['parent_name'];
+        }
+
+        // aplicar reglas de nombres (tanto a parent_name como a location_name)
+        if (isset($my_rules[$location['parent_name']])) {
+            $location['parent_name'] = $my_rules[$location['parent_name']];
+        }
+        if (isset($my_rules[$location['location_name']])) {
+            $location['location_name'] = $my_rules[$location['location_name']];
+        }
+
+        // ❌ excluir si coincide con location_name o con parent_name
+        if (
+            in_array($location['location_name'], $remove_rules) ||
+            in_array($location['parent_name'], $remove_rules)
+        ) {
+            $removed_out[] = $location;
+            continue;
+        }
+
+        // agregar location única
+        if (!in_array($location['location_name'], $seen_locations)) {
+            $seen_locations[] = $location['location_name'];
+            $locations_out[]  = $location; // guardo toda la info
+        }
+
+        // agregar parent único
+        if (!in_array($location['parent_name'], $seen_parents)) {
+            $seen_parents[] = $location['parent_name'];
+            $parents_out[]  = [
+                'parent_name' => $location['parent_name'],
+                'parent_id'   => $location['parent_id']
+            ];
+        }
+    }
+
+    return [
+        'locations' => $locations_out,
+        'parents'   => $parents_out,
+        'removed'   => $removed_out
+    ];
+}
+
+
+
+
+
+
 function save_data_locations(array $params = []) {
     // Locations
     $data = get_only_locations($params);

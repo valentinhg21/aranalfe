@@ -6,6 +6,10 @@
 
 
 
+ $locations_data = get_locations(get_only_locations());
+ $only_barrios = $locations_data['locations'];
+ $only_localidad = $locations_data['parents'];
+
 
 
 ?>
@@ -111,27 +115,12 @@
                 <div class="list-select">
 
                     <ul class="list-type-parentlocation">
-
-                        <?php if ( have_rows( 'locacion_padre', 'options' ) ) : ?>
-
-                            <?php while ( have_rows( 'locacion_padre', 'options' ) ) :
-
-                            the_row(); ?>
-
-                                <?php $id = get_sub_field( 'id', 'options' ); ?>
-
-                                <?php $name = get_sub_field( 'name', 'options' ); ?>
-
+                        <?php foreach ($only_localidad as $localidad): ?>
+                            
                                 <li class="options-list-select option-parent">
-
-                                    <p id="<?php echo $id; ?>" class="option-click-parent"><?php echo $name ?></p>
-
+                                    <p id="<?php echo $localidad['parent_id']; ?>" class="option-click-parent"><?php echo $localidad['parent_name'] ?></p>
                                 </li>
-
-                            <?php endwhile; ?>
-
-                        <?php endif; ?>
-
+                        <?php endforeach; ?>
                     </ul>
 
                 </div>
@@ -147,31 +136,13 @@
                 <div class="results">
                     <input type="text" name="location"  id="search-location" placeholder="Buscar">
                     <ul class="list-type-location">
+                        <?php foreach ($only_barrios as $barrio): ?>
+                            <li class="options-list-select option-location" data-parent="<?php echo $barrio['parent_name'] ?>">
 
+                                <p id="<?php echo $barrio['location_id']; ?>"><?php echo $barrio['location_name'] ?></p>
 
-
-                        <?php if ( have_rows( 'barrios', 'options' ) ) : ?>
-
-                            <?php while ( have_rows( 'barrios', 'options' ) ) :
-
-                            the_row(); ?>
-
-                                <?php $id = get_sub_field( 'id', 'options' ); ?>
-
-                                <?php $name = get_sub_field( 'name', 'options' ); ?>
-
-                                <?php $parentName = get_sub_field( 'parent_name', 'options' ); ?>
-
-                                <li class="options-list-select option-location" data-parent="<?php echo $parentName ?>">
-
-                                    <p id="<?php echo $id; ?>"><?php echo $name ?></p>
-
-                                </li>
-
-                            <?php endwhile; ?>
-
-                        <?php endif; ?>
-
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
 
                 </div>
@@ -183,7 +154,6 @@
         </div>
 
         <div class="submit">
-
             <button type="submit" class="btn btn-search" id="search-button">
                 <span class="d-none-md">Buscar</span>
                 <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +174,6 @@
 
                 </svg>
             </button>
-
         </div>
         <div class="loader-container">
             <span class="loader"></span>

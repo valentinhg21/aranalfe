@@ -1120,13 +1120,14 @@ function get_object_position(string $acf = ''): string {
 function render_filters_apply($data, $barrios) {
     if (empty($data) || empty($barrios)) return '';
 
-    // Forzar que $data sea array para evitar warning
+    // Normalizar $data: array de enteros
     if (!is_array($data)) {
-        $data = [(string) $data];
+        $data = [$data];
     }
+    $data = array_map('intval', $data);
 
-    // Si $data contiene solo un valor vacío o "1", no lo tomamos como localidad válida
-    $localidades_activas = array_filter($data, fn($val) => (string)trim($val) !== '' && (string)$val !== '1');
+    // Filtrar valores inválidos (0 o negativos)
+    $localidades_activas = array_filter($data, fn($val) => $val > 0);
     if (empty($localidades_activas)) return '';
 
     $output = '';
@@ -1136,7 +1137,9 @@ function render_filters_apply($data, $barrios) {
 
     foreach ($data as $id) {
         foreach ($barrios as $barrio) {
-            if ((string)$id === $barrio['id']) {
+            $location_id = (int) $barrio['location_id'];
+
+            if ($id === $location_id) {
                 $modified_params = $query_params;
 
                 if (isset($modified_params['localidad'])) {
@@ -1147,7 +1150,7 @@ function render_filters_apply($data, $barrios) {
 
                     $modified_params['localidad'] = array_filter(
                         $localidad_param,
-                        fn($val) => (string)$val !== (string)$id
+                        fn($val) => (int)$val !== $id
                     );
 
                     if (empty($modified_params['localidad'])) {
@@ -1159,13 +1162,14 @@ function render_filters_apply($data, $barrios) {
                 $query_string = http_build_query($modified_params);
                 $url = $base . ($query_string ? '?' . $query_string : '');
 
-                $output .= '<a href="' . esc_url($url) . '" class="filter-tag">' . esc_html($barrio['name']) . ' &times;</a> ';
+                $output .= '<a href="' . esc_url($url) . '" class="filter-tag">' 
+                    . esc_html($barrio['location_name']) . ' &times;</a> ';
                 break;
             }
         }
     }
 
-    // Si hay localidades activas, mostrar botón "Borrar filtros"
+    // Botón "Borrar filtros"
     if (!empty($localidades_activas)) {
         $no_localidad = $query_params;
         unset($no_localidad['localidad']);

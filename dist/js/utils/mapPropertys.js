@@ -161,7 +161,7 @@ export const mapPropertys = () => {
     const location_ids = locations_data.map(loc => String(loc.location_id));
 
     // 2. Forzar orden de optgroups según datos reales
-    const optgroupNames = ['Capital Federal', 'Provincia de BsAs']; // asegurate que coincidan
+    const optgroupNames = ['Capital Federal', 'Provincia de BsAs', 'Maldonado']; // asegurate que coincidan
     const optgroups = optgroupNames.map(name => ({
       value: name,
       label: name
@@ -181,12 +181,14 @@ export const mapPropertys = () => {
       }
     ];
 
+    console.log(locations_theme)
+
     // 4. Opciones normales
     const filteredOptions = [
       ...extraOptions,
       ...locations_theme.map(loc => ({
-        value: loc.id,
-        text: loc.name,
+        value: loc.location_id,
+        text: loc.location_name,
         optgroup: loc.parent_name
       }))
     ];
@@ -247,7 +249,7 @@ export const mapPropertys = () => {
       }
 
       const finalURL = `${baseURL}/?${currentParams.toString()}`;
-      console.log('Redireccionando a:', finalURL);
+
       window.location.href = finalURL;
     });
   });
