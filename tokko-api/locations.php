@@ -86,7 +86,6 @@ function get_locations($data = []) {
     }
 
     $remove_rules = [];
-
     if (have_rows('excluir_barrioslocalidades', 'options')) {
         while (have_rows('excluir_barrioslocalidades', 'options')) {
             the_row();
