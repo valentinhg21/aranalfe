@@ -6,7 +6,7 @@
     $property_feature = [];
     $params = [
     'data' => [
-        'current_localization_id' => 1, // ID de ciudad/localidad
+        'current_localization_id' => 0, // ID de ciudad/localidad
         'current_localization_type' => 'country', // "country", "province", "city", "zone"
         'price_from' => 0,
         'price_to' => 99999999999999,

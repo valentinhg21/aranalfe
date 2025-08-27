@@ -112,7 +112,7 @@
         },
         {
             "key": "field_68541cf86d95d",
-            "label": "NÃºmero Whatsapp",
+            "label": "Numero Whatsapp",
             "name": "numero_whatsapp",
             "aria-label": "",
             "type": "text",
@@ -213,170 +213,12 @@
             "selected": 0
         },
         {
-            "key": "field_685c404462fe3",
-            "label": "LocaciÃ³n Padre",
-            "name": "locacion_padre",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_685c406262fe4",
-                    "label": "ID",
-                    "name": "id",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_685c404462fe3"
-                },
-                {
-                    "key": "field_685c406962fe5",
-                    "label": "Name",
-                    "name": "name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_685c404462fe3"
-                }
-            ]
-        },
-        {
-            "key": "field_685c407b62fe7",
-            "label": "Barrios",
-            "name": "barrios",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_685c408b62fe8",
-                    "label": "ID",
-                    "name": "id",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_685c407b62fe7"
-                },
-                {
-                    "key": "field_685c409562fe9",
-                    "label": "Name",
-                    "name": "name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_685c407b62fe7"
-                },
-                {
-                    "key": "field_685c40a362fea",
-                    "label": "Parent Name",
-                    "name": "parent_name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_685c407b62fe7"
-                }
-            ]
-        },
-        {
             "key": "field_68ae1686c1595",
             "label": "Cambiar Nombres de Barrios\/Localidades",
             "name": "cambiar_nombres_de_barrioslocalidades",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "En esta sección, tiene la posibilidad de modificar el nombre original del barrio o localidad por uno personalizado.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -389,7 +231,7 @@
             "min": 0,
             "max": 0,
             "collapsed": "",
-            "button_label": "Add Row",
+            "button_label": "Agregar",
             "rows_per_page": 20,
             "sub_fields": [
                 {
@@ -398,7 +240,7 @@
                     "name": "nombre",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Ingresar el nombre original",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -420,7 +262,7 @@
                     "name": "nombre_nuevo",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Ingresar nombre personalizado",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -444,7 +286,7 @@
             "name": "excluir_barrioslocalidades",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "En esta sección, tiene la posibilidad de ocultar el barrio o localidad del buscador.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -457,7 +299,7 @@
             "min": 0,
             "max": 0,
             "collapsed": "",
-            "button_label": "Add Row",
+            "button_label": "Agregar",
             "rows_per_page": 20,
             "sub_fields": [
                 {
@@ -466,7 +308,7 @@
                     "name": "nombre",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Ingresar nombre original del barrio\/localidad",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -503,5 +345,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1756239780
+    "modified": 1756315869
 }

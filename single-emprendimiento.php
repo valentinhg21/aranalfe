@@ -46,7 +46,7 @@ $long = $development['geo_long'];
 // Get all properties by id development
 $params = [
     'data' => [
-        'current_localization_id' => 1,
+        'current_localization_id' => 0,
         'current_localization_type' => 'country',
         'price_from' => 1,
         'price_to' => 999999999999,

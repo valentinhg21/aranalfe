@@ -578,4 +578,9 @@
   font-size: 12px;
   font-weight: bold;
   border-bottom: 1px solid #c4c4c4;
+  .highlight{
+    color: $red;
+  }
 }
+
+.highlight{color: $black;}

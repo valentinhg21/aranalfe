@@ -15,7 +15,7 @@ function get_all_property_by_filter(
 
     if (!isset($params['data'])) {
         $params['data'] = [
-            'current_localization_id' => 1,
+            'current_localization_id' => 0,
             'current_localization_type' => 'country',
             'price_from'   => 1,
             'price_to'     => 999999999,
@@ -110,7 +110,7 @@ function get_all_property_by_filter_test(array $params = [], int $limit = 12, in
 
     if (!isset($params['data'])) {
         $params['data'] = [
-            'current_localization_id' => 1,
+            'current_localization_id' => 0,
             'current_localization_type' => 'country',
             'price_from' => 1,
             'price_to' => 999999999,
@@ -179,7 +179,7 @@ function get_search_summary(array $params = []): array {
 
     if (!isset($params['data'])) {
         $params['data'] = [
-            'current_localization_id' => 1,
+            'current_localization_id' => 0,
             'current_localization_type' => 'country',
             'price_from' => 1,
             'price_to' => 999999999,

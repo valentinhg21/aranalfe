@@ -151,42 +151,36 @@ export const mapPropertys = () => {
 
   // SELECT - inicializar TomSelect en todos los location-input
   const locationInputs = document.querySelectorAll('.location-input');
-
+  let extraOptions = [];
   if (locationInputs.length) {
     // Mostrar los optgroups disponibles (debug)
-    const optgroupDebug = [...new Set(locations_theme.map(loc => loc.parent_name))];
+    const optgroupDebug = [...new Set(locations_data.map(loc => loc.parent_name))];
     console.log('Optgroups detectados:', optgroupDebug);
 
-    // 1. Extraer location_ids
-    const location_ids = locations_data.map(loc => String(loc.location_id));
+    // 1. Extraer parent_names y eliminar duplicados.
+    const parentNames = [...new Set(locations_data.map(loc => String(loc.parent_name)))];
 
     // 2. Forzar orden de optgroups según datos reales
-    const optgroupNames = ['Capital Federal', 'Provincia de BsAs', 'Maldonado']; // asegurate que coincidan
+    const optgroupNames = parentNames;
     const optgroups = optgroupNames.map(name => ({
       value: name,
       label: name
     }));
 
-    // 3. Opciones "Todos"
-    const extraOptions = [
-      {
-        value: 'all_capital',
-        text: 'Todos Capital Federal',
-        optgroup: 'Capital Federal'
-      },
-      {
-        value: 'all_provincia',
-        text: 'Todos Provincia de BsAs',
-        optgroup: 'Provincia de BsAs'
-      }
-    ];
-
-    console.log(locations_theme)
-
+    // 3. Crear las opciones de "Todos" dinámicamente
+   
+    optgroupNames.forEach(name => {
+      extraOptions.push({
+        value: `all_${name.toLowerCase().replace(/\s/g, '_')}`,
+        text: `Todos ${name}`,
+        optgroup: name
+      });
+    });
+    
     // 4. Opciones normales
     const filteredOptions = [
       ...extraOptions,
-      ...locations_theme.map(loc => ({
+      ...locations_data.map(loc => ({
         value: loc.location_id,
         text: loc.location_name,
         optgroup: loc.parent_name
@@ -208,138 +202,146 @@ export const mapPropertys = () => {
     });
   }
 
-  // Botones buscar (search-location)
-  const searchButtons = document.querySelectorAll('.search-location');
-
-  searchButtons.forEach(searchSubmit => {
-    searchSubmit.addEventListener('click', e => {
-      e.preventDefault();
-
-      const form = searchSubmit.closest('form') || document;
-      const items = form.querySelectorAll('.item');
-      const currentParams = new URLSearchParams(window.location.search);
-
-      // Eliminar localidad[]
-      currentParams.delete('localidad[]');
-
-      if (items.length > 0) {
-        items.forEach(item => {
-          const val = item.dataset.value;
-          console.log('Valor seleccionado:', val);
-
-          if (val === 'all_capital') {
-            const capitalItems = locations_theme.filter(loc => loc.parent_name === 'Capital Federal');
-            console.log('Barrios de Capital:', capitalItems);
-            capitalItems.forEach(loc => currentParams.append('localidad[]', loc.id));
-          } else if (val === 'all_provincia') {
-            const provinciaItems = locations_theme.filter(loc => loc.parent_name === 'Provincia de BsAs');
-            console.log('Barrios de Provincia:', provinciaItems);
-            provinciaItems.forEach(loc => currentParams.append('localidad[]', loc.id));
-          } else {
-            currentParams.append('localidad[]', val);
-          }
-        });
-      }
-
-      // Base URL
-      const origin = window.location.origin;
-      let baseURL = `${origin}/propiedades`;
-      if (origin === "https://test.zetenta.com") {
-        baseURL = `${origin}/aranalfe/propiedades`;
-      }
-
-      const finalURL = `${baseURL}/?${currentParams.toString()}`;
-
-      window.location.href = finalURL;
-    });
-  });
+  // Filtros
   const pageResults = document.querySelector('.properties');
   if (pageResults) {
-      const form = document.getElementById('filtros-form');
-      const filtros = form.querySelectorAll('.button-filter');
-      const limpiarBtn = document.getElementById('limpiar-filtros');
+    const form = document.getElementById('filtros-form');
+    const filtros = form.querySelectorAll('.button-filter');
+    const limpiarBtn = document.getElementById('limpiar-filtros');
 
-      // Reconstruir hidden inputs desde URL
-      const urlParams = new URLSearchParams(window.location.search);
+    // Reconstruir hidden inputs desde URL
+    const urlParams = new URLSearchParams(window.location.search);
 
-      filtros.forEach(filtro => {
-          const param = filtro.dataset.param;
-          const value = filtro.dataset.value;
-          if (!param || !value) return;
+    filtros.forEach(filtro => {
+      const param = filtro.dataset.param;
+      const value = filtro.dataset.value;
+      if (!param || !value) return;
 
-          const name = param + '[]';
-          const values = urlParams.getAll(name);
+      const name = param + '[]';
+      const values = urlParams.getAll(name);
 
-          if (values.includes(value)) {
-              const label = filtro.closest('label');
-              label.classList.add('checked');
+      if (values.includes(value)) {
+        const label = filtro.closest('label');
+        label.classList.add('checked');
 
-              let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
-              if (!hidden) {
-                  hidden = document.createElement('input');
-                  hidden.type = 'hidden';
-                  hidden.name = name;
-                  hidden.value = value;
-                  form.appendChild(hidden);
-              }
-          }
-      });
-
-      // Toggle al click y actualizar hidden inputs
-      filtros.forEach(filtro => {
-          filtro.addEventListener('click', e => {
-              e.preventDefault();
-              const label = filtro.closest('label');
-              label.classList.toggle('checked');
-
-              const param = filtro.dataset.param;
-              const value = filtro.dataset.value;
-              if (!param || !value) return;
-
-              const name = param + '[]';
-              let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
-
-              if (label.classList.contains('checked')) {
-                  if (!hidden) {
-                      hidden = document.createElement('input');
-                      hidden.type = 'hidden';
-                      hidden.name = name;
-                      hidden.value = value;
-                      form.appendChild(hidden);
-                  }
-              } else {
-                  if (hidden) hidden.remove();
-              }
-          });
-      });
-
-      // Limpiar todos los filtros
-      if (limpiarBtn) {
-          limpiarBtn.addEventListener('click', e => {
-              e.preventDefault();
-
-              // Quitar checked visual
-              filtros.forEach(filtro => {
-                  filtro.closest('label').classList.remove('checked');
-              });
-
-              // Borrar todos los hidden inputs
-              const hiddens = form.querySelectorAll('input[type="hidden"]');
-              hiddens.forEach(input => input.remove());
-
-              // Reset inputs de texto y radios (precio, sup, moneda, etc)
-              const inputs = form.querySelectorAll('input[type="number"], input[type="radio"]');
-              inputs.forEach(input => {
-                  if (input.type === 'number') {
-                      input.value = input.min || '';
-                  } else if (input.type === 'radio') {
-                      input.checked = false;
-                  }
-              });
-
-              // Recargar página sin query params
-              window.location.href = form.action || window.location.pathname;
-          });
+        let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
+        if (!hidden) {
+          hidden = document.createElement('input');
+          hidden.type = 'hidden';
+          hidden.name = name;
+          hidden.value = value;
+          form.appendChild(hidden);
+        }
       }
+    });
+
+    // Toggle al click y actualizar hidden inputs
+    filtros.forEach(filtro => {
+      filtro.addEventListener('click', e => {
+        e.preventDefault();
+        const label = filtro.closest('label');
+        label.classList.toggle('checked');
+
+        const param = filtro.dataset.param;
+        const value = filtro.dataset.value;
+        if (!param || !value) return;
+
+        const name = param + '[]';
+        let hidden = form.querySelector(`input[type="hidden"][name="${name}"][value="${value}"]`);
+
+        if (label.classList.contains('checked')) {
+          if (!hidden) {
+            hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = name;
+            hidden.value = value;
+            form.appendChild(hidden);
+          }
+        } else {
+          if (hidden) hidden.remove();
+        }
+      });
+    });
+
+    // Limpiar todos los filtros
+    if (limpiarBtn) {
+      limpiarBtn.addEventListener('click', e => {
+        e.preventDefault();
+
+        // Quitar checked visual
+        filtros.forEach(filtro => {
+          filtro.closest('label').classList.remove('checked');
+        });
+
+        // Borrar todos los hidden inputs
+        const hiddens = form.querySelectorAll('input[type="hidden"]');
+        hiddens.forEach(input => input.remove());
+
+        // Reset inputs de texto y radios (precio, sup, moneda, etc)
+        const inputs = form.querySelectorAll('input[type="number"], input[type="radio"]');
+        inputs.forEach(input => {
+          if (input.type === 'number') {
+            input.value = input.min || '';
+          } else if (input.type === 'radio') {
+            input.checked = false;
+          }
+        });
+
+        // Recargar página sin query params
+        window.location.href = form.action || window.location.pathname;
+      });
+    }
   }
+
+  // Botones buscar (search-location)
+  const searchButtons = document.querySelectorAll('.search-location');
+  searchButtons.forEach(searchSubmit => {
+      searchSubmit.addEventListener('click', e => {
+          e.preventDefault();
+
+          const form = searchSubmit.closest('form') || document;
+          const items = form.querySelectorAll('.item');
+          const currentParams = new URLSearchParams(window.location.search);
+
+          // Eliminar localidad[]
+          currentParams.delete('localidad[]');
+
+          if (items.length > 0) {
+              items.forEach(item => {
+                  const val = item.dataset.value;
+                  console.log('Valor seleccionado:', val);
+
+                  // LÓGICA DINÁMICA: verifica si el valor comienza con 'all_'
+                  if (val.startsWith('all_')) {
+                      // Busca el objeto en extraOptions que coincida con el valor
+                      const selectedExtraOption = extraOptions.find(option => option.value === val);
+
+                      if (selectedExtraOption) {
+                          const parentName = selectedExtraOption.optgroup;
+
+                          // Filtra dinámicamente según el nombre del grupo original
+                          const filteredItems = locations_data.filter(loc => loc.parent_name === parentName);
+
+                          console.log(`Ubicaciones de ${parentName}:`, filteredItems);
+                          filteredItems.forEach(loc => currentParams.append('localidad[]', loc.location_id));
+                      }
+                  } else {
+                      // Si no es un valor 'all_', lo añade directamente
+                      currentParams.append('localidad[]', val);
+                  }
+              });
+          }
+
+          // Base URL
+          const origin = window.location.origin;
+          let baseURL = `${origin}/propiedades`;
+          if (origin === "https://test.zetenta.com") {
+              baseURL = `${origin}/aranalfe/propiedades`;
+          }
+
+          const finalURL = `${baseURL}/?${currentParams.toString()}`;
+
+          window.location.href = finalURL;
+      });
+  });
 };

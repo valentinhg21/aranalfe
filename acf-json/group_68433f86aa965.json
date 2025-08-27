@@ -483,6 +483,7 @@
                     "collapsed": "",
                     "button_label": "Add Row",
                     "rows_per_page": 20,
+                    "parent_repeater": "field_68433fadcda31",
                     "sub_fields": [
                         {
                             "key": "field_68433fcecda34",
@@ -533,8 +534,7 @@
                             "delay": 0,
                             "parent_repeater": "field_68433fc3cda33"
                         }
-                    ],
-                    "parent_repeater": "field_68433fadcda31"
+                    ]
                 }
             ]
         }
@@ -545,13 +545,6 @@
                 "param": "page_template",
                 "operator": "==",
                 "value": "templates-page\/template-tasaciones.php"
-            }
-        ],
-        [
-            {
-                "param": "page_template",
-                "operator": "==",
-                "value": "templates-page\/template-contacto.php"
             }
         ]
     ],
@@ -566,5 +559,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1754416934
+    "modified": 1756316366
 }

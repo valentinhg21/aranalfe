@@ -115,7 +115,7 @@ $video_title = $property['videos'][0]['title'] ?? '';
 // Propiedades similares
 $params = [
     'data' => [
-        'current_localization_id' => 1,
+        'current_localization_id' => 0,
         'current_localization_type' => 'country',
         'price_from' => 0,
         'price_to' => $price_max,

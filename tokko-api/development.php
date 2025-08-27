@@ -192,7 +192,7 @@ function get_development_units(int $id): array {
         'format' => 'json',
         'lang' => 'es_ar',
         'data' => json_encode([
-            "current_localization_id" => 1,
+            "current_localization_id" => 0,
             "current_localization_type" => "country",
             "price_from" => 0,
             "price_to" => 999999999999,

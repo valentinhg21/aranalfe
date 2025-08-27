@@ -170,14 +170,14 @@
     // $barrios_2 = get_field('barrios', 'options') ?? [];
 
     $barrios = $locations_data['locations'];
-
+    $localidad = $locations_data['parents'];
     
 ?>
 
 
 <script>
     let locations_data = <?php echo json_encode(array_map(function($l) { return $l; }, $barrios)); ?>;
-    let locations_theme = <?php echo json_encode(array_map(function($l) { return $l; }, $barrios)); ?>;
+    let locations_localidad = <?php echo json_encode(array_map(function($l) { return $l; }, $localidad)); ?>;
 </script>
 
 <main class="properties" data-id="" data-page="<?php echo $page;?>" data-current="<?php echo $offset;?>"

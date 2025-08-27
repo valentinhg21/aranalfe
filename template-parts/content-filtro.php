@@ -194,6 +194,6 @@ $filtros_tag = get_query_var('filtros_tag');
 <?php endif; ?>
 
 <div class="clean-filter">
-        <button type="submit" class="btn btn-red w-100 mb-2 mt-2">Aplicar filtros</button>
+        <button type="submit" class="btn btn-red w-100 mb-2 mt-2" id="aplicar-filtros">Aplicar filtros</button>
         <button type="button" class="btn btn-red-outline w-100" id="limpiar-filtros">Limpiar filtros</button>
 </div>

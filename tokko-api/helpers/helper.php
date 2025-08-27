@@ -106,25 +106,33 @@ function get_construction_status($status = 4): string {
 
 
 function get_full_location($string = ""): string {
-
     $parts = explode(' | ', $string);
 
+    // Saco el primer elemento
     array_shift($parts);
 
+    // Armo un array de reemplazos desde el repeater ACF
+    $reemplazos = [];
+    if ( have_rows('cambiar_nombres_de_barrioslocalidades', 'options') ) {
+        while ( have_rows('cambiar_nombres_de_barrioslocalidades', 'options') ) {
+            the_row();
+            $nombre       = get_sub_field('nombre', 'options');
+            $nombre_nuevo = get_sub_field('nombre_nuevo', 'options');
 
+            if ($nombre && $nombre_nuevo) {
+                $reemplazos[$nombre] = $nombre_nuevo;
+            }
+        }
+    }
 
-    // Reemplaza "Centro (Capital Federal)" por "Centro/Microcentro"
-
-    $parts = array_map(function($part) {
-
-        return trim($part) === 'Centro (Capital Federal)' ? 'Centro/Microcentro' : $part;
-
+    // Aplico reemplazos del ACF
+    $parts = array_map(function($part) use ($reemplazos) {
+        $part = trim($part);
+        return isset($reemplazos[$part]) ? $reemplazos[$part] : $part;
     }, $parts);
 
 
-
     return implode(', ', $parts);
-
 }
 
 
