@@ -21,24 +21,29 @@ function get_developments(array $params = []): array {
     if (is_bot()) {
         $new_cache = get_transient($transient_new);
         $old_cache = get_transient($transient_old);
+        if(TOKKO_LOG){
 
-        if ($new_cache !== false) {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot recibe NEW transient (IP: {$ip_cliente})\n", FILE_APPEND);
-            return $new_cache;
-        } elseif ($old_cache !== false) {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot recibe OLD transient (IP: {$ip_cliente})\n", FILE_APPEND);
-            return $old_cache;
-        } else {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot sin transient, placeholder entregado (IP: {$ip_cliente})\n", FILE_APPEND);
-            return ['developments'=>[], 'placeholder'=>true];
-        }
+       
+            if ($new_cache !== false) {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot recibe NEW transient (IP: {$ip_cliente})\n", FILE_APPEND);
+                return $new_cache;
+            } elseif ($old_cache !== false) {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot recibe OLD transient (IP: {$ip_cliente})\n", FILE_APPEND);
+                return $old_cache;
+            } else {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Bot sin transient, placeholder entregado (IP: {$ip_cliente})\n", FILE_APPEND);
+                return ['developments'=>[], 'placeholder'=>true];
+            }
+         }
     }
 
     // 2. Usuario normal: verificar NEW transient primero
     $cached_transient = get_transient($transient_new);
-    if ($cached_transient !== false) {
-        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Transient NEW entregado a usuario (IP: {$ip_cliente})\n", FILE_APPEND);
-        return $cached_transient;
+    if(TOKKO_LOG){
+        if ($cached_transient !== false) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Transient NEW entregado a usuario (IP: {$ip_cliente})\n", FILE_APPEND);
+            return $cached_transient;
+        }
     }
 
     // 3. Fetch API
@@ -66,13 +71,18 @@ function get_developments(array $params = []): array {
 
             // Actualizar OLD transient para bots
             set_transient($transient_old, $data, $old_time);
+            if(TOKKO_LOG){
+                
+            
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Transient NEW creado para usuario y OLD actualizado para bots (IP: {$ip_cliente})\n", FILE_APPEND);
 
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT Transient NEW creado para usuario y OLD actualizado para bots (IP: {$ip_cliente})\n", FILE_APPEND);
-
+        
+            }
             return $data;
         }
-
-        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT JSON inválido: ".json_last_error_msg()."\n", FILE_APPEND);
+          if(TOKKO_LOG){
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT JSON inválido: ".json_last_error_msg()."\n", FILE_APPEND);
+          }
     } else {
         file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] ALL DEVELOPMENT  CURL error: {$error} | HTTP: {$http_code}\n", FILE_APPEND);
     }
@@ -122,23 +132,29 @@ function get_development_by_id(int $id): array {
     if (is_bot()) {
         $new_cache = get_transient($transient_new);
         $old_cache = get_transient($transient_old);
-
-        if ($new_cache !== false) {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot recibe NEW transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
-            return $new_cache;
-        } elseif ($old_cache !== false) {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot recibe OLD transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
-            return $old_cache;
-        } else {
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot sin transient, placeholder entregado (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
-            return ['objects'=>[], 'placeholder'=>true];
+        if(TOKKO_LOG){
+            
+    
+            if ($new_cache !== false) {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot recibe NEW transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+                return $new_cache;
+            } elseif ($old_cache !== false) {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot recibe OLD transient (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+                return $old_cache;
+            } else {
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Bot sin transient, placeholder entregado (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+                return ['objects'=>[], 'placeholder'=>true];
+            }
         }
     }
 
     // 2. Usuario normal: verificar transient NEW primero
     $cached_transient = get_transient($transient_new);
     if ($cached_transient !== false) {
-        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Transient NEW entregado a usuario (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+        if(TOKKO_LOG){
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Transient NEW entregado a usuario (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+        }
+
         return $cached_transient;
     }
 
@@ -160,8 +176,10 @@ function get_development_by_id(int $id): array {
     $error     = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    if(TOKKO_LOG){
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | DEVELOPMENT_ID | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
+    }
 
-    file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | DEVELOPMENT_ID | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
 
     if ($http_code === 200 && !$error) {
         $data = json_decode($response, true);
@@ -173,8 +191,10 @@ function get_development_by_id(int $id): array {
 
             // Actualizar OLD transient para bots
             set_transient($transient_old, $result, $old_time);
+            if(TOKKO_LOG){
+                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Transient NEW creado para usuario y OLD actualizado para bots (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+            }
 
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] DEVELOPMENT_ID Transient NEW creado para usuario y OLD actualizado para bots (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
 
             return $result;
         }

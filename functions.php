@@ -8,6 +8,7 @@ define('BLOCK', ROOT . '/blocks');
 define('IMAGE_DEFAULT', ROOT . '/dist/img/image-default/default.png');
 define('SVG', '/dist/img/svg');
 define('IMAGE_RELATIVE', '/dist/img/');
+define('TOKKO_LOG', false);
 // URL PARA LAS REDIRECCIONES DE TOKKO DEPENDIENDO DEL LOCAL
 $GLOBALS['tokko_call_count'] = 0;
 $GLOBALS['tokko_call_log'] = [];
