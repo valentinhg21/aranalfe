@@ -91,8 +91,9 @@ $filtros_tag = get_query_var('filtros_tag');
     </div>
     <div class="currency-price">
       <label class="<?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>">
-        <input class="btn-currency-price" type="radio" name="moneda" value="USD"
+        <input class="btn-currency-price" type="radio" name="moneda" value="USD" data-waschecked="<?= ($_GET['moneda'] ?? '') === 'USD' ? 'true' : 'false' ?>"
           <?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>> USD
+          
       </label>
       <label class="<?= ($_GET['moneda'] ?? '') === 'ARS' ? 'checked' : '' ?>">
         <input class="btn-currency-price" type="radio" name="moneda" value="ARS"
@@ -194,6 +195,6 @@ $filtros_tag = get_query_var('filtros_tag');
 <?php endif; ?>
 
 <div class="clean-filter">
-        <button type="submit" class="btn btn-red w-100 mb-2 mt-2" id="aplicar-filtros">Aplicar filtros</button>
+        <button type="button" class="btn btn-red w-100 mb-2 mt-2" id="apply">Aplicar filtros</button>
         <button type="button" class="btn btn-red-outline w-100" id="limpiar-filtros">Limpiar filtros</button>
 </div>

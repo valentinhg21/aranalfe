@@ -15,6 +15,7 @@ import { singleMapProperty } from './utils/singleMapProperty.js'
 import { singleDevelopment } from './utils/singleDevelopment.js'
 import { singleForm } from './utils/singleForm.js'
 import { listProp } from './utils/listProp.js'
+import { filter } from './utils/filter.js'
 window.addEventListener('DOMContentLoaded', () => {
     try {
         transition();
@@ -32,6 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
         singleDevelopment();
         singleForm();
         listProp();
+        filter();
     } catch (error) {
         console.error(error)
     }

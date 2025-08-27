@@ -5,7 +5,6 @@
 function libraries(){
     wp_register_script( 'validator', LIB . '/validator/validator.js', array(), '1.0', true);
     wp_register_script( 'splide-js', LIB . '/splide/splide.min.js', array(), '4.1.3', true);
-    wp_register_script( 'helper-js', LIB . '/helper/helper.js', array(), '1.0', true);
     wp_register_script( 'tokko-js', LIB . '/tokko/helper.js', array(), '1.0', true);
     wp_register_script( 'selects-js', LIB . '/selects/selects.js', array(), '1.0', true);
     wp_register_script( 'countUp-js', LIB . '/countUp/countUp.min.js', array(), '1.0', true);

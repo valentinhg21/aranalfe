@@ -101,7 +101,19 @@ function get_construction_status($status = 4): string {
 
 }
 
-
+function build_query_with_brackets(array $params): string {
+    $parts = [];
+    foreach ($params as $key => $value) {
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                $parts[] = urlencode($key . '[]') . '=' . urlencode((string)$v);
+            }
+        } elseif ($value !== '' && $value !== null) {
+            $parts[] = urlencode($key) . '=' . urlencode((string)$value);
+        }
+    }
+    return implode('&', $parts);
+}
 
 
 
@@ -288,66 +300,6 @@ function sanitize_slugs(array $items): array {
 }
 
 // --- FUNCION PARA GENERAR URL DE LOS FILTROS ---
-
-function build_filter_url($operacion, $tipo, $ubicacion, $localidades, $antiguedad, $ambientes = [], $dormitorios = []): string {
-
-    $localidades = is_array($localidades) ? $localidades : (empty($localidades) ? [] : [$localidades]);
-
-    $antiguedad = is_array($antiguedad) ? $antiguedad : (empty($antiguedad) ? [] : [$antiguedad]);
-
-    $ambientes = is_array($ambientes) ? $ambientes : (empty($ambientes) ? [] : [$ambientes]);
-
-    $dormitorios = is_array($dormitorios) ? $dormitorios : (empty($dormitorios) ? [] : [$dormitorios]);
-
-
-
-    $loc = implode('-', $localidades);
-
-    $ant = implode('-', $antiguedad);
-
-
-
-    $base_url = home_url("/aranalfe/propiedades/{$operacion}/{$tipo}/{$ubicacion}/{$loc}/{$ant}");
-
-
-
-    // Traer query params actuales
-
-    $query = $_GET;
-
-
-
-    // Reemplazar solo los filtros que queremos actualizar
-
-    if (!empty($ambientes)) {
-
-        $query['ambientes'] = $ambientes[0];
-
-    } else {
-
-        unset($query['ambientes']);
-
-    }
-
-
-
-    if (!empty($dormitorios)) {
-
-        $query['dormitorios'] = $dormitorios[0];
-
-    } else {
-
-        unset($query['dormitorios']);
-
-    }
-
-
-
-    return esc_url(add_query_arg($query, $base_url));
-
-}
-
-
 
 
 
@@ -1125,67 +1077,69 @@ function get_object_position(string $acf = ''): string {
     return 'style="object-position: ' . esc_attr($position) . ';"';
 }
 
+
+
 function render_filters_apply($data, $barrios) {
     if (empty($data) || empty($barrios)) return '';
 
-    // Normalizar $data: array de enteros
-    if (!is_array($data)) {
-        $data = [$data];
-    }
+    if (!is_array($data)) $data = [$data];
     $data = array_map('intval', $data);
 
-    // Filtrar valores inválidos (0 o negativos)
     $localidades_activas = array_filter($data, fn($val) => $val > 0);
     if (empty($localidades_activas)) return '';
 
     $output = '';
+    $hidden_inputs = '';
     $current_url = $_SERVER['REQUEST_URI'];
     $parsed_url = parse_url($current_url);
     parse_str($parsed_url['query'] ?? '', $query_params);
 
+    // Normalizar: si viene como string, pasarlo a array
+    if (isset($query_params['localidad']) && !is_array($query_params['localidad'])) {
+        $query_params['localidad'] = [$query_params['localidad']];
+    }
+
     foreach ($data as $id) {
         foreach ($barrios as $barrio) {
             $location_id = (int) $barrio['location_id'];
+            if ($id !== $location_id) continue;
 
-            if ($id === $location_id) {
-                $modified_params = $query_params;
+            // Hidden para mantener activos (imprimir dentro del <form>)
+            $hidden_inputs .= '<input type="hidden" name="localidad[]" value="' . esc_attr($id) . '">' . "\n";
 
-                if (isset($modified_params['localidad'])) {
-                    $localidad_param = $modified_params['localidad'];
-                    if (!is_array($localidad_param)) {
-                        $localidad_param = [(string)$localidad_param];
-                    }
+            // Link para quitar este filtro
+            $modified_params = $query_params;
 
-                    $modified_params['localidad'] = array_filter(
-                        $localidad_param,
-                        fn($val) => (int)$val !== $id
-                    );
-
-                    if (empty($modified_params['localidad'])) {
-                        unset($modified_params['localidad']);
-                    }
+            if (!empty($modified_params['localidad'])) {
+                $modified_params['localidad'] = array_values(array_filter(
+                    array_map('intval', (array)$modified_params['localidad']),
+                    fn($val) => (int)$val !== $id
+                ));
+                if (empty($modified_params['localidad'])) {
+                    unset($modified_params['localidad']);
                 }
-
-                $base = $parsed_url['path'];
-                $query_string = http_build_query($modified_params);
-                $url = $base . ($query_string ? '?' . $query_string : '');
-
-                $output .= '<a href="' . esc_url($url) . '" class="filter-tag">' 
-                    . esc_html($barrio['location_name']) . ' &times;</a> ';
-                break;
             }
+
+            $base = $parsed_url['path'] ?? '/';
+            $query_string = build_query_with_brackets($modified_params);
+            $url = $base . ($query_string ? '?' . $query_string : '');
+
+            $output .= '<a data-id="'. esc_html($barrio['location_id']) .'" href="' . esc_url($url) . '" class="filter-tag">'
+                    . esc_html($barrio['location_name']) . ' &times;</a> ';
+            break;
         }
     }
 
     // Botón "Borrar filtros"
     if (!empty($localidades_activas)) {
         $no_localidad = $query_params;
-        unset($no_localidad['localidad']);
-        $clear_url = $parsed_url['path'] . (http_build_query($no_localidad) ? '?' . http_build_query($no_localidad) : '');
-        $output .= '<a class="label-filter" href="' . esc_url($clear_url) . '" class="filter-clear">Borrar filtros</a>';
+        unset($no_localidad['localidad'], $no_localidad['localidad[]']);
+        $clear_qs = build_query_with_brackets($no_localidad);
+        $clear_url = ($parsed_url['path'] ?? '/') . ($clear_qs ? '?' . $clear_qs : '');
+        $output .= '<a  class="label-filter filter-clear" href="' . esc_url($clear_url) . '">Borrar Barrios</a>';
     }
 
-    return '<div class="filter-wrap">' . $output . '</div>';
+    return $hidden_inputs . '<div class="filter-wrap">' . $output . '</div>';
 }
 
 
