@@ -214,20 +214,25 @@
                                     $name = $property['name'] ?? '';
                                     $image = $property['photos'][0]['image'];
                                     $location = get_full_location($property['location']['full_location']);
-                                    $currency_price = $property['operations'][0]['prices'][0]['currency'];
-                                    if(count($property['operations']) === 2){
-                                        if($operacion_slug === '2'){
-                                            $price = $property['operations'][1]['prices'][0]['price'];
-                                            $operation_type = $property['operations'][1]['operation_type'];
-                                        }else{
-                                            $price = $property['operations'][0]['prices'][0]['price'];
-                                            $operation_type = $property['operations'][0]['operation_type'];
-                                        }
+                               
+                                
+                                    $operation_order = $property['operations'];
+                           
+                                    // Ordenar por operation_id de menor a mayor
+                                    usort($operation_order, function ($a, $b) {
+                                        return $a['operation_id'] <=> $b['operation_id'];
+                                    });
+
+                                    $precios_ordenados = render_all_prices_formatted($operation_order);
+
+                                    if(count($precios_ordenados) === 2){
+                                        $price = $precios_ordenados[1]['formatted_price'];
+                                        $operation_type = $precios_ordenados[1]['operation_type'];
                                     }else{
-                                        $price = $property['operations'][0]['prices'][0]['price'];
-                                        $operation_type = $property['operations'][0]['operation_type'];
+                                        $price = $precios_ordenados[0]['formatted_price'];
+                                        $operation_type = $precios_ordenados[0]['operation_type'];
                                     }
-                                    $total_price = render_price_format($price, $currency_price);
+                                    $total_price = $price;
                                     $type_property = $property['type']['name'];
                                     $address = $property['address'];
                                     $total_surface = $property['total_surface'];
