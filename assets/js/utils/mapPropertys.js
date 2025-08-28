@@ -120,7 +120,7 @@ export const mapPropertys = () => {
     toggleBtn.addEventListener("click", (e) => {
       let row = document.querySelector(".row-results");
       let body = document.querySelector('.theme')
-      console.log(long)
+      // console.log(long)
       if (toggleBtn.classList.contains('active')) {
         toggleBtn.classList.remove("active");
         mapView.classList.remove("show");

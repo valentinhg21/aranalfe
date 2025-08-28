@@ -10,14 +10,7 @@ define('SVG', '/dist/img/svg');
 define('IMAGE_RELATIVE', '/dist/img/');
 define('TOKKO_LOG', false);
 // URL PARA LAS REDIRECCIONES DE TOKKO DEPENDIENDO DEL LOCAL
-$GLOBALS['tokko_call_count'] = 0;
-$GLOBALS['tokko_call_log'] = [];
-function contar_llamada_api($endpoint) {
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'IP desconocida';
-    $GLOBALS['tokko_call_count']++;
-    $GLOBALS['tokko_call_log'][] = $endpoint;
-    error_log("[TOKKO API] Llamada a: {$endpoint} | IP: {$ip}");
-}
+
 
 require_once ('inc/performance/performance.php');
 require_once ('inc/login/login.php');

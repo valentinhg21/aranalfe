@@ -39,9 +39,11 @@
         if (in_array('en-construccion', $antiguedad_slug, true)) {
             $filtro_antiguedad[] = ['age', '=', -1];
         }
+
         if (in_array('a-estrenar', $antiguedad_slug, true)) {
             $filtro_antiguedad[] = ['age', '=', 0];
         }
+
         if (in_array('terminado', $antiguedad_slug, true)) {
             $filtro_antiguedad[] = ['age', '>', 1];
         }
@@ -155,19 +157,15 @@
         ]
     ];
 
+    
+
     $propertys = get_all_property_by_filter($params, 12, $offset, $order_by_slug, $order_slug);
     $total_count = $propertys['meta']['total_count'] ?? 0;
-
-    // $params_2 = $params;
-    // $summary_data = get_search_summary($params_2) ?? [];
-    // $dataFilter = (
-    //     isset($summary_data['objects']) && is_array($summary_data['objects'])
-    // ) ? $summary_data['objects'] : [];
     $filter_data = get_create_filter_data();
     $filter_tag = get_create_filter_tag();
-    // $search_location = $summary_data['objects']['locations'] ?? [];
+
     $locations_data = get_locations(get_only_locations());
-    // $barrios_2 = get_field('barrios', 'options') ?? [];
+
 
     $barrios = $locations_data['locations'];
     $localidad = $locations_data['parents'];
@@ -381,30 +379,34 @@
                                         return $a['operation_id'] <=> $b['operation_id'];
                                     });
 
-                                    $currency_price = $operation_order[0]['prices'][0]['currency'];
+                                    $precios_ordenados = render_all_prices_formatted($operation_order);
                                     
-                                    if (count($property['operations']) === 2) {
+                         
+                                    
+                                    if (count($precios_ordenados) === 2) {
                                        
                                         if ((int)$operacion_slug[0] === 2) {
-                                            $price = $operation_order[1]['prices'][0]['price'];
-                     
+                                            $price = $precios_ordenados[1]['formatted_price'];
                                             $operation_type = $operation_order[1]['operation_type'];
 
                                         } else {
                                             
-                                            $price = $operation_order[0]['prices'][0]['price'];
+                                            $price = $precios_ordenados[0]['formatted_price'];
                                             $operation_type = $operation_order[0]['operation_type'];
                                         }
                                     } else {
-                                        
-                                        $price = $operation_order[0]['prices'][0]['price'];
+                                      
+                                        $price = $precios_ordenados[0]['formatted_price'];
                                         $operation_type = $operation_order[0]['operation_type'];
                                     }
+                                  
+
                                     if($operation_type === 'Alquiler'){
-                                        $total_price = render_price_format($price, 'ARS');
+                                        $total_price = $price;
                                     }else{
-                                        $total_price = render_price_format($price, 'USD');
+                                        $total_price = $price;
                                     }
+
                                     $type_property = $property['type']['name'];
                                     $address = $property['address'];
                                     $total_surface = $property['total_surface'];
@@ -458,25 +460,42 @@
                         $operations = $p['operations'] ?? [];
                         $price = null;
                         $operation_type = null;
-                        if (count($operations) === 2) {
-                            if ($operacion_slug === '2') {
-                                $price = $operations[1]['prices'][0]['price'] ?? null;
-                                $operation_type = $operations[1]['operation_type'] ?? null;
-                            } else {
-                                $price = $operations[0]['prices'][0]['price'] ?? null;
-                                $operation_type = $operations[0]['operation_type'] ?? null;
-                            }
+                        // Ordenar por operation_id de menor a mayor
+                        usort($operations, function ($a, $b) {
+                            return $a['operation_id'] <=> $b['operation_id'];
+                        });
 
-                        } elseif (count($operations) > 0) {
-                            $price = $operations[0]['prices'][0]['price'] ?? null;
-                            $operation_type = $operations[0]['operation_type'] ?? null;
+                        $precios_or = render_all_prices_formatted($operations);
+
+                        if (count($precios_or) === 2) {
+                                       
+                            if ((int)$operacion_slug[0] === 2) {
+                                $price = $precios_or[1]['formatted_price'];
+                                $operation_type = $precios_or[1]['operation_type'];
+
+                            } else {
+                                            
+                                $price = $precios_or[0]['formatted_price'];
+                                $operation_type = $precios_or[0]['operation_type'];
+                             }
+                            } else {
+                                      
+                                $price = $precios_or[0]['formatted_price'];
+                                $operation_type = $precios_or[0]['operation_type'];
+                            }
+                                  
+
+                        if($operation_type === 'Alquiler'){
+                            $total_price = $price;
+                        }else{
+                            $total_price = $price;
                         }
                         return [
                             'name' => $p['name'] ?? '',
                             'lat' => $p['geo_lat'] ?? null,
                             'lng' => $p['geo_long'] ?? null,
                             'operation_type' => $operation_type,
-                            'price' => render_price_format($price, $operations[0]['prices'][0]['currency'] ?? 'USD'),
+                            'price' => $total_price,
                             'image' => $p['photos'][0]['image'] ?? null,
                             'type' => $p['type']['name'] ?? '',
                             'address' => $p['address'] ?? '',

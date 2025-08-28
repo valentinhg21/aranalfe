@@ -36,7 +36,7 @@ function get_summary_locations(array $params = []): array {
     ], $params);
 
     $url = $config['locations_url'] . '?' . http_build_query($params);
-    contar_llamada_api($config['locations_url']);
+    var_dump($url);
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);

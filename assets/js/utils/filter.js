@@ -12,7 +12,7 @@ const filterLogic = () => {
   if (locationInputs.length) {
     // Mostrar los optgroups disponibles (debug)
     const optgroupDebug = [...new Set(locations_data.map(loc => loc.parent_name))];
-    console.log('Optgroups detectados:', optgroupDebug);
+    // console.log('Optgroups detectados:', optgroupDebug);
 
     // 1. Extraer parent_names y eliminar duplicados.
     const parentNames = [...new Set(locations_data.map(loc => String(loc.parent_name)))];

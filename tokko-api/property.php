@@ -1,6 +1,6 @@
 <?php 
-$_SERVER['REMOTE_ADDR'] = '66.249.70.64';
-$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+// $_SERVER['REMOTE_ADDR'] = '66.249.70.64';
+// $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 function get_all_property_by_filter(
     array $params = [],
     int $limit = 12,
@@ -85,8 +85,10 @@ function get_all_property_by_filter(
     $error     = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    if(TOKKO_LOG){
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
+    }
 
-    file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
 
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
