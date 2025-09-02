@@ -9,9 +9,10 @@ function get_all_property_by_filter(
     string $order = 'ASC'
 ): array {
 
-    $config     = require get_template_directory() . '/tokko-api/config.php';
-    $log_file   = get_template_directory() . '/tokko.log';
-    $ip_cliente = $_SERVER['REMOTE_ADDR'] ?? '';
+    $config       = require get_template_directory() . '/tokko-api/config.php';
+    $log_file     = get_template_directory() . '/tokko.log';
+    $ip_cliente   = $_SERVER['REMOTE_ADDR'] ?? '';
+    $nocache      = isset($_GET['nocache']) && $_GET['nocache'] == 1;
 
     if (!isset($params['data'])) {
         $params['data'] = [
@@ -30,11 +31,11 @@ function get_all_property_by_filter(
 
     $transient_new = 'tokko_props_new_' . md5(json_encode([$params, $limit, $offset, $order_by, $order]));
     $transient_old = 'tokko_props_old';
-    $new_time      = 120;   // 2 minutos
-    $old_time      = 86400;  // 1 hora
+    $new_time      = 120;     // 2 minutos
+    $old_time      = 86400;   // 1 día
 
     // 1. Bots: usar NEW si existe, sino OLD
-    if (is_bot()) {
+    if (is_bot() && !$nocache) {
         $new_cache = get_transient($transient_new);
         $old_cache = get_transient($transient_old);
         if(TOKKO_LOG){
@@ -51,17 +52,8 @@ function get_all_property_by_filter(
         }
     }
 
-    // 2. Usuario normal: verificar transient NEW primero
-    $cached_transient = get_transient($transient_new);
-    if ($cached_transient !== false) {
-        if(TOKKO_LOG){
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transient NEW entregado a usuario (IP: {$ip_cliente})\n", FILE_APPEND);
-           
-        }
-         return $cached_transient;
-    }
+    // 2. Usuario normal o nocache: siempre va a la API
 
-    // 3. Fetch API
     $data_json = json_encode($params['data'], JSON_UNESCAPED_SLASHES);
     $url = $config['property_search_url']
         . '?lang=es_ar'
@@ -85,27 +77,24 @@ function get_all_property_by_filter(
     $error     = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    if(TOKKO_LOG){
-            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
-    }
 
+    if(TOKKO_LOG){
+        file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | NOCACHE: ".($nocache?'SI':'NO')." | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
+    }
 
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
 
-            // Guardar NEW transient (usuarios)
-            set_transient($transient_new, $decoded, $new_time);
+            // Guardar transients solo si es BOT y no es nocache
+            if (is_bot() && !$nocache) {
+                set_transient($transient_new, $decoded, $new_time);
+                set_transient($transient_old, $decoded, $old_time);
 
-            // Actualizar OLD transient (bots) solo si no existe o siempre reemplazar
-            set_transient($transient_old, $decoded, $old_time);
-
-            if(TOKKO_LOG){
-
-                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transient NEW creado para usuario y OLD actualizado para bots (IP: {$ip_cliente})\n", FILE_APPEND);
-         
+                if(TOKKO_LOG){
+                    file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transient NEW creado y OLD actualizado para bots (IP: {$ip_cliente})\n", FILE_APPEND);
+                }
             }
-
 
             return $decoded;
         }
@@ -113,14 +102,11 @@ function get_all_property_by_filter(
         if(TOKKO_LOG){
             file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] JSON inválido: ".json_last_error_msg()."\n", FILE_APPEND);
         }
-     
-        
-
-        
     }
 
     return [];
 }
+
 
 function get_search_summary(array $params = []): array {
     $config = require get_template_directory() . '/tokko-api/config.php';
@@ -145,7 +131,7 @@ function get_search_summary(array $params = []): array {
     $params['lang'] = 'es_ar';
 
     $url = $config['get_search_summary_url'] . '?' . http_build_query($params);
-    contar_llamada_api($config['get_search_summary_url']);
+    // contar_llamada_api($config['get_search_summary_url']);
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -276,7 +262,6 @@ function get_create_filter_tag(array $dataFilter = []): array {
 
 
 // FUNCION PARA CAPTURAR DATO DE UNA PROPIEDAD
-
 function get_details_property(int $id): array {
 
     $config = require get_template_directory() . '/tokko-api/config.php';
@@ -293,8 +278,17 @@ function get_details_property(int $id): array {
     $transient_key = md5(json_encode($params));
     $transient_new = 'tokko_detail_new_' . $transient_key;
     $transient_old = 'tokko_detail_old_' . $transient_key;
-    $new_time      = 120;   // 2 minutos
-    $old_time      = 3600;  // 1 hora
+    $new_time      = 60;    // 1 min
+    $old_time      = 1800;  // 30 min
+
+    // Forzar refresh si se pasa ?nocache=1
+    if (!empty($_GET['nocache'])) {
+        delete_transient($transient_new);
+        delete_transient($transient_old);
+        if (defined('TOKKO_LOG') && TOKKO_LOG) {
+            file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Transients eliminados por nocache (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
+        }
+    }
 
     // 1. Bots: usar NEW si existe, sino OLD
     if (is_bot()) {
@@ -314,19 +308,9 @@ function get_details_property(int $id): array {
         }
     }
 
-    // 2. Usuario normal: verificar NEW transient primero
-    $cached_transient = get_transient($transient_new);
-  
-        if ($cached_transient !== false) {
-           if(TOKKO_LOG){
-                file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Transient NEW entregado a usuario (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
-            }
-            return $cached_transient;
-        }
-   
+    // 2. Usuario normal: siempre va a la API, no usa transients
 
-
-    // 3. Fetch API
+    // Fetch API
     $url = $config['property_detail_url'] . '?' . http_build_query($params);
 
     $ch = curl_init($url);
@@ -345,20 +329,16 @@ function get_details_property(int $id): array {
         file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] IP: {$ip_cliente} | Single Property | HTTP: {$http_code} | URL: {$url} | Error: {$error}\n", FILE_APPEND);
     }
 
-
     if ($response && $http_code === 200) {
         $decoded = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
 
-            // Guardar NEW transient
+            // Guardar transients solo para bots
             set_transient($transient_new, $decoded, $new_time);
-
-            // Actualizar OLD transient para bots
             set_transient($transient_old, $decoded, $old_time);
             if(TOKKO_LOG){
                 file_put_contents($log_file, "[".date('Y-m-d H:i:s')."] Single Property Transient NEW creado para usuario y OLD actualizado para bots (ID: {$id} | IP: {$ip_cliente})\n", FILE_APPEND);
             }
-
 
             return $decoded;
         }

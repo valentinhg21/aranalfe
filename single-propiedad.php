@@ -152,6 +152,9 @@ get_header('', [
 ?>
 
 <main class="single-property" id="<?php echo esc_html($current_id);?>">
+    <div class="d-none">
+        <?php var_dump($property); ?>
+    </div>
     <div class="container-fluid">
         <section class="hero">
             <div class="splide" id="hero-splide<?php echo count($images) <= 2 ? '-' . count($images) : ''; ?>" data-images="<?php echo count($images);?>">

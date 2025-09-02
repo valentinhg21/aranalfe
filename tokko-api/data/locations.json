@@ -1,5 +1,12 @@
 [
     {
+        "count": 1,
+        "location_id": 24676,
+        "location_name": "Balvanera",
+        "parent_id": 146,
+        "parent_name": "Capital Federal"
+    },
+    {
         "count": 13,
         "location_id": 24677,
         "location_name": "Barracas",
@@ -112,7 +119,7 @@
         "parent_name": "Maldonado"
     },
     {
-        "count": 23,
+        "count": 24,
         "location_id": 24681,
         "location_name": "Recoleta",
         "parent_id": 146,

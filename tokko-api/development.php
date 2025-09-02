@@ -226,7 +226,7 @@ function get_development_units(int $id): array {
     ];
 
     $url = $config['development_units_url'] . '?' . http_build_query($params);
-    contar_llamada_api($config['development_units_url']);
+    // contar_llamada_api($config['development_units_url']);
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
