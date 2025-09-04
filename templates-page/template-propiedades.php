@@ -11,9 +11,7 @@
 <?php get_header(); ?>
 <?php 
     $current_url = (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
     $page = max(1, get_query_var('paged') ?: 1);
-
     $operacion_slug = isset($_GET['operacion']) ? ($_GET['operacion']) : [1,2];
     $operacion_slug = (array) $operacion_slug;
     $operation_type_id = array_map('intval', $operacion_slug);

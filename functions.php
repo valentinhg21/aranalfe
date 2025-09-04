@@ -38,3 +38,4 @@ require_once ('inc/register-sync-acf.php');
 require_once ('inc/register-theme-options.php');
 require_once ('inc/register-cron.php');
 require_once ('inc/panel-adm/panel-adm.php');
+

@@ -206,7 +206,6 @@ function render_pagination(string $current_url, int $total_count, int $limit = 1
     $current_page = 1;
     if (preg_match('#/page/(\d+)$#', $path, $matches)) {
         $current_page = max(1, (int)$matches[1]);
-        // Limpiar /page/X
         $base_path = preg_replace('#/page/\d+$#', '', $path);
     } else {
         $base_path = $path;
@@ -220,6 +219,10 @@ function render_pagination(string $current_url, int $total_count, int $limit = 1
         $prev_link = ($prev_page === 1)
             ? $base_path . '/' . $query_string
             : $base_path . '/page/' . $prev_page . '/' . $query_string;
+
+        // Reemplazar [0], [1]... por []
+        $prev_link = preg_replace('/%5B\d+%5D/', '%5B%5D', $prev_link);
+
         $html .= "<li class=\"prev\"><a href=\"$prev_link\"><i class='fa-solid fa-chevron-left'></i></a></li>";
     }
 
@@ -237,6 +240,9 @@ function render_pagination(string $current_url, int $total_count, int $limit = 1
             ? $base_path . '/' . $query_string
             : $base_path . '/page/' . $i . '/' . $query_string;
 
+        // Reemplazar [0], [1]... por []
+        $link = preg_replace('/%5B\d+%5D/', '%5B%5D', $link);
+
         $link_for_compare = rtrim(parse_url($link, PHP_URL_PATH), '/');
         $current_path = rtrim($path, '/');
 
@@ -249,6 +255,10 @@ function render_pagination(string $current_url, int $total_count, int $limit = 1
     if ($current_page < $total_pages) {
         $next_page = $current_page + 1;
         $next_link = $base_path . '/page/' . $next_page . '/' . $query_string;
+
+        // Reemplazar [0], [1]... por []
+        $next_link = preg_replace('/%5B\d+%5D/', '%5B%5D', $next_link);
+
         $html .= "<li class=\"next\"><a href=\"$next_link\"><i class='fa-solid fa-chevron-right'></i></a></li>";
     }
 
