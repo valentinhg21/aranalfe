@@ -247,8 +247,13 @@ get_header('', [
                                     </div>
                                 </div>
                         <?php endif; ?>
-                        <h1><?php echo esc_html($address);?></h1>
-                        <h2><?php echo esc_html($location);?></h2>
+                        <?php echo $address; ?><br>
+                        <?php echo $location; ?> 
+                        <div class="info-address">
+                            <h1><?php echo $address; ?></h1>
+                            <h2><?php echo $location; ?></h2>
+                        </div>
+
                     </div>
                     <div class="area">
                         <?php if($total_surface > 0): ?>

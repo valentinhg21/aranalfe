@@ -24,7 +24,7 @@ export const mapPropertys = () => {
     }).setView([lat, long], zoom);
     // Add the MapTiler tile layer
     L.tileLayer(
-      "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=uBBj5vx85VpOncGtyuHq",
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         tileSize: 512,
         zoomOffset: -1,
