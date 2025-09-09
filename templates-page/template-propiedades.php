@@ -150,7 +150,8 @@
             'filters' => array_values(array_merge(
                 $filtro_antiguedad,
                 $ambientes_filtro,
-                $dormitorios_filtro
+                $dormitorios_filtro,
+                $superficie_filtro
             )),
             'with_tags' => $servicios_filtro,
             'without_tags' => []

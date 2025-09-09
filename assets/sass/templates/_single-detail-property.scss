@@ -1,16 +1,13 @@
 .single-property {
-  > .container{
-
-    @include media(sm){
+  > .container {
+    @include media(sm) {
       overflow-x: hidden;
     }
   }
   .hero {
     position: relative;
     #hero-splide-list {
-      
       @include media-down(sm) {
-      
         display: grid;
         grid-template-columns: 1.5fr 1fr;
         grid-template-rows: repeat(2, 1fr);
@@ -19,27 +16,24 @@
       }
     }
 
-    #hero-splide-1-list{
+    #hero-splide-1-list {
       @include media-down(sm) {
-        
         display: grid;
         grid-template-columns: 1fr;
-
       }
     }
-    #hero-splide-2-list{
+    #hero-splide-2-list {
       @include media-down(sm) {
-        
         display: grid;
         grid-template-columns: 1.8fr 1fr;
         grid-column-gap: 7px;
         grid-row-gap: 7px;
-        .splide__slide:nth-child(2){
+        .splide__slide:nth-child(2) {
           height: 627px;
         }
       }
     }
-    
+
     .splide__slide {
       //   height: 550px;
 
@@ -160,14 +154,14 @@
     padding-bottom: 40px;
     .options-view {
       display: flex;
-      @include media(sm){
+      @include media(sm) {
         margin-bottom: 20px;
       }
-      @include media(xs){
+      @include media(xs) {
         width: 100%;
       }
 
-      @include media-down(sm){
+      @include media-down(sm) {
         position: relative;
         top: -6rem;
         z-index: 999;
@@ -177,11 +171,10 @@
         grid-template-columns: repeat(3, 1fr);
         list-style: none;
         gap: 20px;
-        @include media(sm){
+        @include media(sm) {
           gap: 10px;
-        
         }
-        @include media(xs){
+        @include media(xs) {
           width: 100%;
         }
         button {
@@ -197,12 +190,12 @@
           cursor: pointer;
           transition: $fast;
           color: $black;
-          @include media(sm){
+          @include media(sm) {
             border: 1px solid #d9d9d9;
             color: $black;
             font-size: 14px;
           }
-          @include media(xs){
+          @include media(xs) {
             width: 100%;
           }
           svg {
@@ -212,7 +205,7 @@
               transition: $fast;
               color: $black;
             }
-            @include media(sm){
+            @include media(sm) {
               color: $black;
               * {
                 color: $black;
@@ -230,13 +223,13 @@
                 color: $white;
               }
             }
-            @include media(sm){
+            @include media(sm) {
               background: $red;
               border-color: $red;
               color: $white;
-              svg{
+              svg {
                 color: $white;
-                *{
+                * {
                   color: $white;
                 }
               }
@@ -286,39 +279,43 @@
       padding-top: 20px;
       display: flex;
       flex-direction: column;
-      @include media(sm){
+      color: $black;
+      * {
+        min-width: 0;
+      }
+      @include media(sm) {
         padding-bottom: 40px;
       }
-      .info-prices{
+      .info-prices {
         display: flex;
         flex-direction: row;
         margin-bottom: 8px;
-        @include media(xs){
+        @include media(xs) {
           flex-direction: column;
           row-gap: 20px;
         }
-        p{
+        p {
           font-weight: 300;
           color: $black;
           font-size: 14px;
         }
-        .price-usd{
+        .price-usd {
           padding-right: 30px;
-          @include media(xs){
+          @include media(xs) {
             padding-right: 0;
           }
           position: relative;
-          @include media(lg){
+          @include media(lg) {
             padding-right: 20px;
           }
-          &::before{
+          &::before {
             @include bg-presets();
             right: 0;
             top: 10%;
             width: 1.2px;
             height: 90%;
             background: $black;
-            @include media(xs){
+            @include media(xs) {
               top: initial;
               bottom: -10px;
               width: 100%;
@@ -326,20 +323,20 @@
             }
           }
         }
-        .price-ars{
+        .price-ars {
           padding-left: 30px;
-          @include media(xs){
+          @include media(xs) {
             padding-left: 0;
           }
-          @include media(lg){
+          @include media(lg) {
             padding-right: 20px;
           }
         }
-        .separator{
-            width: 1px;
-            height: 100%;
-            background: $black;
-            margin: 0 auto;
+        .separator {
+          width: 1px;
+          height: 100%;
+          background: $black;
+          margin: 0 auto;
         }
       }
       span {
@@ -347,27 +344,74 @@
         font-weight: bold;
         font-size: 36px;
         margin-bottom: 8px;
-        @include media(sm){
+        @include media(sm) {
           font-size: 28px;
         }
       }
       h1 {
         font-weight: bold;
         margin-bottom: 4px;
-
+        * {
+          font-weight: bold !important;
+        }
       }
       h1,
       h2 {
-        color: $black;
         font-size: 18px;
-        @include media(sm){
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        word-break: break-word; /* por si son direcciones largas */
+        min-width: 0; /* Fix para flexbox en iOS */
+        @include media(sm) {
           font-size: 1rem;
+        }
+
+        display: block;
+        color: $black;
+        * {
+          font-size: 18px !important;
+          @include media(sm) {
+            font-size: 1rem !important;
+          }
         }
       }
       h2 {
         font-weight: 400;
-
+        * {
+          font-weight: 400 !important;
+        }
       }
+
+      .info-address__text {
+        font-size: 18px;
+        @include media(sm) {
+          font-size: 1rem;
+        }
+        display: flex;
+        flex-direction: column;
+        color: $black;
+        strong {
+          color: $black;
+        }
+      }
+    }
+    .info-address {
+      position: absolute !important;
+      left: -9999px !important;
+      top: auto !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+    }
+    .text-wrap {
+      display: inline; /* o block si querés que rompa línea */
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      word-break: break-word !important;
+      -webkit-line-clamp: unset !important;
+      -webkit-box-orient: unset !important;
     }
     .area {
       padding-top: 20px;
@@ -375,7 +419,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
       margin-bottom: 40px;
-      @include media(sm){
+      @include media(sm) {
         display: none;
       }
       .item {
@@ -401,7 +445,6 @@
       }
     }
     .details {
- 
       h2 {
         font-size: 20px;
         color: $red;
@@ -409,36 +452,35 @@
         border-bottom: 1px solid #ccc;
         padding: 12px 0;
         margin-bottom: 20px;
-        @include media(sm){
+        @include media(sm) {
           padding: 6px 0;
           font-size: 18px;
           margin-bottom: 10px;
-      
         }
       }
       ul {
         display: grid;
         grid-template-columns: 1.5fr 1fr 1fr;
         gap: 20px;
-        @include media(sm){
+        @include media(sm) {
           grid-template-columns: 1fr 1fr;
           gap: 10px;
         }
       }
-      .list-mobile-area{
-        @include media-down(sm){
+      .list-mobile-area {
+        @include media-down(sm) {
           display: none;
         }
         grid-template-columns: repeat(1, 1fr);
         border-bottom: 1px solid #ccc;
-        li{
-          &:last-child{
+        li {
+          &:last-child {
             margin-bottom: 10px;
           }
         }
       }
-      @include media(sm){
-        .list-details{
+      @include media(sm) {
+        .list-details {
           margin-top: 10px;
         }
       }
@@ -446,7 +488,7 @@
       p {
         color: $black;
         line-height: 140%;
-        @include media(sm){
+        @include media(sm) {
           font-size: 14px;
         }
       }
@@ -480,40 +522,39 @@
 
       .item {
         color: $black;
-        *{
+        * {
           color: $black;
         }
-        > div{
+        > div {
           margin-bottom: 20px;
-                      @include media(sm){
-              font-size: 14px;
-            }
-              color: $black;
-          @include media(sm){
+          @include media(sm) {
+            font-size: 14px;
+          }
+          color: $black;
+          @include media(sm) {
             margin-bottom: 10px;
           }
-          *{
+          * {
             color: $black;
-            @include media(sm){
+            @include media(sm) {
               font-size: 14px;
             }
           }
         }
-        @include media(sm){
-          &:first-child{
-           
+        @include media(sm) {
+          &:first-child {
             position: relative;
             margin-bottom: 40px;
-            &::before{
+            &::before {
               position: absolute;
               content: "";
               top: -10px;
               left: -8rem;
               width: 150%;
-     
+
               height: 116%;
-            background: rgba(248, 248, 248, 0.97);
-            z-index: -1;
+              background: rgba(248, 248, 248, 0.97);
+              z-index: -1;
             }
           }
         }
@@ -521,7 +562,7 @@
           > div {
             height: 500px;
             border-radius: 6px;
-            @include media(sm){
+            @include media(sm) {
               height: 320px;
             }
           }
@@ -535,7 +576,7 @@
         }
         &:not(:first-child) {
           margin-top: 40px;
-          @include media(sm){
+          @include media(sm) {
             margin-top: 20px;
           }
         }
@@ -562,28 +603,28 @@
             }
           }
         }
-        &.description{
-          *{
+        &.description {
+          * {
             font-size: 1rem !important;
             color: $black;
             line-height: 140%;
-            @include media(sm){
-                font-size: 14px !important;
+            @include media(sm) {
+              font-size: 14px !important;
             }
             margin-bottom: 10px !important;
           }
-          p{
+          p {
             margin-bottom: 10px !important;
-            *{
+            * {
               color: $black;
               line-height: 140%;
               font-size: 16px !important;
-              @include media(sm){
+              @include media(sm) {
                 font-size: 14px !important;
               }
             }
           }
-          br{
+          br {
             display: block !important;
           }
         }
@@ -599,7 +640,7 @@
     width: 100%;
     flex-direction: column;
     padding-top: 50px;
-    @include media(sm){
+    @include media(sm) {
       padding-top: 30px;
     }
     h2 {
@@ -610,9 +651,9 @@
     .row {
       padding-top: 33px;
       padding-bottom: 50px;
-       @include media(sm){
+      @include media(sm) {
         padding-top: 20px;
-       }
+      }
     }
   }
   aside {
@@ -625,10 +666,10 @@
       box-shadow: 4px 4px 28px 0px rgba(0, 0, 0, 0.08);
       position: sticky;
       top: 8rem;
-      .content{
+      .content {
         padding: 30px;
       }
-      @include media(sm){
+      @include media(sm) {
         position: relative;
       }
       .input__container {
@@ -661,20 +702,20 @@
           resize: none;
         }
       }
-      #closeFormRequest{
+      #closeFormRequest {
         position: absolute;
         right: 1rem;
-        top: .6rem;
+        top: 0.6rem;
         border: 0;
         outline: none;
         background: transparent;
-        i{
+        i {
           font-size: 24px;
           color: $black;
         }
       }
     }
-    @include media(sm){
+    @include media(sm) {
       position: fixed;
       top: 0;
       left: 0;
@@ -686,31 +727,30 @@
       opacity: 0;
       z-index: -1;
       transition: $fast;
-      &.show{
+      &.show {
         visibility: visible;
         opacity: 1;
         z-index: 999999;
       }
     }
   }
-  .button-request{
+  .button-request {
     position: fixed;
     bottom: 2rem;
     left: 0;
     width: 100%;
- 
+
     z-index: 999;
     padding: 0 25px;
   }
 }
 
-
 .splide__arrow--prev,
-.splide__arrow--next{
+.splide__arrow--next {
   background: transparent;
   opacity: 1 !important;
-  svg{
-     height: 2em;
+  svg {
+    height: 2em;
     width: 2em;
     fill: $white;
     opacity: 1;
