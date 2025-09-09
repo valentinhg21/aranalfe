@@ -523,19 +523,20 @@ $hay_planos = get_field('activar') ? true : false;
                                 $address = $unidad['address'];
                                 $permalink = return_url() . '/propiedad/' . slugify($address) . '/' . $unidad['id'];
                                 $real_adress = $unidad['real_address'];
+                               
                                 $floor = extractFloorIdentifier($real_adress);
                             ?>
                             <div class="tabla-row">
-                                <div class="col"><?= $floor ?? '—' ?>&#176;</div>
+                                <div class="col"><?= $floor ?? '—' ?></div>
                                 <div class="col"><?= $unidad['room_amount'] ?? '—' ?></div>
                                 <div class="col d-none d-block-md"><?= $unidad['roofed_surface'] ?? '—' ?> m²</div>
                                 <div class="col"><?= $unidad['total_surface'] ?? '—' ?> m²</div>
                                 <div class="col"><?= !empty($unidad['web_price']) ? $total_price : 'Consultar' ?></div>
                                 <div class="col d-none d-block-md">
-                                    <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white">Ver</a>
+                                    <a href="<?= $permalink ?>" target="_self" class="btn btn-black-white">Ver</a>
                                 </div>
                                 <div class="col d-none-md d-block">
-                                    <a href="<?= $permalink ?>" target="_blank" class="btn btn-black-white"><i class="fa-solid fa-plus"></i></a>
+                                    <a href="<?= $permalink ?>" target="_self" class="btn btn-black-white"><i class="fa-solid fa-plus"></i></a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

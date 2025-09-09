@@ -806,28 +806,17 @@ function get_hero_image_development(array $data): ?array {
 
 
 function extractFloorIdentifier(string $text): ?string {
-
-    $pattern = '/Piso\s(\d+)/';
-
-    // Intenta encontrar el patrón en el string
+    $pattern = '/(?:Piso\s(\d+)|\bPB\b)/i';
 
     if (preg_match($pattern, $text, $matches)) {
-
-        // Si se encuentra una coincidencia, el primer grupo capturado ($matches[1])
-
-        // contiene el identificador de piso.
-
-        return $matches[1];
-
-    } else {
-
-        // Si no se encuentra el patrón, retorna null.
-
-        return null;
-
+        if (!empty($matches[1])) {
+            return $matches[1] . ' &#176;'; // Piso con número + °
+        }
+        return 'PB'; // Planta baja sin °
     }
-
+    return null;
 }
+
 
 
 

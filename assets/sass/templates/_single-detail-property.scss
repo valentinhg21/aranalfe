@@ -152,6 +152,13 @@
   .body-content {
     padding-top: 20px;
     padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    min-width: 0;
+    *{
+      min-width: 0;
+    }
     .options-view {
       display: flex;
       @include media(sm) {
@@ -280,8 +287,15 @@
       display: flex;
       flex-direction: column;
       color: $black;
+      max-width: 100%;
+      -webkit-transform: translateZ(0);
+      min-width: 0;
       * {
         min-width: 0;
+        overflow: hidden;
+        min-width: 0;        /* evita bug en iOS */
+        flex-shrink: 1;      /* permite que se reduzca sin cortar texto */
+        -webkit-transform: translateZ(0); /* fuerza repintado en WebKit */
       }
       @include media(sm) {
         padding-bottom: 40px;
@@ -382,19 +396,27 @@
           font-weight: 400 !important;
         }
       }
-
-      .info-address__text {
-        font-size: 18px;
+      .location{
+         font-size: 18px;
         @include media(sm) {
           font-size: 1rem;
         }
         display: flex;
         flex-direction: column;
         color: $black;
+        font-weight: 500;
+        margin-bottom: 0;
         strong {
           color: $black;
         }
+        min-width: 0;
+        overflow: visible;
+        white-space: normal;
+        text-overflow: unset;
+        word-break: break-word;
       }
+
+
     }
     .info-address {
       position: absolute !important;

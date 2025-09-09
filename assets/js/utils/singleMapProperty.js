@@ -1,17 +1,17 @@
 const createMap = (container, lat, lng) => {
    const POINT_IMAGE = `${ajax_var.image}/point-map.png`;
   const map = L.map(container, { scrollWheelZoom: true }).setView([lat, lng], 14);
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    minZoom: 5,
+    maxZoom: 20,
+    crossOrigin: true,
+    scrollwheel: true,
+    ...(L.Browser.mobile && {
       tileSize: 512,
       zoomOffset: -1,
-      minZoom: 5,
-      maxZoom: 20,
-      crossOrigin: true,
-      scrollwheel: true,
-    }
-  ).addTo(map);
+      detectRetina: true,
+    })
+  }).addTo(map);
 
   const propertyICON = L.icon({
     iconUrl: POINT_IMAGE,

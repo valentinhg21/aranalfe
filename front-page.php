@@ -107,7 +107,7 @@
                                 ?>
       
                                 <div class="col-sm-4 col-xs-6 col-12">
-                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Ver categoria <?php echo $title;?>" target="_blank"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category" title="Ver categoria <?php echo $title;?>" target="_self"> 
                                         <div class="image d-flex-sm d-none">
                                             <?php insert_image($image); ?>
                                         </div>
@@ -243,7 +243,7 @@
                                 <div class="col-xxl-3 col-md-4 col-xs-6 col-12"  data-date = "<?php echo $created_at;?>" data-fetaure="<?php echo $feature;?>">
                                     <a  class="card-property" href="<?php echo $permalink?>"
                                         title="<?php echo $operation_type;?> / <?php echo $type_property;?> -  <?php echo $total_price;?>  - <?php echo  $address;?> - <?php echo $location;?>"
-                                        target="_blank">
+                                        target="_self">
                                         <div class="image">
 
                                             <button type="button" class="favorite">
@@ -318,7 +318,7 @@
                         <?php insert_acf($titulo, 'h2'); ?>
                         <div class="button__container d-flex-md d-none">
                             <?php $url = get_sub_field( 'url' ); ?>
-                            <a href="<?php echo esc_url($url);?>" class="btn btn-red-outline" title="Ver mas" target="_blank">
+                            <a href="<?php echo esc_url($url);?>" class="btn btn-red-outline" title="Ver mas" target="_self">
                                 Ver todos
                             </a>
                         </div>
@@ -334,7 +334,7 @@
                                 ?>
 
                                 <div class="col-sm-4 col-6">
-                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category-property" title="Ver categoria <?php echo $title;?>" target="_blank"> 
+                                    <a href="<?php echo esc_url($url_parametros);?>" class="card-category-property" title="Ver categoria <?php echo $title;?>" target="_self"> 
                                         <div class="image">
                                             <?php insert_image($image); ?>
                                         </div>

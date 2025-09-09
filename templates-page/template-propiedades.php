@@ -418,7 +418,7 @@
                                 <div class="col-xxl-3 col-md-4 col-xs-6 col-12"  data-date = "<?php echo $created_at;?>">
                                     <a  class="card-property" href="<?php echo $permalink?>"
                                         title="<?php echo $operation_type;?> / <?php echo $type_property;?> -  <?php echo $total_price;?>  - <?php echo  $address;?> - <?php echo $location;?>"
-                                        target="_blank">
+                                        target="_self">
                                         <div class="image">
                                             <button type="button" class="favorite">
                                                 <?php render_svg(SVG . '/icon-favorite.svg'); ?>

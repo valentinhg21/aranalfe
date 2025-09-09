@@ -234,7 +234,7 @@ get_header('', [
                     </div>
                     <div class="info">
                         <?php if($count_prices == 1): ?>
-                            <span><?php echo esc_html($total_price);?></span>
+                             <span><?php echo esc_html($total_price);?></span>
                             <?php else: ?>
                                 <div class="info-prices">
                                     <div  class="price-usd">
@@ -247,13 +247,14 @@ get_header('', [
                                     </div>
                                 </div>
                         <?php endif; ?>
-                        <?php echo $address; ?><br>
-                        <?php echo $location; ?> 
+                         <spa class="location"n><?php echo $address; ?></spa>
+                         <span class="location"><?php echo $location; ?></span>
                         <div class="info-address">
                             <h1><?php echo $address; ?></h1>
                             <h2><?php echo $location; ?></h2>
                         </div>
-
+                 
+                        
                     </div>
                     <div class="area">
                         <?php if($total_surface > 0): ?>
@@ -392,6 +393,7 @@ get_header('', [
                             </div>
                         </div>
                     </div>
+                    <?php echo esc_html($address);?>
                 </div>
             </div>
             <aside class="col-sm-5 col-12" id="containerFormRequest">
@@ -466,7 +468,7 @@ get_header('', [
                 <div class="<?php echo $class_property_similar;?>">
                     <a class="card-property" href="<?php echo $permalink?>"
                         title="Alquiler / Departamento -  170.000 USD  - Charcas al 2500 - Barrio Norte, Capital Federal"
-                        target="_blank">
+                        target="_self">
                         <div class="image">
                             <button type="button" class="favorite">
                                 <?php render_svg(SVG . '/icon-favorite.svg'); ?>
