@@ -1,6 +1,6 @@
 [
     {
-        "count": 84,
+        "count": 83,
         "id": 2,
         "type": "Departamento"
     },
@@ -25,7 +25,7 @@
         "type": "Terreno"
     },
     {
-        "count": 17,
+        "count": 16,
         "id": 5,
         "type": "Oficina"
     }

@@ -1,7 +1,47 @@
 .single-property {
+
+  .location-name {
+      all: unset !important;
+      display: block !important;
+      white-space: normal !important;  /* permite saltos de línea */
+      overflow: visible !important;     /* muestra todo el contenido */
+      word-break: break-word;           /* rompe palabras largas si es necesario */
+      hyphens: auto;                    /* divide palabras si hace falta */
+      max-height: none !important;      /* sin límite de altura */
+      -webkit-line-clamp: unset !important; /* desactiva line-clamp */
+      color: #333 !important;           /* color fijo */
+      mix-blend-mode: normal !important; /* desactiva efectos de mezcla */
+      text-decoration: none !important;
+      border: none !important; /* por si es un border-bottom en lugar de underline */
+      text-overflow: clip !important;
+      width: 100% !important;
+      *{
+        all: unset !important;
+        display: block !important;
+        white-space: normal !important;  /* permite saltos de línea */
+        overflow: visible !important;     /* muestra todo el contenido */
+        word-break: break-word;           /* rompe palabras largas si es necesario */
+        hyphens: auto;                    /* divide palabras si hace falta */
+        max-height: none !important;      /* sin límite de altura */
+        -webkit-line-clamp: unset !important; /* desactiva line-clamp */
+        color: #333 !important;           /* color fijo */
+        mix-blend-mode: normal !important; /* desactiva efectos de mezcla */
+        text-decoration: none !important;
+        border: none !important; /* por si es un border-bottom en lugar de underline */
+        text-overflow: clip !important;
+        width: 100% !important;
+      }
+
+      &.first{
+        font-weight: bold !important;
+        *{
+          font-weight: bold !important;
+        }
+      }
+  }
   > .container {
     @include media(sm) {
-      overflow-x: hidden;
+      // overflow-x: hidden;
     }
   }
   .hero {
@@ -52,7 +92,7 @@
           object-position: center;
           display: flex;
           @include media(sm) {
-            height: 55dvh;
+            height: 30vh;
           }
         }
       }
@@ -155,10 +195,8 @@
     display: flex;
     flex-direction: column;
     max-width: 100%;
-    min-width: 0;
-    *{
-      min-width: 0;
-    }
+    // min-width: 0;
+ 
     .options-view {
       display: flex;
       @include media(sm) {
@@ -247,6 +285,7 @@
     }
     .breadcrum {
       display: flex;
+
       ul {
         display: flex;
         align-items: center;
@@ -467,6 +506,9 @@
       }
     }
     .details {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
       h2 {
         font-size: 20px;
         color: $red;
@@ -566,18 +608,9 @@
         @include media(sm) {
           &:first-child {
             position: relative;
-            margin-bottom: 40px;
-            &::before {
-              position: absolute;
-              content: "";
-              top: -10px;
-              left: -8rem;
-              width: 150%;
-
-              height: 116%;
-              background: rgba(248, 248, 248, 0.97);
-              z-index: -1;
-            }
+            // margin-bottom: 40px;
+            background: rgba(248, 248, 248, 0.97);
+   
           }
         }
         .mapViewProperty {
@@ -626,7 +659,7 @@
           }
         }
         &.description {
-          * {
+          *:not(h2) {
             font-size: 1rem !important;
             color: $black;
             line-height: 140%;
@@ -764,6 +797,43 @@
 
     z-index: 999;
     padding: 0 25px;
+  }
+
+  .ex-container{
+
+      @include media-down(sm){
+        max-width: 1366px;
+        width: 100%;
+        margin: 0 auto;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+      .body-content{
+        .options-view,
+        .breadcrum,
+        .info,
+        .area{
+          @include media(sm){
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+        }
+        .details{
+          .details-property{
+            @include media(sm){
+              padding: 20px;
+            }
+          }
+          .item:not(.details-property){
+             @include media(sm){
+              width: 100%;
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+          }
+        }
+      }
   }
 }
 

@@ -152,9 +152,6 @@ get_header('', [
 ?>
 
 <main class="single-property" id="<?php echo esc_html($current_id);?>">
-    <div class="d-none">
-        <?php var_dump($property); ?>
-    </div>
     <div class="container-fluid">
         <section class="hero">
             <div class="splide" id="hero-splide<?php echo count($images) <= 2 ? '-' . count($images) : ''; ?>" data-images="<?php echo count($images);?>">
@@ -189,212 +186,205 @@ get_header('', [
             </div>
         </section>
     </div>
-    <div class="container">
+    <div class="container-fluid ex-container">
         <div class="row">
             <div class="col-sm-7 col-12">
-                <div class="body-content">
-                    <div class="options-view">
-                        <ul>
-                            <li>
-                                <button type="buttton" class="btn-view btn-open-image active">
-                                    <?php render_svg(SVG . '/icon-image.svg');?> Fotos
-                                </button>
-                            </li>
-                            <?php if($video_url): ?>
-                            <li>
-                                <button type="buttton" class="btn-view btn-open-video">
-                                    <?php render_svg(SVG . '/icon-video.svg');?>
-                                    Video
-                                </button>
-                            </li>
-                            <?php endif; ?>
-                            <li>
-                                <button type="buttton" class="btn-view btn-open-single-map">
-                                    <?php render_svg(SVG . '/icon-location.svg');?>
-                                    Mapa
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="breadcrum">
-                        <ul>
-                            <li><?php echo esc_html($operation_type);?></li>
-                            <li><?php echo esc_html($type_property);?></li>
-                            <?php if($total_surface): ?>
-                                <li><?php echo esc_html($total_surface);?> M<sup>2</sup></li>
-                            <?php endif; ?>
-                            <?php if($room_amount): ?>
-                                <?php if($room_amount <= 1): ?>
-                                        <li><?php echo esc_html($room_amount);?> Ambiente</li>
-                                    <?php else: ?>
-                                        <li><?php echo esc_html($room_amount);?> Ambientes</li>
+                    <div class="body-content">
+                        <div class="options-view">
+                            <ul>
+                                <li>
+                                    <button type="buttton" class="btn-view btn-open-image active">
+                                        <?php render_svg(SVG . '/icon-image.svg');?> Fotos
+                                    </button>
+                                </li>
+                                <?php if($video_url): ?>
+                                <li>
+                                    <button type="buttton" class="btn-view btn-open-video">
+                                        <?php render_svg(SVG . '/icon-video.svg');?>
+                                        Video
+                                    </button>
+                                </li>
                                 <?php endif; ?>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-                    <div class="info">
-                        <?php if($count_prices == 1): ?>
-                             <span><?php echo esc_html($total_price);?></span>
-                            <?php else: ?>
-                                <div class="info-prices">
-                                    <div  class="price-usd">
-                                        <p>PRECIO DE VENTA</p>
-                                        <span><?php echo esc_html($total_price);?></span>
-                                    </div>
-                                    <div class="price-ars">
-                                        <p>PRECIO DE ALQUILER</p>
-                                        <span ><?php echo esc_html($total_price_alquiler);?></span>
-                                    </div>
-                                </div>
-                        <?php endif; ?>
-                         <spa class="location"n><?php echo $address; ?></spa>
-                         <span class="location"><?php echo $location; ?></span>
-                        <div class="info-address">
-                            <h1><?php echo $address; ?></h1>
-                            <h2><?php echo $location; ?></h2>
-                        </div>
-                 
-                        
-                    </div>
-                    <div class="area">
-                        <?php if($total_surface > 0): ?>
-                        <div class="item">
-                            <?php render_svg(SVG . '/icon-superficie.svg') ?>
-                            <p><?php echo esc_html($total_surface);?> m<sup>2</sup> totales</p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if($roofed_surface > 0): ?>
-                        <div class="item">
-                            <?php render_svg(SVG . '/icon-semicubierto.svg') ?>
-                            <p><?php echo esc_html($roofed_surface);?> m<sup>2</sup> cubiertos</p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if($semi_surface > 0): ?>
-                        <div class="item">
-                            <?php render_svg(SVG . '/icon-cubierto.svg') ?>
-                            <p><?php echo esc_html($semi_surface);?> m<sup>2</sup> semicubiertos</p>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="details">
-                        <div class="item">
-                            <h2>Detalles de la propiedad</h2>
-                            <ul class="list-mobile-area">
-                                <?php if($total_surface > 0): ?>
-                                    <li>
-                                        <div class="icon">
-                                                <?php render_svg(SVG . '/icon-superficie.svg') ?>
-                                        </div>
-                                        <p><?php echo esc_html($total_surface)?> m<sup>2</sup> tot. construído</p>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if($roofed_surface > 0): ?>
-                                    <li>
-                                        <div class="icon">
-                                                <?php render_svg(SVG . '/icon-semicubierto.svg') ?>
-                                        </div>
-                                        <p><?php echo esc_html($roofed_surface);?> m<sup>2</sup> <?php echo ($roofed_surface < 2 ? 'cubierto' : 'cubiertos'); ?></p>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if($semi_surface > 0): ?>
-                                    <li>
-                                        <div class="icon"><?php render_svg(SVG . '/icon-cubierto.svg') ?></div>
-                                        <p><?php echo esc_html($semi_surface);?> m<sup>2</sup> <?php echo ($roofed_surface < 2 ? 'semicubierto' : 'semicubiertos'); ?></p>
-                                    </li>
-                                <?php endif; ?>
+                                <li>
+                                    <button type="buttton" class="btn-view btn-open-single-map">
+                                        <?php render_svg(SVG . '/icon-location.svg');?>
+                                        Mapa
+                                    </button>
+                                </li>
                             </ul>
-                            <ul class="list-details">
+                        </div>
+                        <div class="breadcrum">
+                            <ul>
+                                <li><?php echo esc_html($operation_type);?></li>
+                                <li><?php echo esc_html($type_property);?></li>
+                                <?php if($total_surface): ?>
+                                    <li><?php echo esc_html($total_surface);?> M<sup>2</sup></li>
+                                <?php endif; ?>
                                 <?php if($room_amount): ?>
-                                    <li>
-                                        <div class="icon">
-                                            <?php render_svg(SVG . '/icon-single-ambientes.svg'); ?>
-                                        </div>
-                                        <?php echo esc_html($room_amount); ?>
-                                        <?php echo ($room_amount <= 1) ? 'Ambiente' : 'Ambientes'; ?>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if($suite_amount): ?>
-                                    <li>
-                                        <div class="icon">
-                                            <?php render_svg(SVG . '/icon-single-dormitorio.svg'); ?>
-                                        </div>
-                                        <?php echo esc_html($suite_amount)?> <?php echo ($suite_amount <= 1) ? 'Dormitorio' : 'Dormitorios'; ?>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if($bathroom_amount): ?>
-                                    <li>
-                                        <div class="icon">
-                                            <?php render_svg(SVG . '/icon-single-bano.svg'); ?>
-                                        </div>
-                                        <?php echo esc_html($bathroom_amount)?> <?php echo ($bathroom_amount <= 1) ? 'Baño' : 'Baños'; ?>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if($age_text): ?>
-                                    <li>
-                                        <div class="icon">
-                                            <?php render_svg(SVG . '/icon-single-status.svg'); ?>
-                                        </div>
-                                        <?php echo esc_html($age_text);?>
-                                    </li>
+                                    <?php if($room_amount <= 1): ?>
+                                            <li><?php echo esc_html($room_amount);?> Ambiente</li>
+                                        <?php else: ?>
+                                            <li><?php echo esc_html($room_amount);?> Ambientes</li>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </ul>
                         </div>
-                        <?php if($concepto): ?>
+                        <div class="info">
+                            <?php if($count_prices == 1): ?>
+                                <span><?php echo esc_html($total_price);?></span>
+                                <?php else: ?>
+                                    <div class="info-prices">
+                                        <div  class="price-usd">
+                                            <p>PRECIO DE VENTA</p>
+                                            <span><?php echo esc_html($total_price);?></span>
+                                        </div>
+                                        <div class="price-ars">
+                                            <p>PRECIO DE ALQUILER</p>
+                                            <span ><?php echo esc_html($total_price_alquiler);?></span>
+                                        </div>
+                                    </div>
+                            <?php endif; ?>
+                            <h1 class="location-name first"><?php echo htmlspecialchars(strip_tags($property['address'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h1>
+                            <h2 class="location-name"><?php echo htmlspecialchars(strip_tags($location ?? ''), ENT_QUOTES, 'UTF-8'); ?></h2> 
+                        </div>
+                        <div class="area">
+                            <?php if($total_surface > 0): ?>
                             <div class="item">
-                                <h2>Concepto</h2>
-                                <p>
-                                    <?php echo esc_html($concepto); ?>
-                                </p>
+                                <?php render_svg(SVG . '/icon-superficie.svg') ?>
+                                <p><?php echo esc_html($total_surface);?> m<sup>2</sup> totales</p>
                             </div>
-                        <?php endif; ?>
-                        <?php if($description_text):?>
-                            <div class="item description">
-                                <h2>Descripción</h2>
-                                <?php echo $description_text; ?>
+                            <?php endif; ?>
+                            <?php if($roofed_surface > 0): ?>
+                            <div class="item">
+                                <?php render_svg(SVG . '/icon-semicubierto.svg') ?>
+                                <p><?php echo esc_html($roofed_surface);?> m<sup>2</sup> cubiertos</p>
                             </div>
-                        <?php endif; ?>
-                        <?php if($servicios_only): ?>
-                            <div class="item item-list">
-                                <h2>Servicios</h2>
-                                <?php if($servicios_only): ?>
-                                <ul>
-                                    <?php foreach($servicios_only as $tag): ?>
-                                    <li><?php echo esc_html($tag['name']);  ?></li>
-                                    <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if($semi_surface > 0): ?>
+                            <div class="item">
+                                <?php render_svg(SVG . '/icon-cubierto.svg') ?>
+                                <p><?php echo esc_html($semi_surface);?> m<sup>2</sup> semicubiertos</p>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="details">
+                            <div class="item details-property">
+                                <h2>Detalles de la propiedad</h2>
+                                <ul class="list-mobile-area">
+                                    <?php if($total_surface > 0): ?>
+                                        <li>
+                                            <div class="icon">
+                                                    <?php render_svg(SVG . '/icon-superficie.svg') ?>
+                                            </div>
+                                            <p><?php echo esc_html($total_surface)?> m<sup>2</sup> tot. construído</p>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if($roofed_surface > 0): ?>
+                                        <li>
+                                            <div class="icon">
+                                                    <?php render_svg(SVG . '/icon-semicubierto.svg') ?>
+                                            </div>
+                                            <p><?php echo esc_html($roofed_surface);?> m<sup>2</sup> <?php echo ($roofed_surface < 2 ? 'cubierto' : 'cubiertos'); ?></p>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if($semi_surface > 0): ?>
+                                        <li>
+                                            <div class="icon"><?php render_svg(SVG . '/icon-cubierto.svg') ?></div>
+                                            <p><?php echo esc_html($semi_surface);?> m<sup>2</sup> <?php echo ($roofed_surface < 2 ? 'semicubierto' : 'semicubiertos'); ?></p>
+                                        </li>
+                                    <?php endif; ?>
                                 </ul>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if($servicios_ambientes): ?>
-                            <div class="item item-list">
-                                <h2>Ambientes</h2>
-                                <ul>
-                                    <?php foreach($servicios_ambientes as $tag): ?>
-                                    <li><?php echo esc_html($tag['name']);  ?></li>
-                                    <?php endforeach; ?>
+                                <ul class="list-details">
+                                    <?php if($room_amount): ?>
+                                        <li>
+                                            <div class="icon">
+                                                <?php render_svg(SVG . '/icon-single-ambientes.svg'); ?>
+                                            </div>
+                                            <?php echo esc_html($room_amount); ?>
+                                            <?php echo ($room_amount <= 1) ? 'Ambiente' : 'Ambientes'; ?>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if($suite_amount): ?>
+                                        <li>
+                                            <div class="icon">
+                                                <?php render_svg(SVG . '/icon-single-dormitorio.svg'); ?>
+                                            </div>
+                                            <?php echo esc_html($suite_amount)?> <?php echo ($suite_amount <= 1) ? 'Dormitorio' : 'Dormitorios'; ?>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if($bathroom_amount): ?>
+                                        <li>
+                                            <div class="icon">
+                                                <?php render_svg(SVG . '/icon-single-bano.svg'); ?>
+                                            </div>
+                                            <?php echo esc_html($bathroom_amount)?> <?php echo ($bathroom_amount <= 1) ? 'Baño' : 'Baños'; ?>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if($age_text): ?>
+                                        <li>
+                                            <div class="icon">
+                                                <?php render_svg(SVG . '/icon-single-status.svg'); ?>
+                                            </div>
+                                            <?php echo esc_html($age_text);?>
+                                        </li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
-                        <?php endif; ?>
-                        <?php if($servicios_adicionales): ?>
-                            <div class="item item-list">
-                                <h2>Adicionales</h2>
-                                <ul>
-                                    <?php foreach($servicios_adicionales as $tag): ?>
-                                    <li><?php echo esc_html($tag['name']);  ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-                        <div class="item location">
-                            <h2>Ubicación</h2>
-                            <p><?php echo esc_html($address);?>, <?php echo esc_html($location);?></p>
-                            <div class="mapViewProperty">
-                                <div id="mapviewproperty" class="mapViewSingle" data-lat="<?php echo esc_html($lat);?>" data-long="<?php echo esc_html($long);?>"></div>
+                            <?php if($concepto): ?>
+                                <div class="item">
+                                    <h2>Concepto</h2>
+                                    <p>
+                                        <?php echo esc_html($concepto); ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($description_text):?>
+                                <div class="item description">
+                                    <h2>Descripción</h2>
+                                    <?php echo $description_text; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($servicios_only): ?>
+                                <div class="item item-list">
+                                    <h2>Servicios</h2>
+                                    <?php if($servicios_only): ?>
+                                    <ul>
+                                        <?php foreach($servicios_only as $tag): ?>
+                                        <li><?php echo esc_html($tag['name']);  ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($servicios_ambientes): ?>
+                                <div class="item item-list">
+                                    <h2>Ambientes</h2>
+                                    <ul>
+                                        <?php foreach($servicios_ambientes as $tag): ?>
+                                        <li><?php echo esc_html($tag['name']);  ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($servicios_adicionales): ?>
+                                <div class="item item-list">
+                                    <h2>Adicionales</h2>
+                                    <ul>
+                                        <?php foreach($servicios_adicionales as $tag): ?>
+                                        <li><?php echo esc_html($tag['name']);  ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+                            <div class="item location">
+                                <h2>Ubicación</h2>
+                                <p><?php echo esc_html($address);?>, <?php echo esc_html($location);?></p>
+                                <div class="mapViewProperty">
+                                    <div id="mapviewproperty" class="mapViewSingle" data-lat="<?php echo esc_html($lat);?>" data-long="<?php echo esc_html($long);?>"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <?php echo esc_html($address);?>
-                </div>
             </div>
             <aside class="col-sm-5 col-12" id="containerFormRequest">
                 <form id="singlePropertyForm" data-origen="Form Propiedad" data-property="<?php echo $current_id?>" data-tags="Consulta de propiedad" data-event="form_propiedad">

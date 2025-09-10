@@ -77,14 +77,14 @@
         "parent_name": "Centro (Capital Federal)"
     },
     {
-        "count": 3,
+        "count": 2,
         "location_id": 24700,
         "location_name": "Monserrat",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },
     {
-        "count": 14,
+        "count": 13,
         "location_id": 24728,
         "location_name": "Palermo",
         "parent_id": 146,

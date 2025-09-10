@@ -66,67 +66,84 @@ $filtros_tag = get_query_var('filtros_tag');
 
 
 <!-- Precios -->
-  <div class="filter filter-price">
-    <p>Precios</p>
-    <div class="input-min-max">
-      <div>
-        <label for="precio_min">Mínimo:</label>
-        <input
-          type="number"
-          name="precio_min"
-          id="precio_min"
-          min="1"
-          value="<?= esc_attr(($val = preg_replace('/[^\d]/', '', $_GET['precio_min'] ?? '')) !== '' ? $val : '1') ?>"/>
-      </div>
-      <div class="separator"><span>-</span></div>
-      <div>
-        <label for="precio_max">Máximo:</label>
-        <input
-          type="number"
-          name="precio_max"
-          id="precio_max"
-          min="0"
-          value="<?= esc_attr(($val = preg_replace('/[^\d]/', '', $_GET['precio_max'] ?? '')) !== '' ? $val : '999999999') ?>"/>
-      </div>
+<div class="filter filter-price">
+  <p>Precios</p>
+  <div class="input-min-max">
+    <div>
+      <?php 
+        $input_price_min = $_GET['precio_min'] ?? '1';
+        $val_price_min_clean = preg_replace('/[^\d]/', '', $input_price_min);
+        $val_price_min_clean = $val_price_min_clean !== '' ? (int)$val_price_min_clean : 1;
+        $val_price_min_display = number_format($val_price_min_clean, 0, '', '.');
+      ?>
+      <label for="precio_min_display">Mínimo:</label>
+      <input type="text" class="price-input" data-target="precio_min" id="precio_min_display" value="<?= esc_attr($val_price_min_display) ?>">
+      <input type="hidden" name="precio_min" id="precio_min" value="<?= esc_attr($val_price_min_clean) ?>">
     </div>
-    <div class="currency-price">
-      <label class="<?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>">
-        <input class="btn-currency-price" type="radio" name="moneda" value="USD" data-waschecked="<?= ($_GET['moneda'] ?? '') === 'USD' ? 'true' : 'false' ?>"
-          <?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>> USD
-          
-      </label>
-      <label class="<?= ($_GET['moneda'] ?? '') === 'ARS' ? 'checked' : '' ?>">
-        <input class="btn-currency-price" type="radio" name="moneda" value="ARS"
-          <?= ($_GET['moneda'] ?? '') === 'ARS' ? 'checked' : '' ?>> ARS
-      </label>
+    <div class="separator"><span>-</span></div>
+    <div>
+      <?php 
+        $input_price_max = $_GET['precio_max'] ?? '999999999';
+        $val_price_max_clean = preg_replace('/[^\d]/', '', $input_price_max);
+        $val_price_max_clean = $val_price_max_clean !== '' ? (int)$val_price_max_clean : 999999999;
+        $val_price_max_display = number_format($val_price_max_clean, 0, '', '.');
+      ?>
+      <label for="precio_max_display">Máximo:</label>
+      <input type="text" class="price-input" data-target="precio_max" id="precio_max_display" value="<?= esc_attr($val_price_max_display) ?>">
+      <input type="hidden" name="precio_max" id="precio_max" value="<?= esc_attr($val_price_max_clean) ?>">
     </div>
   </div>
+  <div class="currency-price">
+    <label class="<?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>">
+      <input class="btn-currency-price" type="radio" name="moneda" value="USD"
+        <?= ($_GET['moneda'] ?? '') === 'USD' ? 'checked' : '' ?>> USD
+    </label>
+    <label class="<?= ($_GET['moneda'] ?? '') === 'ARS' ? 'checked' : '' ?>">
+      <input class="btn-currency-price" type="radio" name="moneda" value="ARS"
+        <?= ($_GET['moneda'] ?? '') === 'ARS' ? 'checked' : '' ?>> ARS
+    </label>
+  </div>
+</div>
 
-  <!-- Superficie -->
-  <div class="filter filter-sup">
-    <p>Superficie en m<sup>2</sup></p>
-    <div class="input-min-max">
-      <div>
-        <label for="sup_min">Mínimo:</label>
-        <input
-          type="number"
-          name="sup_min"
-          id="sup_min"
-          min="0"
-          value="<?= esc_attr(($val = preg_replace('/[^\d]/', '', $_GET['sup_min'] ?? '')) !== '' ? $val : '1') ?>"/>
-      </div>
-      <div class="separator"><span>-</span></div>
-      <div>
-        <label for="sup_max">Máximo:</label>
-        <input
-          type="number"
-          name="sup_max"
-          id="sup_max"
-          min="0"
-          value="<?= esc_attr(($val = preg_replace('/[^\d]/', '', $_GET['sup_max'] ?? '')) !== '' ? $val : '999999') ?>"/>
-      </div>
+<!-- Superficie -->
+<div class="filter filter-sup">
+  <p>Superficie en m<sup>2</sup></p>
+  <div class="input-min-max">
+    <?php 
+      $input_sup_min = $_GET['sup_min'] ?? '1';
+      $val_sup_min_clean = preg_replace('/[^\d]/', '', $input_sup_min);
+      $val_sup_min_clean = $val_sup_min_clean !== '' ? (int)$val_sup_min_clean : 1;
+      $val_sup_min_display = number_format($val_sup_min_clean, 0, '', '.');
+
+      $input_sup_max = $_GET['sup_max'] ?? '999999';
+      $val_sup_max_clean = preg_replace('/[^\d]/', '', $input_sup_max);
+      $val_sup_max_clean = $val_sup_max_clean !== '' ? (int)$val_sup_max_clean : 999999;
+      $val_sup_max_display = number_format($val_sup_max_clean, 0, '', '.');
+    ?>
+    <div>
+      <label for="sup_min_display">Mínimo:</label>
+      <input type="text" class="price-input" data-target="sup_min" id="sup_min_display" value="<?= esc_attr($val_sup_min_display) ?>">
+      <input type="hidden" name="sup_min" id="sup_min" value="<?= esc_attr($val_sup_min_clean) ?>">
+    </div>
+    <div class="separator"><span>-</span></div>
+    <div>
+      <label for="sup_max_display">Máximo:</label>
+      <input type="text" class="price-input" data-target="sup_max" id="sup_max_display" value="<?= esc_attr($val_sup_max_display) ?>">
+      <input type="hidden" name="sup_max" id="sup_max" value="<?= esc_attr($val_sup_max_clean) ?>">
     </div>
   </div>
+</div>
+
+<script>
+document.querySelectorAll('.price-input').forEach(input => {
+    input.addEventListener('input', function() {
+        let clean = this.value.replace(/[^\d]/g, '');
+        let targetId = this.dataset.target;
+        document.getElementById(targetId).value = clean;
+        this.value = clean.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    });
+});
+</script>
 
 <?php if (!empty($filtros_tag) && is_array($filtros_tag)): ?>
 
@@ -198,3 +215,5 @@ $filtros_tag = get_query_var('filtros_tag');
         <button type="button" class="btn btn-red w-100 mb-2 mt-2" id="apply">Aplicar filtros</button>
         <button type="button" class="btn btn-red-outline w-100" id="limpiar-filtros">Limpiar filtros</button>
 </div>
+
+
