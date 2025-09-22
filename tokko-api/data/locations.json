@@ -63,14 +63,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 1,
-        "location_id": 24718,
-        "location_name": "Liniers",
-        "parent_id": 146,
-        "parent_name": "Capital Federal"
-    },
-    {
-        "count": 14,
+        "count": 15,
         "location_id": 24699,
         "location_name": "Microcentro",
         "parent_id": 24697,
@@ -140,7 +133,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 5,
         "location_id": 24703,
         "location_name": "San Nicolás",
         "parent_id": 146,

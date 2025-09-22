@@ -5,16 +5,17 @@
 
 get_header();
 
-$developments = get_developments(); // Trae todos los desarrollos
+$data_api = get_developments(); // Trae todos los desarrollos
 
 $file_path = get_template_directory() . '/tokko-api/data/developments.json';
 if (!file_exists($file_path)) return [];
 $json = file_get_contents($file_path);
 $data = json_decode($json, true);
-if (empty($data) || !is_array($data)) return [];
+if (empty($data) || !is_array($data)) return []; 
 
 
-$developments = $data['objects'];
+
+$developments = $data_api['objects'] ?? $data['objects'];
 
 // Agrupar por estado
 $grouped = ['ver-todas' => $developments];
@@ -87,7 +88,6 @@ $status_titles = [
                                 $location = get_full_location($item['location']['full_location'] ?? '') ?? '';
                                 $permalink = (function_exists('return_url') ? return_url() : home_url()) . '/emprendimiento/' . sanitize_title($name);
                                 $status = get_construction_status($item['construction_status'] ?? '');
-                                
                                 $post = get_page_by_path(sanitize_title($name), OBJECT, 'emprendimiento');
                                 $object_position = 'center';
                                 if ($post) {

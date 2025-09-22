@@ -307,46 +307,6 @@ function send_form_tokko() {
 
     
 
-   
-
-
-
-    // $response = sendTokkoWebContact($contactData, $apiKey);
-
-    // var_dump($response);
-
-    // if ($response === null) {
-
-    //     wp_send_json_error([
-
-    //         'message' => 'Error interno del servidor al enviar el contacto.',
-
-    //         'details' => 'Revisa los logs del servidor para más información.'
-
-    //     ]);
-
-    // } elseif (!isset($response['id'])) {
-
-    //     wp_send_json_error([
-
-    //         'message' => 'Error inesperado de la API de Tokko.',
-
-    //         'response' => $response
-
-    //     ]);
-
-    // } else {
-
-    //     wp_send_json_success([
-
-    //         'message' => '¡Mensaje enviado con éxito!',
-
-    //         'response_data' => $response
-
-    //     ]);
-
-    // }
-
 
 
     wp_die();
@@ -379,6 +339,19 @@ function enviar_consulta_tokko() {
     $propertyPrice = sanitize_text_field($_POST['property_price'] ?? '');
     $propertyPriceAlquiler = sanitize_text_field($_POST['property_price_alquiler'] ?? '');
     $propertyMetros = sanitize_text_field($_POST['property_metros'] ?? '');
+
+    // Array de emails baneados
+    $email_baneados = ['jfhsojio@outlook.com'];
+
+    // Si el email está baneado devolvemos error y cortamos
+    if (in_array(strtolower($email), array_map('strtolower', $email_baneados))) {
+        wp_send_json([
+            'status'  => 'ERROR',
+            'message' => 'Este mensaje se detecto como SPAM.'
+        ]);
+        wp_die();
+    }
+
     $contactData = [
         "name"  => $fullname,
         "phone" => $telephone,
@@ -393,6 +366,7 @@ function enviar_consulta_tokko() {
     if (!empty($development_id)) {
         $contactData['developments'] = [(int)$development_id];
     }
+
     $data_drive = [
         'origen'         => $origen,
         'nombre'         => $fullname,
@@ -412,12 +386,11 @@ function enviar_consulta_tokko() {
         'metros_totales' => $propertyMetros
     ];
 
-
-
     $apiKey = $config['api_token'];
     $response = sendTokkoWebContact($contactData, $apiKey);
     $driveUrl = "https://script.google.com/macros/s/AKfycbyl6C7DTtqAh1eNJ4ckJvHxzHzdNebhUEzLmzi8hSE7cXeNr36qWqnpaaSNG8QUUew/exec";
     $responseDrive = saveDataGoogleSheet($data_drive, $driveUrl);
+
     // Envío del correo
     $to = 'info@aranalfe.com ';
     $subject = $data_drive['origen'] . ' de ' . $data_drive['nombre']. ' desde la web aranalfe.com';
@@ -444,9 +417,6 @@ function enviar_consulta_tokko() {
         'Cc: federico@zetenta.com',
     ];
 
-
-
-    // Setea no-reply como remitente
     add_filter('wp_mail_from', function () {
         return 'no-responder@aranalfe.com';
     });
@@ -457,8 +427,6 @@ function enviar_consulta_tokko() {
 
     wp_mail($to, $subject, $body, $headers);
 
-
-
     // Respuesta AJAX
     $jsonResponse = [
         'status'  => ($responseDrive && trim($responseDrive) === 'OK') ? 'ERROR' : 'OK',
@@ -466,8 +434,8 @@ function enviar_consulta_tokko() {
         'response' => $data_drive
     ];
     wp_send_json($jsonResponse);
-    
 }
+
 
 
 add_action('wp_ajax_get_search', 'get_search');

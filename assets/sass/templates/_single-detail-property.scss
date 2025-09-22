@@ -1,8 +1,9 @@
 .single-property {
 
   .location-name {
+ 
       all: unset !important;
-      display: block !important;
+      display: flex !important;
       white-space: normal !important;  /* permite saltos de línea */
       overflow: visible !important;     /* muestra todo el contenido */
       word-break: break-word;           /* rompe palabras largas si es necesario */
@@ -15,9 +16,10 @@
       border: none !important; /* por si es un border-bottom en lugar de underline */
       text-overflow: clip !important;
       width: 100% !important;
+
       *{
         all: unset !important;
-        display: block !important;
+        display: flex !important;
         white-space: normal !important;  /* permite saltos de línea */
         overflow: visible !important;     /* muestra todo el contenido */
         word-break: break-word;           /* rompe palabras largas si es necesario */
@@ -30,6 +32,7 @@
         border: none !important; /* por si es un border-bottom en lugar de underline */
         text-overflow: clip !important;
         width: 100% !important;
+    
       }
 
       &.first{
