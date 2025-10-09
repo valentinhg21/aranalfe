@@ -33,10 +33,11 @@
             <nav class="row">
                 <div class="col-sm-4 col-12" style="order:0;">
                     <div class="logo">
-                        <a href="<?php echo get_home_url()?>" title="Logo Aranalfe">
+                        <a href="<?php echo get_home_url()?>" title="Logo Aranalfe" class="flex-column">
                             <?php render_svg(IMAGE_RELATIVE . '/logo.svg') ?>
+                            <p>MATRICULA: CUCICBA 2906</p>
                         </a>
-
+                        
                     </div>
 
                 </div>

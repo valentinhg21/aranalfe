@@ -160,6 +160,14 @@ footer {
     a{
       display: flex;
       height: auto;
+      flex-direction: column;
+      p{
+        font-size: 12px;
+     
+        @include media-down(xs){
+          margin: 4px 24px;
+        }
+      }
     }
     @include media(sm) {
       display: flex;

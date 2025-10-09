@@ -5,7 +5,7 @@
         "type": "Departamento"
     },
     {
-        "count": 44,
+        "count": 45,
         "id": 7,
         "type": "Locales"
     },
@@ -25,7 +25,7 @@
         "type": "Terreno"
     },
     {
-        "count": 16,
+        "count": 14,
         "id": 5,
         "type": "Oficina"
     }

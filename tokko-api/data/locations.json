@@ -21,7 +21,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 30,
+        "count": 27,
         "location_id": 24682,
         "location_name": "Belgrano",
         "parent_id": 146,
@@ -63,7 +63,7 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 15,
+        "count": 16,
         "location_id": 24699,
         "location_name": "Microcentro",
         "parent_id": 24697,
@@ -77,14 +77,14 @@
         "parent_name": "Capital Federal"
     },
     {
-        "count": 13,
+        "count": 14,
         "location_id": 24728,
         "location_name": "Palermo",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },
     {
-        "count": 4,
+        "count": 3,
         "location_id": 24731,
         "location_name": "Palermo Hollywood",
         "parent_id": 24728,
@@ -98,7 +98,7 @@
         "parent_name": "Palermo"
     },
     {
-        "count": 16,
+        "count": 17,
         "location_id": 24701,
         "location_name": "Puerto Madero",
         "parent_id": 146,
@@ -112,14 +112,14 @@
         "parent_name": "Maldonado"
     },
     {
-        "count": 23,
+        "count": 22,
         "location_id": 24681,
         "location_name": "Recoleta",
         "parent_id": 146,
         "parent_name": "Capital Federal"
     },
     {
-        "count": 1,
+        "count": 2,
         "location_id": 24702,
         "location_name": "Retiro",
         "parent_id": 146,
