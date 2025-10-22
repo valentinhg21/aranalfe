@@ -9,7 +9,8 @@ return [
     'property_tag_url' => 'https://www.tokkobroker.com/api/v1/property_tag/',
     'property_detail_url' => 'https://www.tokkobroker.com/api/v1/property/',
     'webcontact_url' => 'https://tokkobroker.com/api/v1/webcontact/?key=',
-    'get_search_summary_url' => 'https://www.tokkobroker.com/api/v1/property/get_search_summary/'
+    'get_search_summary_url' => 'https://www.tokkobroker.com/api/v1/property/get_search_summary/',
+    'get_custom_tag_url' => 'https://www.tokkobroker.com/api/v1/property_custom_tag/',
 ];
 
 

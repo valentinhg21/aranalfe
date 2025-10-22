@@ -138,6 +138,8 @@
         array_map('sanitize_text_field', $servicios_otros_activa)
     ));
 
+    $custom_tag = isset($_GET['custom_tag']) ? (array) $_GET['custom_tag'] : [];
+
     $params = [
         'data' => [
             'current_localization_id' => $ubicacion_localidad_slug,
@@ -154,7 +156,8 @@
                 $superficie_filtro
             )),
             'with_tags' => $servicios_filtro,
-            'without_tags' => []
+            'without_tags' => [],
+            'with_custom_tags' => $custom_tag
         ]
     ];
 
@@ -164,7 +167,7 @@
     $total_count = $propertys['meta']['total_count'] ?? 0;
     $filter_data = get_create_filter_data();
     $filter_tag = get_create_filter_tag();
-
+    $filter_custom_tag = get_create_filter_custom_tag();
     $locations_data = get_locations(get_only_locations());
 
 
@@ -277,6 +280,7 @@
                     <form id="filtros-form" class="filters-container p-relative" method="get" action="/propiedades/">
                         <?php set_query_var('filtros', $filter_data); ?>
                         <?php set_query_var('filtros_tag', $filter_tag); ?>
+                        <?php set_query_var('filtros_custom_tag', $filter_custom_tag); ?>
                         <?php get_template_part('/template-parts/content', 'filtro');?>
                     </form>
 

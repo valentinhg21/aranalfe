@@ -35,7 +35,7 @@
                     <div class="logo">
                         <a href="<?php echo get_home_url()?>" title="Logo Aranalfe" class="flex-column">
                             <?php render_svg(IMAGE_RELATIVE . '/logo.svg') ?>
-                            <p>MATRICULA: CUCICBA 2906</p>
+                            
                         </a>
                         
                     </div>
@@ -88,9 +88,12 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-
+                        <li class="matricula desktop">
+                            <p class="matricula__title">MATRICULA: CUCICBA 2906</p>
+                        </li>
                     </ul>
                 </div>
+
                 <div class="col-12">
                     <div class="copy">
                         <?php $year = date("Y");?>
@@ -106,7 +109,11 @@
                         </p>
                     </div>
                 </div>
+                
             </nav>
+            <div class="matricula mobile">
+                <p class="matricula__title">MATRICULA: CUCICBA 2906</p>
+            </div>
         </div>
     </div>
 </footer>

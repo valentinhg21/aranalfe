@@ -205,24 +205,22 @@ function get_create_filter_data(array $dataFilter = []): array {
     $dormitorios_slug = array_map('sanitize_text_field', $dormitorios_slug);
     $dormitorios_slug = array_unique(array_filter($dormitorios_slug)); // limpio
 
+
+
+
     return [
         'Tipo de operación' => generar_filtros_operacion($type_operation),
         'Ubicación' => generar_filtros_ubicacion($location),
         'Tipo de propiedad' => generar_filtros_tipo($type_property),
         'Antiguedad' => generar_filtros_antiguedad($age),
         'Ambientes' => generar_filtros_ambientes($ambientes_slug),
-        'Dormitorios' => generar_filtros_dormitorios($dormitorios_slug),
+        'Dormitorios' => generar_filtros_dormitorios($dormitorios_slug)
     ];
 }
 
 // FILTROS SERVICIOS Y OTROS
 
 function get_create_filter_tag(array $dataFilter = []): array {
-
-
-
-
-
 
 
     $servicios = $_GET['servicios'] ?? [];
@@ -256,6 +254,25 @@ function get_create_filter_tag(array $dataFilter = []): array {
         'Otros' => generar_filtros_otros_servicios($all_other_tag, $otros)
 
     ];
+
+}
+
+function get_create_filter_custom_tag(): array {
+    $custom_tag = $_GET['custom_tag'] ?? [];
+
+    $custom_tag = is_array($custom_tag) ? $custom_tag : [$custom_tag];
+
+    $custom_tag = array_map('intval', $custom_tag);
+
+    $all_custom_tag = get_all_custom_tag_property()['objects'];
+    return [
+
+        'Etiquetas' => generar_filtros_custom_tag($all_custom_tag, $custom_tag)
+
+
+
+    ];
+
 
 }
 

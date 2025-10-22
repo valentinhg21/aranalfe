@@ -677,6 +677,32 @@ function generar_filtros_otros_servicios(array $data, array $params){
 
 }
 
+function generar_filtros_custom_tag(array $data, array $params){
+    $out = [];
+
+    foreach ($data as $type) {
+  
+        $label = $type['name'];
+        $id = (int) $type['id'];
+
+        $checked = in_array($id, $params, true);
+
+        $url = actualizar_query_param('custom_tag', $id, true);
+        if($label == 'Apto crédito'){
+            $out[] = [
+                'label' => $label,
+                'checked' => $checked,
+                'url'     => $url,
+                'param' => 'custom_tag',
+                'value' => $id
+            ];
+        }
+
+
+    }
+
+    return $out;
+}
 
 
 

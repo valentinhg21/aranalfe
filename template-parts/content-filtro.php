@@ -1,6 +1,7 @@
 <?php 
 $filtros = get_query_var('filtros');
 $filtros_tag = get_query_var('filtros_tag');
+$filtros_custom_tag = get_query_var('filtros_custom_tag');
 ?> 
 
 <?php if (!empty($filtros) && is_array($filtros)): ?>
@@ -205,6 +206,54 @@ document.querySelectorAll('.price-input').forEach(input => {
                 
             </div>
             <?php endif; ?>
+        <?php endif; ?>
+
+    <?php endforeach; ?>
+
+<?php endif; ?>
+
+<?php if (!empty($filtros_custom_tag) && is_array($filtros_custom_tag)): ?>
+
+    <?php foreach ($filtros_custom_tag as $titulo => $opciones): ?>
+
+        <?php if (!empty($opciones) && is_array($opciones)): ?>
+            <?php if($titulo !== 'Ubicación'): ?>
+            <div class="filter">
+
+                <p><?= esc_html($titulo) ?></p>
+
+                <ul class="<?= strtolower(esc_attr($titulo)) ?>">
+
+                    <?php foreach ($opciones as $i => $opcion): 
+
+                        $name = 'filter-' . sanitize_title($titulo);
+
+                        $id = $name . '-' . $i;
+
+                        $checked = !empty($opcion['checked']) ? 'checked' : '';
+
+                    ?>
+
+                        <li class="checkbox">
+                            <label class="<?= $checked ?>">
+
+                                <?php if (!empty($opcion['url'])): ?>
+                                    <button class="button-filter" type="button" data-href="<?= esc_url($opcion['url']) ?>" data-value="<?= esc_attr($opcion['value']) ?>" data-param="<?= esc_attr($opcion['param']) ?>">
+                                <?php endif; ?>
+                                    <div class="checkmark"></div>
+                                    <?= esc_html($opcion['label']) ?>
+                                <?php if (!empty($opcion['url'])): ?>
+                                    </button>
+                                <?php endif; ?>
+                            </label>
+                        </li>
+                    <?php endforeach; ?>
+                               
+                </ul>
+
+            </div>
+            <?php endif; ?>
+
         <?php endif; ?>
 
     <?php endforeach; ?>
